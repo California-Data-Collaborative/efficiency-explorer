@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>MWELO Efficiency Inspector</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery-bootstrap-datepicker.css">
+  <link rel="stylesheet" href="css/metricsgraphics.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header col-md-4">
+        <a class="navbar-brand" href="http://californiadatacollaborative.com/">
+          <!-- <img alt="Brand" src="./img/CDC_logo.png" height="100%"> -->
+          CALIFORNIA DATA COLLABORATIVE
+        </a>
+      </div>
+      <ul class="nav navbar-nav">
+        <!-- I use href="javascript:..." because href default cursor property is pointer -->
+        <li><a class='selected' onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#extraUtility');">MWELO Efficiency Framework</a></li>
+        <li><a onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#interUtility');">Statewide Context</a></li>
+        <li><a onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#intraUtility');">District-Level Management</a></li>
+      </ul>
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <!-- Content -->
+  <div class="container-fluid">
+
+    <div id='extraUtility' class='section row'></div>
+
+    <div id='interUtility' class='section row'>
+
+      <div class="col-md-4">
+        <div id="filters">
+          <!-- <h1>Scenario Builder</h1> -->
+
+          <div id="dateSelection">
+            <h3>Date</h3>
+
+            <div class="form-group">
+              <label for="cal">Set Month and Year</label>
+              <div class="input-group">
+                <span class="input-group-addon" id="cal-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                <input type="text" class="form-control" id="cal" aria-describedby="cal-addon" readonly>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="mweloSelection">
+            <h3>MWELO Coefficients</h3>
+
+            <div class="form-group">
+              <label for="gpcpd">Set GPCPD</label>
+              <div class="input-group">
+                <span class="input-group-addon" id="gpcpd-addon">
+                  <i class="glyphicon glyphicon-tint"></i>
+                  <i class="glyphicon glyphicon-user"></i>
+                </span>
+                <input type="text" class="form-control" id="gpcpd" aria-describedby="gpcpd-addon">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="pf">Set Plant Factor</label>
+              <div class="input-group">
+                <span class="input-group-addon" id="pf-addon">
+                  <i class="glyphicon glyphicon-leaf"></i>
+                  <i class="glyphicon glyphicon-tree-deciduous"></i>
+                </span>
+                <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div id="tsSection">
+          <div id="tsTitles">
+          <h3>Historical Usage</h3>
+
+          <label for="ts">&nbsp;</label>
+        </div>
+          <div id='tsContainer'>
+            <div id="ts"></div>
+            <div id="tsLegend"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-8 nopadding">
+        <div id="map"></div>
+      </div>
+
+    </div>
+
+    <div id='intraUtility' class='section row'></div>
+
+  </div>
+
+  <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src='js/libs/metricsgraphics.js'></script>
+  <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/functions.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+  <script type="text/javascript" src="js/vars.js"></script>
+  <script>
+  window.onload = main;
+  </script>
+
+</body>
+</html>
+
