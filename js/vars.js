@@ -3,7 +3,15 @@
 // It may be of interest to refactor this setup so that these _dm vars and functions are contained with a distinct class
 
 //Probably don't need both agencyName and agencyID
-var vizState_dm = {"date":"'2015-12-01'", "gpcpd":55, "pf":.8, "agencyName":'Moulton Niguel Water District', "agencyID":1663}
+var vizState_dm = {
+	"startDate":"'2014-06-01'",
+	"endDate":"'2015-07-01'",
+	"dayRange": 365.434856,
+	"gpcpd":55,
+	"pf":.8,
+	"agencyName":'Moulton Niguel Water District',
+	"agencyID":1663
+}
 
 
 var cartoAccount_dm = "thenamesdave"
@@ -28,35 +36,38 @@ var strawmanStyles_dm = `
 
 	#${tableName_dm} [ percentdifference <= 100] { marker-fill: #D9C24F; }
 	#${tableName_dm} [ percentdifference <= 0] { marker-fill: #3EAB45; }
-	#${tableName_dm} [ af_usage <= 35000] { marker-width: 20.0; }
-	#${tableName_dm} [ af_usage <= 1616.43326232499] { marker-width: 18.3; }
-	#${tableName_dm} [ af_usage <= 1055.44230786826] { marker-width: 16.7; }
-	#${tableName_dm} [ af_usage <= 749.664639295821] { marker-width: 15.0; }
-	#${tableName_dm} [ af_usage <= 554.011211043499] { marker-width: 13.3; }
-	#${tableName_dm} [ af_usage <= 416.5821576689485] { marker-width: 11.7; }
-	#${tableName_dm} [ af_usage <= 310.066577194462] { marker-width: 10.0; }
-	#${tableName_dm} [ af_usage <= 228.183469280518] { marker-width: 8.3; }
-	#${tableName_dm} [ af_usage <= 163.533728240873] { marker-width: 6.7; }
-	#${tableName_dm} [ af_usage <= 100] { marker-width: 5.0; }
+	#${tableName_dm} [ population <= 4000000] { marker-width: 20.0; }
+	#${tableName_dm} [ population <= 217600] { marker-width: 18.3; }
+	#${tableName_dm} [ population <= 162600] { marker-width: 16.7; }
+	#${tableName_dm} [ population <= 121263] { marker-width: 15.0; }
+	#${tableName_dm} [ population <= 91627] { marker-width: 13.3; }
+	#${tableName_dm} [ population <= 68134] { marker-width: 11.7; }
+	#${tableName_dm} [ population <= 46989] { marker-width: 10.0; }
+	#${tableName_dm} [ population <= 32693] { marker-width: 8.3; }
+	#${tableName_dm} [ population <= 21647] { marker-width: 6.7; }
+	#${tableName_dm} [ population <= 13000] { marker-width: 5.0; }
 	`
-	// #${tableName_dm} [ population <= 4000000] { marker-width: 20.0; }
-	// #${tableName_dm} [ population <= 217600] { marker-width: 18.3; }
-	// #${tableName_dm} [ population <= 162600] { marker-width: 16.7; }
-	// #${tableName_dm} [ population <= 121263] { marker-width: 15.0; }
-	// #${tableName_dm} [ population <= 91627] { marker-width: 13.3; }
-	// #${tableName_dm} [ population <= 68134] { marker-width: 11.7; }
-	// #${tableName_dm} [ population <= 46989] { marker-width: 10.0; }
-	// #${tableName_dm} [ population <= 32693] { marker-width: 8.3; }
-	// #${tableName_dm} [ population <= 21647] { marker-width: 6.7; }
-	// #${tableName_dm} [ population <= 13000] { marker-width: 5.0; }
+	
+
+
+	// #${tableName_dm} [ af_usage <= 35000] { marker-width: 20.0; }
+	// #${tableName_dm} [ af_usage <= 1616.43326232499] { marker-width: 18.3; }
+	// #${tableName_dm} [ af_usage <= 1055.44230786826] { marker-width: 16.7; }
+	// #${tableName_dm} [ af_usage <= 749.664639295821] { marker-width: 15.0; }
+	// #${tableName_dm} [ af_usage <= 554.011211043499] { marker-width: 13.3; }
+	// #${tableName_dm} [ af_usage <= 416.5821576689485] { marker-width: 11.7; }
+	// #${tableName_dm} [ af_usage <= 310.066577194462] { marker-width: 10.0; }
+	// #${tableName_dm} [ af_usage <= 228.183469280518] { marker-width: 8.3; }
+	// #${tableName_dm} [ af_usage <= 163.533728240873] { marker-width: 6.7; }
+	// #${tableName_dm} [ af_usage <= 100] { marker-width: 5.0; }
 
 	var bubble_dm = new cdb.geo.ui.Legend({
 		type: "bubble",
 		show_title: true,
-		title: "Water Usage (Acre-Feet)",
+		title: "District Population",
 		data: [
-		{ value: "100" },
-		{ value: "35,000" },
+		{ value: "13000" },
+		{ value: "4000000" },
 		{ name: "graph_color", value: "#ccc" }
 		]
 	});
@@ -94,12 +105,15 @@ var strawmanStyles_dm = `
 	<p>{{agencyname}}</p>
 	<h4>Percent Over/Under Target</h4>
 	<p>{{percentdifference}}%</p>
-	<h4>Predicted Irrigable Area</h4>
-	<p>{{residential_predicted_irr_area_sf}}</p>
+	<h4>Total Usage</h4>
+	<p>{{af_usage}}</p>
+	
 
 	</div>
 	</div>`
 							// Other tool tip fields
+							// <h4>Predicted Irrigable Area</h4>
+							// <p>{{residential_predicted_irr_area_sf}}</p>
 							// <h4>Average eto</h4>
 							// <p>{{avg_eto}}</p>
 							// <h4>Population</h4>
