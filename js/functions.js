@@ -40,7 +40,7 @@ function generateQuery_dm(gpcpd, pf, dayRange, where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (residential_usage_gal * 3.06889*10^(-6) - mwelo) / CAST(mwelo AS FLOAT)) percentDifference,
-	residential_usage_gal * 3.06889*10^(-6) af_usage
+	ROUND(residential_usage_gal * 3.06889*10^(-6)) af_usage
 	FROM
 	cte_mwelo
 	${where_clause}
@@ -54,7 +54,7 @@ function generateQuery_dm(gpcpd, pf, dayRange, where_clause, allDates=false) {
 		Min(cartodb_id) cartodb_id,
 		Min(agencyname) agencyname,
 		Min(agencyuniq) agencyuniq,
-		AVG(population) population,
+		ROUND(AVG(population)) population,
 		SUM(residential_usage_gal) gal_usage,
 		AVG(avg_eto) avg_eto,
 		AVG(residential_predicted_irr_area_sf) residential_predicted_irr_area_sf,
@@ -65,7 +65,7 @@ function generateQuery_dm(gpcpd, pf, dayRange, where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (gal_usage * 3.06889*10^(-6) - mwelo) / CAST(mwelo AS FLOAT)) percentDifference,
-	gal_usage * 3.06889*10^(-6) af_usage
+	ROUND(gal_usage * 3.06889*10^(-6)) af_usage
 	FROM
 	cte_mwelo
 	ORDER BY
@@ -150,7 +150,7 @@ function sliderSetup_dm() {
 			var formatter = d3.time.format("%Y-%m-%d")
 			startDate = dates[ui.values[0]]
 			endDate = dates[ui.values[1]]
-			dayRange = (endDate - startDate)*1.1574*.00000001 + 30.437;
+			dayRange = (endDate - startDate)*1.1574*.00000001 + 30.437; // convert uct to days
 			vizState_dm.startDate = `'${formatter(new Date(startDate))}'`
 			vizState_dm.endDate = `'${formatter(new Date(endDate))}'`
 			vizState_dm.dayRange = dayRange;
@@ -175,7 +175,7 @@ function sliderSetup_dm() {
 
 
 function tsSetup_dm(agencyID, agencyName) {
-	transition_dm("label[for='ts']", agencyName);
+	transition_dm("label[for='ts'], #summarySentence", agencyName);
 	query = generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause="WHERE agencyuniq = " + agencyID, allDates=true);
 	encoded_query = encodeURIComponent(query);
 	$.getJSON("https://thenamesdave.cartodb.com/api/v2/sql?q="+encoded_query, function(utilityData) {

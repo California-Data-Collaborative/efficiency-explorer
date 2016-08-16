@@ -66,8 +66,8 @@ var strawmanStyles_dm = `
 		show_title: true,
 		title: "District Population",
 		data: [
-		{ value: "13000" },
-		{ value: "4000000" },
+		{ value: "13,000" },
+		{ value: "4,000,000" },
 		{ name: "graph_color", value: "#ccc" }
 		]
 	});
@@ -105,8 +105,10 @@ var strawmanStyles_dm = `
 	<p>{{agencyname}}</p>
 	<h4>Percent Over/Under Target</h4>
 	<p>{{percentdifference}}%</p>
+	<h4>District Population</h4>
+	<p>{{population}}</p>
 	<h4>Total Usage</h4>
-	<p>{{af_usage}}</p>
+	<p>{{af_usage}} Acre-Feet</p>
 	
 
 	</div>
