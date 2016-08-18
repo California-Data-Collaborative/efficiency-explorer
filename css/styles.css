@@ -14,8 +14,9 @@ a.selected {
   background: #222;
 }
 
-label {
+#summarySentence, label {
 	white-space: nowrap;
+  font-size: 93%;
 }
 
 .navbar-inverse .navbar-brand {
@@ -52,6 +53,10 @@ label {
 
 }
 
+#dateSelection {
+  padding-top: 10px
+}
+
 #tsContainer {
 	background-color: #eee;
     border: 1px solid #cccccc;
@@ -68,7 +73,6 @@ label {
   /*font-size: 0.9rem !important;*/
   padding: 5px;
 }
-
 
 #map {
 	width: 100%;

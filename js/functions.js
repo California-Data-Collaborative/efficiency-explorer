@@ -6,7 +6,7 @@
 function styleSetup_dm() {
 	$('body').css("padding-top", nav_height_dm);
 	$('.section, #map').css("height", `calc(100vh - ${nav_height_dm}px)`);
-	var ts_height_dm = $('#map').height() - $('#filters').height() - $('#tsTitles').height() -  115; // the last term depends on the size of the elements above the chart
+	var ts_height_dm = $('#map').height() - $('#filters').height() - $('#tsTitles').height() - 145; // the last term depends on the size of the elements above the chart
 	$('#ts').css("height", ts_height_dm);
 	$(window).resize(function(){location.reload()});
 	// smoothScroll_dm('#extraUtility')
@@ -28,6 +28,27 @@ function transition_dm(element, content){
 		$(element).fadeIn();
 	});
 }
+
+function summarySentence_dm(agency, usageDifference, targetValue, startDate, endDate){
+	if (usageDifference < 0) {
+		var differenceDescription = 'under'
+	} else {
+		var differenceDescription = 'over'
+	}
+
+	var parser = d3.time.format("'%Y-%m-%d'")
+	var formatter = d3.time.format("%b %Y")
+	startDate = parser.parse(startDate)
+	endDate = parser.parse(endDate)
+
+	var summary = 	`<b>Agency:</b> ${agency}<br>
+	<b>Target:</b> ${targetValue} acre-feet<br>
+	<b>Efficiency:</b> ${Math.abs(usageDifference)} acre-feet <em>${differenceDescription}</em> target in this scenario</b>
+	`
+
+	transition_dm('#summarySentence', summary)
+
+};
 
 function generateQuery_dm(gpcpd, pf, dayRange, where_clause, allDates=false) {
 
@@ -55,23 +76,23 @@ function generateQuery_dm(gpcpd, pf, dayRange, where_clause, allDates=false) {
 		Min(agencyname) agencyname,
 		Min(agencyuniq) agencyuniq,
 		ROUND(AVG(population)) population,
-		SUM(residential_usage_gal) gal_usage,
+		ROUND(SUM(residential_usage_gal) * 3.06889*10^(-6)) af_usage,
 		AVG(avg_eto) avg_eto,
 		AVG(residential_predicted_irr_area_sf) residential_predicted_irr_area_sf,
-		AVG(population) * ${gpcpd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(residential_predicted_irr_area_sf) * AVG(avg_eto) * ${pf} * .62 * 3.06889*10^(-6)) AS mwelo		
+		ROUND(AVG(population) * ${gpcpd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(residential_predicted_irr_area_sf) * AVG(avg_eto) * ${pf} * .62 * 3.06889*10^(-6))) AS mwelo		
 		FROM strawman_spatial_official
 		${where_clause}
 		GROUP BY agencyuniq, the_geom_webmercator)
 	SELECT
 	*,
-	ROUND(100 * (gal_usage * 3.06889*10^(-6) - mwelo) / CAST(mwelo AS FLOAT)) percentDifference,
-	ROUND(gal_usage * 3.06889*10^(-6)) af_usage
+	ROUND(100 * (af_usage - mwelo) / CAST(mwelo AS FLOAT)) percentDifference,
+	(af_usage - mwelo) usageDifference
 	FROM
 	cte_mwelo
 	ORDER BY
 	percentDifference
 	`
-	
+
 	if (allDates == true) {
 		return tsQuery_dm
 	} else { 
@@ -89,7 +110,6 @@ function mweloSetup_dm() {
 			query = generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause=`WHERE usage_date BETWEEN ${vizState_dm.startDate} AND ${vizState_dm.endDate}`, allDates=false);
 			sublayers_dm[0].setSQL(query);
 			tsSetup_dm(vizState_dm.agencyID, vizState_dm.agencyName);
-			console.log(vizState_dm)
 		}
 	});
 
@@ -140,23 +160,23 @@ function sliderSetup_dm() {
 		
 		var datesLength = dates.length-1
 		
-	$( "#slider-range" ).slider({
-		range: true,
-		min: 0,
-		max: datesLength,
-		step: 1,
-		values: [1, 13],
-		stop: function (event, ui) {
-			var formatter = d3.time.format("%Y-%m-%d")
-			startDate = dates[ui.values[0]]
-			endDate = dates[ui.values[1]]
-			dayRange = (endDate - startDate)*1.1574*.00000001 + 30.437; // convert uct to days
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: datesLength,
+			step: 1,
+			values: [1, 12],
+			stop: function (event, ui) {
+				var formatter = d3.time.format("%Y-%m-%d")
+				startDate = dates[ui.values[0]]
+				endDate = dates[ui.values[1]]
+			dayRange = (endDate - startDate)*1.1574*.00000001 + 30.437; // convert uct to months
 			vizState_dm.startDate = `'${formatter(new Date(startDate))}'`
 			vizState_dm.endDate = `'${formatter(new Date(endDate))}'`
 			vizState_dm.dayRange = dayRange;
 			query = generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause=`WHERE usage_date BETWEEN ${vizState_dm.startDate} AND ${vizState_dm.endDate}`, allDates=false);
 			sublayers_dm[0].setSQL(query);
-			console.log(vizState_dm.dayRange);
+			tsSetup_dm(vizState_dm.agencyID, vizState_dm.agencyName);
 			
 		},
 		slide: function(event, ui) {
@@ -166,16 +186,19 @@ function sliderSetup_dm() {
 		}
 	});
 
-	start = new Date(dates[$("#slider-range").slider("values", 0)])
-	end = new Date(dates[$("#slider-range").slider("values", 1)])
-	$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
-	})
-	
+start = new Date(dates[$("#slider-range").slider("values", 0)])
+end = new Date(dates[$("#slider-range").slider("values", 1)])
+$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
+})
+
 }
 
 
 function tsSetup_dm(agencyID, agencyName) {
-	transition_dm("label[for='ts'], #summarySentence", agencyName);
+	var markers = [
+	{'usage_date': new Date(vizState_dm.startDate), 'label': 'SCENARIO START DATE'},
+	{'usage_date': new Date(vizState_dm.endDate), 'label': 'SCENARIO END DATE'}
+	];
 	query = generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause="WHERE agencyuniq = " + agencyID, allDates=true);
 	encoded_query = encodeURIComponent(query);
 	$.getJSON("https://thenamesdave.cartodb.com/api/v2/sql?q="+encoded_query, function(utilityData) {
@@ -187,6 +210,7 @@ function tsSetup_dm(agencyID, agencyName) {
 		full_height: true,
 		y_extended_ticks: true,
 		x_extended_ticks: true,
+		markers: markers,
 		xax_format: d3.time.format('%b'),
 		y_label: 'Water Volume (AF)',
 		min_x: new Date('2014-06-01'),
@@ -196,7 +220,7 @@ function tsSetup_dm(agencyID, agencyName) {
         target: "#ts", // the html element that the graphic is inserted in
         x_accessor: 'usage_date',  // the key that accesses the x value
         y_accessor: ['mwelo', 'af_usage'], // the key that accesses the y value
-        legend:  ['MWELO Target', 'Usage'],
+        legend:  ['Target', 'Usage'],
         legend_target: '#tsLegend'
         // mouseover: function(d, i) {
         // 	d3.select('svg .mg-active-datapoint')
@@ -244,7 +268,7 @@ var agencyLayer = {
 	sublayers: [{
 		sql: generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause=`WHERE usage_date BETWEEN ${vizState_dm.startDate} AND ${vizState_dm.endDate}`, allDates=false),
 		cartocss: strawmanStyles_dm,
-		interactivity: ['agencyname', 'percentdifference', 'agencyuniq', 'af_usage', 'population', 'avg_eto', 'residential_predicted_irr_area_sf', 'cartodb_id']
+		interactivity: ['agencyname','usagedifference', 'percentdifference', 'agencyuniq', 'af_usage', 'population', 'avg_eto', 'residential_predicted_irr_area_sf', 'cartodb_id', 'mwelo']
 	}]
 };
 
@@ -264,9 +288,6 @@ var agencyLayer = {
     		sublayers_dm[i] = layer.getSubLayer(i);
     	};
 
-    	// console.log(sublayers_dm[0].getSQL())
-
-
     	showFeature(3314); // cartodb_id for Moulton Nigel (the default display)
 
     	sublayers_dm[0].setInteraction(true);
@@ -278,20 +299,43 @@ var agencyLayer = {
     		fields: [{ agencyname:'agencyname'}] // Unclear how this option operates
     	});
 
+    	layer.on('loading', function() {
+    		 query = generateQuery_dm(gpcpd=vizState_dm.gpcpd, pf=vizState_dm.pf, dayRange=vizState_dm.dayRange, where_clause=`WHERE usage_date BETWEEN ${vizState_dm.startDate} AND ${vizState_dm.endDate}`, allDates=false);
+    		 encoded_query = encodeURIComponent(query);
+    		 $.getJSON("https://thenamesdave.carto.com/api/v2/sql?q="+encoded_query, function(utilityData) {
+    		 	for (row in utilityData.rows) {
+    		 		if (utilityData.rows[row].agencyname == vizState_dm.agencyName) {
+    		 			console.log()
+    		 			vizState_dm.mwelo = utilityData.rows[row].mwelo;
+    		 			vizState_dm.usageDifference = utilityData.rows[row].usagedifference;
+    		 			summarySentence_dm(vizState_dm.agencyName, vizState_dm.usageDifference, vizState_dm.mwelo, vizState_dm.startDate, vizState_dm.endDate);
+    		 		}
+    		 	}
+
+
+    		 });
+    	});
+
+
+
     	sublayers_dm[0].on('featureOver', function(e, latlng, pos, data) {
     		$('#map').css('cursor', 'pointer')
     	});
-    	
+
     	sublayers_dm[0].on('featureOut', function(e, latlng, pos, data) {
     		$('#map').css('cursor','')
     	});
 
     	sublayers_dm[0].on('featureClick', function(e, latlng, pos, data) {
-    		console.log(data)
+
     		showFeature(data.cartodb_id)
     		vizState_dm.agencyName = data.agencyname;
     		vizState_dm.agencyID = data.agencyuniq;
+    		vizState_dm.mwelo = data.mwelo;
+    		vizState_dm.usageDifference = data.usagedifference;
+
     		tsSetup_dm(vizState_dm.agencyID, vizState_dm.agencyName);
+    		summarySentence_dm(vizState_dm.agencyName, vizState_dm.usageDifference, vizState_dm.mwelo, vizState_dm.startDate, vizState_dm.endDate);
     	});
     });
 };

@@ -249,14 +249,14 @@
 .mg-markers line {
     opacity: 0.9;
     shape-rendering: auto;
-    stroke: #b3b2b2;
+    stroke: black; /*#b3b2b2;*/
     stroke-width: 1px;
 }
 
 .mg-markers text {
     fill: black;
     font-size: 0.7rem;
-    opacity: 0.5;
+    opacity: .9;/*0.5;*/
     stroke: none;
 }
 

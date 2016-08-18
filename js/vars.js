@@ -4,13 +4,15 @@
 
 //Probably don't need both agencyName and agencyID
 var vizState_dm = {
-	"startDate":"'2014-06-01'",
-	"endDate":"'2015-07-01'",
+	"startDate":"'2014-07-01'",
+	"endDate":"'2015-06-01'",
 	"dayRange": 365.434856,
 	"gpcpd":55,
 	"pf":.8,
 	"agencyName":'Moulton Niguel Water District',
-	"agencyID":1663
+	"agencyID":1663,
+	"mwelo":23653,
+	"usageDifference": 4971
 }
 
 
@@ -76,7 +78,7 @@ var strawmanStyles_dm = `
 	var choropleth_dm = new cdb.geo.ui.Legend({
 		type: "choropleth",
 		show_title: true,
-		title: "Percent over/under MWELO Target",
+		title: "Percent over/under Efficiency Target",
 		data: [{
 			value: "< 0%"
 		}, {
@@ -107,17 +109,19 @@ var strawmanStyles_dm = `
 	<p>{{percentdifference}}%</p>
 	<h4>District Population</h4>
 	<p>{{population}}</p>
-	<h4>Total Usage</h4>
-	<p>{{af_usage}} Acre-Feet</p>
+
 	
 
 	</div>
 	</div>`
-							// Other tool tip fields
-							// <h4>Predicted Irrigable Area</h4>
-							// <p>{{residential_predicted_irr_area_sf}}</p>
-							// <h4>Average eto</h4>
-							// <p>{{avg_eto}}</p>
-							// <h4>Population</h4>
-							// <p>{{population}}</p>
-							
+	
+	// Other tool tip fields
+	// <h4>Predicted Irrigable Area</h4>
+	// <p>{{residential_predicted_irr_area_sf}}</p>
+	// <h4>Average eto</h4>
+	// <p>{{avg_eto}}</p>					
+	// <h4>Target Usage</h4>
+	// <p>{{mwelo}} Acre-Feet</p>
+	// <h4>Total Usage</h4>
+	// <p>{{af_usage}} Acre-Feet</p>
+
