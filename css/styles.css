@@ -1,5 +1,6 @@
 body {
 	background-color: #222;
+  overflow: hidden
 }
 
 nav {
@@ -14,7 +15,39 @@ a.selected {
   background: #222;
 }
 
-#summarySentence, label {
+td {
+  font-style: italic;
+}
+
+
+.centered {
+  text-align: center;
+}
+
+.myButton {
+  margin-top: 30px;
+  background-color:#ffffff;
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  border-radius:10px;
+  display:inline-block;
+  cursor:pointer;
+  color:#000000;
+  font-size:24px;
+  padding:10px 35px;
+  text-decoration:none;
+  outline: none !important;
+}
+.myButton:hover {
+  color:#000000;
+  background-color:#337ab7;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+
+#summarySentence label {
 	white-space: nowrap;
   font-size: 93%;
 }
@@ -29,11 +62,7 @@ a.selected {
    margin: 0 !important;
 }
 
-#extraUtility {
-	background-color: gray;
-}
-
-#interUtility {
+.section {
 	background-color: white;
 }
 
@@ -41,17 +70,6 @@ a.selected {
 	cursor: default;
 }
 
-.ui-datepicker-calendar, .ui-datepicker-next, .ui-datepicker-prev {
-    display: none;
-    }
-
-.ui-datepicker-year, .ui-datepicker-month {
-	background-color: white;
-	border-color: #428bca;
-	box-shadow: 0 0 8px rgba(102,175,233,.6);
-	color: #555;
-
-}
 
 #dateSelection {
   padding-top: 10px
@@ -80,9 +98,4 @@ a.selected {
 
 .pointer {
 	cursor: pointer !important;
-}
-
-
-#intraUtility {
-	background-color: #D3D3D3;
 }

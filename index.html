@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>MWELO Efficiency Inspector</title>
+  <title>Efficiency Benchmarker</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
@@ -14,125 +13,156 @@
 </head>
 
 <body>
-
   <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header col-md-4">
         <a class="navbar-brand" href="http://californiadatacollaborative.com/">
-          <!-- <img alt="Brand" src="./img/CDC_logo.png" height="100%"> -->
           CALIFORNIA DATA COLLABORATIVE
         </a>
       </div>
       <ul class="nav navbar-nav">
         <!-- I use href="javascript:..." because href default cursor property is pointer -->
-        <li><a class='selected' onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#extraUtility');">MWELO Efficiency Framework</a></li>
-        <li><a onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#interUtility');">Statewide Context</a></li>
-        <li><a onclick='makeSelected(this)' href="javascript: smoothScroll_dm('#intraUtility');">District-Level Management</a></li>
+        <li><a  onclick='makeSelected(this)' href="javascript: smoothScroll('#extraUtility');">About</a></li>
+        <li><a class='selected' id='intraULink' onclick='makeSelected(this)' href="javascript: smoothScroll('#intraUtility');">Neighborhood-Level Efficiency Explorer</a></li>
       </ul>
-    </div><!-- /.container-fluid -->
+    </div>
   </nav>
 
   <!-- Content -->
   <div class="container-fluid">
 
-    <div id='extraUtility' class='section row'></div>
+    <div id='extraUtility' class='section row'>
+      <div class='col-md-12'>
+        <h1>Context:</h1>
+        <p>
+          In May 2016, Governor Brown issued Executive Order B-37-16. The EO calls for the development of <b>water use targets customized to the unique conditions of each urban water agency as part of a new, permanent efficiency framework.</b>
+        </p>
+        <p>
+         Standards for efficiency are being developed by the Department of Water Resources and the Water Board <b>in consultation with urban water suppliers</b> and other stakeholder groups.
+       </p>
+       <p>
+        This new water use framework shall be publicly proposed <b>by January 10, 2017.</b> 
+      </p>
 
+      <p>
+        At present, the efficiency benchmarking tools the CaDC has developed focus on the <em>residential usage</em> component of an agency's efficiency target. This component will vary according to:
 
-    <div id='interUtility' class='section row'>
+        <table  style="width:100%">
+          <tr>
+            <th>District-Specific Factors</th>
+            <th>Policy Decisions</th>
+          </tr>
+          <tr>
+            <td>Population</td>
+            <td>Reasonable gallons per capita per day usage (GPCD)</td>
+          </tr>
+          <tr>
+            <td>Irrigable area</td>
+            <td>The natural water use characteristics of appropriate landscape (Plant Factor)</td>
+          </tr>
+          <tr>
+            <td>Evapotranspiration</td>
+            <td></td>
+          </tr>
+        </table>
+      </p>
 
-      <div class="col-md-4">
-        <div id="tsSection">
-          <div id="tsTitles">
-            <h2>Scenario Builder</h2>
-            <!-- <hr> -->
-            <p id='summarySentence'>&nbsp;</p>
-            <!-- <h3>Historical Usage</h3> -->
-            <!-- <label for="ts">Historical Usage</label> -->
-          </div>
-          <div id='tsContainer'>
-            <div id="ts"></div>
-            <div id="tsLegend"></div>
-          </div>
-        </div>
+      <h1>Instructions:</h1>
 
-        <div id="filters">
-
-
-          <!-- <hr> -->
-          <!-- <h3>Scenario Builder</h3> -->
-
-          <div id="dateSelection">
-            <!-- <h3>Date</h3> -->
-
-            <div class="form-group">
-              <label for="cal">Date Range</label>
-              <div class="input-group">
-                <span class="input-group-addon" id="cal-addon">
-                  <i class="glyphicon glyphicon-calendar"></i>
-                  <i class="glyphicon glyphicon-resize-horizontal"></i>
-                </span>
-                <input type="text" class="form-control" id="cal" aria-describedby="cal-addon" disabled>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div id='slider-range'></div>
-            </div>
-
-          </div>
-
-          <div id="mweloSelection">
-            <!-- <h3>MWELO Coefficients</h3> -->
-
-            <div class="form-group">
-              <label for="gpcpd">GPCD</label>
-              <div class="input-group">
-                <span class="input-group-addon" id="gpcpd-addon">
-                  <i class="glyphicon glyphicon-tint"></i>
-                  <i class="glyphicon glyphicon-user"></i>
-                </span>
-                <input type="text" class="form-control" id="gpcpd" aria-describedby="gpcpd-addon">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="pf">Plant Factor</label>
-              <div class="input-group">
-                <span class="input-group-addon" id="pf-addon">
-                  <i class="glyphicon glyphicon-leaf"></i>
-                  <i class="glyphicon glyphicon-tree-deciduous"></i>
-                </span>
-                <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
-              </div>
-            </div>
-
-          </div>
-          <!-- <hr> -->
-        </div>
-      </div>
-      <div class="col-md-8 nopadding">
-        <div id="map"></div>
-      </div>
+      <p>
+        The tools below aim to serve water managers by both providing an intuitive platform for exploring the new efficiency targets, and by enabling instantaneous access to data for different water use policy scenarios.
+      </p>
+      <p>
+        The <a href="javascript: smoothScroll('#interUtility'); makeSelected('#interULink');">Agency-Wide Efficiency Explorer</a> addresses benchmarking scenarios at the state-level. By setting values for GPCD (gallons per capita per day) and Plant Factor, managers can use this tool to investigate how different standards for residential water use affect their agencies over different periods of time.
+      </p>
+      <p>
+        The <a href="javascript: smoothScroll('#intraUtility'); makeSelected('#intraULink');">Neighborhood-Level Efficiency Explorer</a> uses the same scenario building features described above to explore water use efficiency across census blocks within a single district. Managers can use this tool to identify communities that are potentially historically under-preforming and allocate conservation intervention resources accordingly.
+      </p>
+      <p>
+        Specifically, each tool consists of a map for selecting an agency or census block, and Scenario Builder panel for (1) selecting Date Range, GPCD, and Plant Factor; and (2) viewing results (residential usage target, number of acre-feet over or under target for current scenario, and a time series graph for comparing target usage to actual usage over time). 
+      </p>
+      <p>
+        Use the navigation bar links above to scroll between tools. Please set your browser window to full screen for best experience.
+      </p>
 
     </div>
-
-    <div id='intraUtility' class='section row'></div>
-
   </div>
 
-  <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src='js/libs/metricsgraphics.js'></script>
-  <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-  <script type="text/javascript" src="js/functions.js"></script>
-  <script type="text/javascript" src="js/script.js"></script>
-  <script type="text/javascript" src="js/vars.js"></script>
-  <script>
-  window.onload = main;
-  </script>
+  <div id='intraUtility' class='section row'>
+    <div class="col-md-4">
+      <div id="tsSection">
+        <div id="tsTitles">
+          <h2>Scenario Builder</h2>
+          <p id='summarySentence'>&nbsp;</p>
+        </div>
+        <div id='tsContainer'>
+          <div id="ts"></div>
+          <div id="tsLegend"></div>
+        </div>
+      </div>
+
+      <div id="filters">
+        <div id="dateSelection">
+          <div class="form-group">
+            <label for="cal">Date Range</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="cal-addon">
+                <i class="glyphicon glyphicon-calendar"></i>
+                <i class="glyphicon glyphicon-resize-horizontal"></i>
+              </span>
+              <input type="text" class="form-control" id="cal" aria-describedby="cal-addon" disabled>
+            </div>
+          </div>
+          <div class="form-group">
+            <div id='range_slider'></div>
+          </div>
+        </div>
+        <div id="coefficientSelection">
+          <div class="form-group">
+            <label for="gpcd">GPCD</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="gpcd-addon">
+                <i class="glyphicon glyphicon-tint"></i>
+                <i class="glyphicon glyphicon-user"></i>
+              </span>
+              <input type="text" class="form-control" id="gpcd" aria-describedby="gpcd-addon">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pf">Plant Factor</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="pf-addon">
+                <i class="glyphicon glyphicon-leaf"></i>
+                <i class="glyphicon glyphicon-tree-deciduous"></i>
+              </span>
+              <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 nopadding">
+      <div id="map"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src='js/libs/metricsgraphics.js'></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/ss_config.js"></script>
+<script type="text/javascript" src="js/objects.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script>
+window.onload = function() {
+  dataSetup(main);
+};
+</script>
 
 </body>
 </html>
