@@ -1,6 +1,5 @@
 var config = {
 	"account" : "<CARTO_ACCOUNT>",
-	"key" : "<API_KEY>",
 
 	"geometry_table" : "<BLOCKGROUP_SHAPEFILE>", // This could eventually be a single shapefile of all blockgroups in California
 	"zoom" : "<ZOOM_LEVEL>",
