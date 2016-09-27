@@ -50,18 +50,18 @@ function generateQuery(where_clause, allDates=false) {
 	${where_clause}
 	ORDER BY ${config.column_names.date}
 	`
-
+	// usage_ccf is still hard-coded
 	var query = `
 	WITH cte_otf AS
 	(SELECT
 		${config.geometry_table}.the_geom_webmercator,
 		${config.geometry_table}.cartodb_id,
 		${config.geometry_table}.${config.column_names.unique_id},
-		${config.attribute_table}.cust_loc_hhsize,
-		${config.attribute_table}.cust_loc_irr_area_sf,
-		${config.attribute_table}.usage_et_amount,
+		${config.attribute_table}.${config.column_names.population},
+		${config.attribute_table}.${config.column_names.irrigable_area},
+		${config.attribute_table}.${config.column_names.average_eto},
 		${config.attribute_table}.usage_ccf,
-		${config.attribute_table}.usage_date
+		${config.attribute_table}.${config.column_names.date}
 		FROM
 		${config.geometry_table},
 		${config.attribute_table}
@@ -79,7 +79,7 @@ function generateQuery(where_clause, allDates=false) {
 		ROUND(SUM(${config.column_names.residential_usage_gal})) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
-		ROUND(AVG(${config.column_names.population}) * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 * 3.06889*10^(-6))) AS target_af
+		AVG(${config.column_names.population}) * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af
 		FROM cte_otf
 		${where_clause}
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
@@ -87,7 +87,7 @@ function generateQuery(where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (af_usage - target_af) / CAST(target_af AS FLOAT)) percentDifference,
-	(af_usage - target_af) usageDifference
+	(ROUND(CAST(af_usage AS NUMERIC),2) - ROUND(CAST(target_af AS NUMERIC),2)) usageDifference
 
 	FROM
 	cte_targets
