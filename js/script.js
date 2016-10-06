@@ -87,7 +87,8 @@ function generateQuery(where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (af_usage - target_af) / CAST(target_af AS FLOAT)) percentDifference,
-	(ROUND(CAST(af_usage AS NUMERIC),2) - ROUND(CAST(target_af AS NUMERIC),2)) usageDifference
+	(ROUND(CAST(af_usage AS NUMERIC),2) - ROUND(CAST(target_af AS NUMERIC),2)) usageDifference,
+	ROUND(CAST(target_af AS NUMERIC),2) target_af_round
 
 	FROM
 	cte_targets
@@ -242,7 +243,7 @@ function showFeature(cartodb_id) {
 		}).addTo(map);
 	});
 }
-// End highlight feature setup 
+// End highlight feature setup
 
 var placeLayer = {
 	user_name: config.account,
@@ -250,7 +251,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af', 'population',  `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population',  `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -289,7 +290,7 @@ var placeLayer = {
     		 $.getJSON(url, function(utilityData) {
     		 	for (row in utilityData.rows) {
     		 		if (utilityData.rows[row][config.column_names.unique_id] == state.placeID) {
-    		 			var target_af = utilityData.rows[row].target_af,
+    		 			var target_af = utilityData.rows[row].target_af_round,
     		 				usagedifference = utilityData.rows[row].usagedifference,
     		 				percentdifference = utilityData.rows[row].percentdifference;
     		 			summarySentence_dm(usagedifference, percentdifference, target_af);
@@ -312,7 +313,8 @@ var placeLayer = {
     	globals.sublayers[0].on('featureClick', function(e, latlng, pos, data) {
     		showFeature(data.cartodb_id)
     		state.placeID = data[config.column_names.unique_id];
-    		var target_af = data.target_af,
+    		console.log(data.target_af_round);
+    		var target_af = data.target_af_round,
     		 	usagedifference = data.usagedifference,
     		 	percentdifference = data.percentdifference;
     		summarySentence_dm(usagedifference, percentdifference, target_af);
