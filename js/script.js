@@ -39,7 +39,9 @@ function generateQuery(where_clause, allDates=false) {
 		*,
 		${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
 		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal
-		FROM ${config.attribute_table})
+		FROM ${config.attribute_table}
+		WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
+		)
 	SELECT
 	*,
 	ROUND(100 * (${config.column_names.residential_usage_gal} * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,
@@ -61,12 +63,15 @@ function generateQuery(where_clause, allDates=false) {
 		${config.attribute_table}.${config.column_names.irrigable_area},
 		${config.attribute_table}.${config.column_names.average_eto},
 		${config.attribute_table}.usage_ccf,
-		${config.attribute_table}.${config.column_names.date}
+		${config.attribute_table}.${config.column_names.date},
+		${config.column_names.population} * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af
 		FROM
 		${config.geometry_table},
 		${config.attribute_table}
 		WHERE
 		${config.geometry_table}.${config.column_names.unique_id} = ${config.attribute_table}.${config.column_names.unique_id}
+		AND
+		${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
 		),
 	cte_targets AS
 	(SELECT     
@@ -79,7 +84,7 @@ function generateQuery(where_clause, allDates=false) {
 		ROUND(SUM(${config.column_names.residential_usage_gal})) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
-		AVG(${config.column_names.population}) * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af
+		AVG(target_af) target_af
 		FROM cte_otf
 		${where_clause}
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
@@ -113,6 +118,8 @@ function tsSetup() {
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 	$.getJSON(url, function(utilityData) {
+		console.log(globals.dateData.rows[0][config.column_names.date])
+		console.log(utilityData.rows[utilityData.total_rows - 1][config.column_names.date])
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
 			data: tsData,
@@ -147,7 +154,6 @@ function standardsSetup() {
 			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
-			console.log(query)
 		}
 	});
 
@@ -159,7 +165,6 @@ function standardsSetup() {
 			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
-			console.log(query)
 		}
 	});
 };
@@ -173,8 +178,6 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 				}).sort()
 
 	var datesLength = dates.length - 1,
-		minDate = dates[0],
-		maxDate = dates[datesLength],
 		startPosition = (
 			dates.indexOf(
 				parser.parse(state.startDate).getTime()
@@ -190,7 +193,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 	$("#range_slider").slider({
 		range: true,
 		min: 0,
-		max: datesLength,
+		max: datesLength - 1,  // exclude most recent month because data may not be available for all months
 		step: 1,
 		values: [startPosition, endPosition],
 		stop: function (event, ui) {
@@ -202,7 +205,6 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			state.endDate = `${formatter(new Date(endDate))}`
 			query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
-			console.log(query)
 			tsSetup();
 			
 		},
@@ -272,8 +274,6 @@ var placeLayer = {
     		globals.sublayers[i] = layer.getSubLayer(i);
     	};
 
-    	console.log(generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false))
-
     	globals.sublayers[0].setInteraction(true);
     	layer.leafletMap.viz.addOverlay({
     		type: 'tooltip',
@@ -313,7 +313,6 @@ var placeLayer = {
     	globals.sublayers[0].on('featureClick', function(e, latlng, pos, data) {
     		showFeature(data.cartodb_id)
     		state.placeID = data[config.column_names.unique_id];
-    		console.log(data.target_af_round);
     		var target_af = data.target_af_round,
     		 	usagedifference = data.usagedifference,
     		 	percentdifference = data.percentdifference;

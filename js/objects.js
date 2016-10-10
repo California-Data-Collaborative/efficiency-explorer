@@ -15,7 +15,9 @@ globals = {
 //// Set default state values and store global non-state-dependent data
 function dataSetup(callback) {
 	// choose random place for default placeID
-	query = `SELECT DISTINCT ${config.column_names.unique_id} FROM ${config.attribute_table}`;
+	query = `	SELECT DISTINCT ${config.column_names.unique_id}
+				FROM ${config.attribute_table}
+				WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL`;
 	encoded_query = encodeURIComponent(query);
 	url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
 	$.getJSON(url, function(idData) {
@@ -24,13 +26,17 @@ function dataSetup(callback) {
 			randIdx =  Math.floor(Math.random() * (max - min)) + min,
 			randomPlace = idData.rows[randIdx].geoid10;
 		state.placeID = randomPlace
-		// calculate most recent month and 1 year back for default end and start dates, respectively
-		query = `SELECT DISTINCT ${config.column_names.date} FROM ${config.attribute_table} ORDER BY ${config.column_names.date} DESC`;
+		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
+		// ^*I exclude the actual most recent month because not every block contains these data
+		query = `	SELECT DISTINCT ${config.column_names.date}
+					FROM ${config.attribute_table}
+					WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
+					ORDER BY ${config.column_names.date} DESC`;
 		encoded_query = encodeURIComponent(query);
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
 		$.getJSON(url, function(dateData) {
-			state.endDate = dateData.rows[0][config.column_names.date];
-			state.startDate = dateData.rows[11][config.column_names.date];
+			state.endDate = dateData.rows[1][config.column_names.date];
+			state.startDate = dateData.rows[12][config.column_names.date]; 
 			state.gpcd = 55
 			state.pf = .8
 
