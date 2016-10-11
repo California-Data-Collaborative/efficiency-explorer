@@ -30,7 +30,8 @@ function transition(element, content){
 function generateQuery(where_clause, allDates=false) {
 	var milliunix_start = new Date(state.startDate).getTime(),
 		milliunix_end = new Date(state.endDate).getTime(),
-		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 1 + 30.437; // convert milliunix to days
+		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
+		console.log("dayRange: "+dayRange)
 	
 	
 	var tsQuery = `
@@ -83,8 +84,8 @@ function generateQuery(where_clause, allDates=false) {
 		SUM(${config.column_names.residential_usage_gal}) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
-		SUM(${config.column_names.population}) * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
-		SUM(${config.column_names.population}) * ${state.gpcd} * ${dayRange} + (${dayRange}/30.437) * (AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 ) AS target_gal
+		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
+		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
 		FROM cte_otf
 		${where_clause}
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
@@ -92,7 +93,7 @@ function generateQuery(where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
-	ROUND(CAST(af_usage AS NUMERIC), 3) - ROUND(CAST(target_af AS NUMERIC), 3) usageDifference,
+	ROUND(CAST(af_usage AS NUMERIC), 4) - ROUND(CAST(target_af AS NUMERIC), 4) usageDifference,
 	ROUND(CAST(target_af AS NUMERIC), 3) target_af_round
 
 	FROM
@@ -204,9 +205,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
-			console.log("start: " + state.startDate)
-			console.log("end: " + state.endDate )
-			
+			console.log(query);
 		},
 		slide: function(event, ui) {
 			var start = new Date(dates[ui.values[0]]),
@@ -253,7 +252,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population',  `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -317,7 +316,11 @@ var placeLayer = {
     		 	usagedifference = data.usagedifference,
     		 	percentdifference = data.percentdifference;
     		summarySentence_dm(usagedifference, percentdifference, target_af);
-    		tsSetup();
+    		tsSetup(data.af_usage)
+    		console.log("gal usage: " + data.gal_usage);
+    		console.log("gal target: " + data.target_gal);
+    		console.log("af usage: " + data.af_usage);
+    		console.log("af target: " + data.target_af);
     	});
     });
 };
