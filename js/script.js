@@ -46,7 +46,7 @@ function generateQuery(where_clause, allDates=false) {
 	*,
 	ROUND(100 * (${config.column_names.residential_usage_gal} * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,
 	ROUND(${config.column_names.residential_usage_gal} * 3.06889*10^(-6)) af_usage,
-	ROUND(${config.column_names.residential_usage_gal}) gal_usage
+	${config.column_names.residential_usage_gal} gal_usage
 	FROM
 	cte_targets
 	${where_clause}
@@ -63,8 +63,7 @@ function generateQuery(where_clause, allDates=false) {
 		${config.attribute_table}.${config.column_names.irrigable_area},
 		${config.attribute_table}.${config.column_names.average_eto},
 		${config.attribute_table}.usage_ccf,
-		${config.attribute_table}.${config.column_names.date},
-		${config.column_names.population} * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af
+		${config.attribute_table}.${config.column_names.date}
 		FROM
 		${config.geometry_table},
 		${config.attribute_table}
@@ -80,20 +79,21 @@ function generateQuery(where_clause, allDates=false) {
 		Min(${config.column_names.hr_name}) hr_name,
 		${config.column_names.unique_id},
 		ROUND(AVG(${config.column_names.population})) population,
-		ROUND(SUM(${config.column_names.residential_usage_gal}) * 3.06889*10^(-6)) af_usage,
-		ROUND(SUM(${config.column_names.residential_usage_gal})) gal_usage,
+		SUM(${config.column_names.residential_usage_gal}) * 3.06889*10^(-6) af_usage,
+		SUM(${config.column_names.residential_usage_gal}) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
-		AVG(target_af) target_af
+		SUM(${config.column_names.population}) * ${state.gpcd} * ${dayRange} * 3.06889*10^(-6) + (${dayRange}/30.437)*(AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
+		SUM(${config.column_names.population}) * ${state.gpcd} * ${dayRange} + (${dayRange}/30.437) * (AVG(${config.column_names.irrigable_area}) * AVG(${config.column_names.average_eto}) * ${state.pf} * .62 ) AS target_gal
 		FROM cte_otf
 		${where_clause}
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
 
 	SELECT
 	*,
-	ROUND(100 * (af_usage - target_af) / CAST(target_af AS FLOAT)) percentDifference,
-	(ROUND(CAST(af_usage AS NUMERIC),2) - ROUND(CAST(target_af AS NUMERIC),2)) usageDifference,
-	ROUND(CAST(target_af AS NUMERIC),2) target_af_round
+	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
+	ROUND(CAST(af_usage AS NUMERIC), 3) - ROUND(CAST(target_af AS NUMERIC), 3) usageDifference,
+	ROUND(CAST(target_af AS NUMERIC), 3) target_af_round
 
 	FROM
 	cte_targets
@@ -118,8 +118,6 @@ function tsSetup() {
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 	$.getJSON(url, function(utilityData) {
-		console.log(globals.dateData.rows[0][config.column_names.date])
-		console.log(utilityData.rows[utilityData.total_rows - 1][config.column_names.date])
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
 			data: tsData,
@@ -206,6 +204,8 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
+			console.log("start: " + state.startDate)
+			console.log("end: " + state.endDate )
 			
 		},
 		slide: function(event, ui) {
