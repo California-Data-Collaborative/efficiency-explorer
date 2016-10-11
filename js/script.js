@@ -93,8 +93,8 @@ function generateQuery(where_clause, allDates=false) {
 	SELECT
 	*,
 	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
-	ROUND(CAST(af_usage AS NUMERIC), 3) - ROUND(CAST(target_af AS NUMERIC), 3) usageDifference,
-	ROUND(CAST(target_af AS NUMERIC), 3) target_af_round
+	ROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,
+	ROUND(CAST(target_af AS NUMERIC), 2) target_af_round
 
 	FROM
 	cte_targets
