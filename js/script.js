@@ -31,7 +31,7 @@ function generateQuery(where_clause, allDates=false) {
 	var milliunix_start = new Date(state.startDate).getTime(),
 		milliunix_end = new Date(state.endDate).getTime(),
 		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
-		console.log("dayRange: "+dayRange)
+		
 	
 	
 	var tsQuery = `
@@ -41,7 +41,6 @@ function generateQuery(where_clause, allDates=false) {
 		${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
 		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal
 		FROM ${config.attribute_table}
-		WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
 		)
 	SELECT
 	*,
@@ -70,8 +69,7 @@ function generateQuery(where_clause, allDates=false) {
 		${config.attribute_table}
 		WHERE
 		${config.geometry_table}.${config.column_names.unique_id} = ${config.attribute_table}.${config.column_names.unique_id}
-		AND
-		${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
+		
 		),
 	cte_targets AS
 	(SELECT     
@@ -88,6 +86,7 @@ function generateQuery(where_clause, allDates=false) {
 		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
 		FROM cte_otf
 		${where_clause}
+		
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
 
 	SELECT
@@ -98,6 +97,8 @@ function generateQuery(where_clause, allDates=false) {
 
 	FROM
 	cte_targets
+
+
 
 	ORDER BY
 	percentDifference
@@ -119,6 +120,7 @@ function tsSetup() {
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 	$.getJSON(url, function(utilityData) {
+		console.log(utilityData)
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
 			data: tsData,
@@ -205,7 +207,6 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
-			console.log(query);
 		},
 		slide: function(event, ui) {
 			var start = new Date(dates[ui.values[0]]),
@@ -317,10 +318,7 @@ var placeLayer = {
     		 	percentdifference = data.percentdifference;
     		summarySentence_dm(usagedifference, percentdifference, target_af);
     		tsSetup(data.af_usage)
-    		console.log("gal usage: " + data.gal_usage);
-    		console.log("gal target: " + data.target_gal);
-    		console.log("af usage: " + data.af_usage);
-    		console.log("af target: " + data.target_af);
+    		
     	});
     });
 };

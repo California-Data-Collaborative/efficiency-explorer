@@ -16,8 +16,7 @@ globals = {
 function dataSetup(callback) {
 	// choose random place for default placeID
 	query = `	SELECT DISTINCT ${config.column_names.unique_id}
-				FROM ${config.attribute_table}
-				WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL`;
+				FROM ${config.attribute_table}`;
 	encoded_query = encodeURIComponent(query);
 	url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
 	$.getJSON(url, function(idData) {
@@ -30,7 +29,6 @@ function dataSetup(callback) {
 		// ^*I exclude the actual most recent month because not every block contains these data
 		query = `	SELECT DISTINCT ${config.column_names.date}
 					FROM ${config.attribute_table}
-					WHERE ${config.attribute_table}.${config.column_names.average_eto} IS NOT NULL
 					ORDER BY ${config.column_names.date} DESC`;
 		encoded_query = encodeURIComponent(query);
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
