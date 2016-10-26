@@ -20,10 +20,10 @@ var config = {
 
 
 config.account = "california-data-collaborative"
-config.geometry_table = "riverside_census_blocks_2010"//"oc_census_blocks_2010"//
-config.zoom = 11//12
-config.coordinates = [33.775,-117.1]//[33.56,-117.69]
-config.attribute_table = "uw9fpxxgcqncpndh_census_block_usage"//"bfh5gpcbwjq4lzh0_census_block_usage" 
+config.geometry_table = ""
+config.zoom = ""
+config.coordinates = ""
+config.attribute_table = ""
 config.column_names.unique_id = "geoid10"
 config.column_names.hr_name = "geoid10"
 config.column_names.date = "usage_date"
