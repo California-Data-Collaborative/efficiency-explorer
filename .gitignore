@@ -1,0 +1,9 @@
+processing_files/config.pyc
+processing_files/config.py
+processing_files/.ipynb_checkpoints/
+processing_files/dev/
+processing_files/tempOUT/*
+!processing_files/tempOUT/placeholder.csv
+
+.hushlogin
+.DS_Store
