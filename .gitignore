@@ -5,5 +5,7 @@ processing_files/dev/
 processing_files/tempOUT/*
 !processing_files/tempOUT/placeholder.csv
 
+js/ss_config.js
+
 .hushlogin
 .DS_Store
