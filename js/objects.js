@@ -1,6 +1,7 @@
 ////// visualization state object and global data object
 state = {
 	"placeID" : "<PLACE_IDENTIFIER>",
+	"hrName" : "<HUMAN_READABLE_IDENTIFIER>",
 	"startDate" : "<SCENARIO_START>",
 	"endDate" : "<SCENARIO_END>",
 	"gpcd" : "<GPCD>",
@@ -16,20 +17,20 @@ globals = {
 function dataSetup(callback) {
 	// choose random place for default placeID
 	query = `	SELECT DISTINCT ${config.column_names.unique_id}
-				FROM ${config.attribute_table}`;
+	FROM ${config.attribute_table}`;
 	encoded_query = encodeURIComponent(query);
 	url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
 	$.getJSON(url, function(idData) {
 		var	min = 0,
-			max = idData.total_rows,
-			randIdx =  Math.floor(Math.random() * (max - min)) + min,
-			randomPlace = idData.rows[randIdx].geoid10;
+		max = idData.total_rows,
+		randIdx =  Math.floor(Math.random() * (max - min)) + min,
+		randomPlace = idData.rows[randIdx][config.column_names.unique_id];
 		state.placeID = randomPlace
 		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
 		// ^*I exclude the actual most recent month because not every block contains these data
 		query = `	SELECT DISTINCT ${config.column_names.date}
-					FROM ${config.attribute_table}
-					ORDER BY ${config.column_names.date} DESC`;
+		FROM ${config.attribute_table}
+		ORDER BY ${config.column_names.date} DESC`;
 		encoded_query = encodeURIComponent(query);
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`
 		$.getJSON(url, function(dateData) {
@@ -47,21 +48,9 @@ function dataSetup(callback) {
 
 
 ////// cartography object
-var cartography = {
-	"cartocss" :
-	`
-	#table{
-		polygon-fill: #333;
-		polygon-opacity: 0.6;
-		line-width: 0.2;
-		line-color: #222;
-		line-opacity: 0.8;
-	}
 
-	#table [ percentdifference >= 50] {polygon-fill: #D9534F;}
-	#table [ percentdifference < 50] {polygon-fill: #D9C24F;}
-	#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}
-	`,
+var cartography = {
+	"cartocss" : "<GEOM_DEPENDENT>",
 	"legend" : new cdb.geo.ui.Legend({
 		type: "choropleth",
 		show_title: true,
@@ -85,13 +74,44 @@ var cartography = {
 	`
 	<div class="cartodb-tooltip-content-wrapper light">
 	<div class="cartodb-tooltip-content">
-	<h4>Census Block</h4>
-	<p>{{${config.column_names.unique_id}}}</p>
+	<h4>Place</h4>
+	<p>{{hr_name}}</p>
 	<h4>Percent Over/Under Target</h4>
 	<p>{{percentdifference}}%</p>
-	<h4>Block Population</h4>
+	<h4>Population</h4>
 	<p>{{population}}</p>
 	</div>
 	</div>
 	`
+
 }
+
+if (config.geom_type == "point") {
+	cartography.cartocss =
+	`#table {
+		marker-fill-opacity: .8;
+		marker-line-width: 0;
+		marker-width: 10;
+		marker-fill: #333;
+		marker-allow-overlap: true; }
+
+		#table [ percentdifference > 50] {marker-fill: #D9534F;}
+		#table [ percentdifference <= 50] { marker-fill: #D9C24F; }
+		#table [ percentdifference <= 0] { marker-fill: #3EAB45; }
+		`
+	}
+	else if (config.geom_type == "polygon") {
+		cartography.cartocss =
+		`#table {
+			polygon-fill: #333;
+			polygon-opacity: 0.6;
+			line-width: 0.2;
+			line-color: #222;
+			line-opacity: 0.8;
+		}
+
+		#table [ percentdifference >= 50] {polygon-fill: #D9534F;}
+		#table [ percentdifference < 50] {polygon-fill: #D9C24F;}
+		#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}
+		`
+	};

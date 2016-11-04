@@ -44,15 +44,15 @@ function generateQuery(where_clause, allDates=false) {
 		)
 	SELECT
 	*,
-	ROUND(100 * (${config.column_names.residential_usage_gal} * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,
-	ROUND(${config.column_names.residential_usage_gal} * 3.06889*10^(-6)) af_usage,
-	${config.column_names.residential_usage_gal} gal_usage
+	ROUND(100 * (${config.column_names.usage}*${config.conversion_to_gal} * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,
+	ROUND(${config.column_names.usage}*${config.conversion_to_gal} * 3.06889*10^(-6)) af_usage,
+	${config.column_names.usage}*${config.conversion_to_gal} gal_usage
 	FROM
 	cte_targets
 	${where_clause}
 	ORDER BY ${config.column_names.date}
 	`
-	// usage_ccf is still hard-coded
+
 	var query = `
 	WITH cte_otf AS
 	(SELECT
@@ -62,8 +62,9 @@ function generateQuery(where_clause, allDates=false) {
 		${config.attribute_table}.${config.column_names.population},
 		${config.attribute_table}.${config.column_names.irrigable_area},
 		${config.attribute_table}.${config.column_names.average_eto},
-		${config.attribute_table}.usage_ccf,
-		${config.attribute_table}.${config.column_names.date}
+		${config.attribute_table}.${config.column_names.usage},
+		${config.attribute_table}.${config.column_names.date},
+		${config.attribute_table}.${config.column_names.hr_name} hr_name
 		FROM
 		${config.geometry_table},
 		${config.attribute_table}
@@ -75,11 +76,11 @@ function generateQuery(where_clause, allDates=false) {
 	(SELECT     
 		the_geom_webmercator,
 		Min(cartodb_id) cartodb_id,
-		Min(${config.column_names.hr_name}) hr_name,
+		Min(hr_name) hr_name,
 		${config.column_names.unique_id},
 		ROUND(AVG(${config.column_names.population})) population,
-		SUM(${config.column_names.residential_usage_gal}) * 3.06889*10^(-6) af_usage,
-		SUM(${config.column_names.residential_usage_gal}) gal_usage,
+		SUM(${config.column_names.usage}*${config.conversion_to_gal}) * 3.06889*10^(-6) af_usage,
+		SUM(${config.column_names.usage}*${config.conversion_to_gal}) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
 		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
@@ -252,7 +253,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -291,8 +292,9 @@ var placeLayer = {
     		 		if (utilityData.rows[row][config.column_names.unique_id] == state.placeID) {
     		 			var target_af = utilityData.rows[row].target_af_round,
     		 				usagedifference = utilityData.rows[row].usagedifference,
-    		 				percentdifference = utilityData.rows[row].percentdifference;
-    		 			summarySentence_dm(usagedifference, percentdifference, target_af);
+    		 				percentdifference = utilityData.rows[row].percentdifference,
+    		 				hrName = utilityData.rows[row].hr_name;
+    		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName);
     		 			showFeature(utilityData.rows[row].cartodb_id);
     		 		};
     		 	};
@@ -314,22 +316,23 @@ var placeLayer = {
     		state.placeID = data[config.column_names.unique_id];
     		var target_af = data.target_af_round,
     		 	usagedifference = data.usagedifference,
-    		 	percentdifference = data.percentdifference;
-    		summarySentence_dm(usagedifference, percentdifference, target_af);
+    		 	percentdifference = data.percentdifference,
+    		 	hrName = data.hr_name;
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName);
     		tsSetup(data.af_usage)
     		
     	});
     });
 };
 
-function summarySentence_dm(usageDifference, percentDifference, targetValue){
+function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName){
 	if (usageDifference < 0) {
 		var differenceDescription = 'under'
 	} else {
 		var differenceDescription = 'over'
 	}
 	var summary = `
-	<b>Place:</b> ${state.placeID}<br>
+	<b>Place:</b> ${hrName}<br>
 	<b>Residential Usage Target:</b> ${targetValue} acre-feet<br>
 	<b>Efficiency:</b> ${Math.abs(usageDifference)} acre-feet <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
 	`
