@@ -120,7 +120,6 @@ function tsSetup() {
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 	$.getJSON(url, function(utilityData) {
-		console.log(utilityData)
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
 			data: tsData,
