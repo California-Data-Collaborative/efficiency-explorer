@@ -253,7 +253,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'irr_area', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -320,6 +320,7 @@ var placeLayer = {
     		 	hrName = data.hr_name;
     		summarySentence_dm(usagedifference, percentdifference, target_af, hrName);
     		tsSetup(data.af_usage)
+    		console.log(`irrigable_area: ${data.irr_area}`)
     		
     	});
     });
