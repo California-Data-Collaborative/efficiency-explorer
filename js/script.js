@@ -39,7 +39,9 @@ function generateQuery(where_clause, allDates=false) {
 	(SELECT
 		*,
 		${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
-		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal
+		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal,
+		${config.column_names.population} * ${state.gpcd} * 30.437 + 1.1*${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
+		${config.column_names.population} * ${state.gpcd} * 30.437 + .9*${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
 		FROM ${config.attribute_table}
 		)
 	SELECT
@@ -113,9 +115,9 @@ function generateQuery(where_clause, allDates=false) {
 };
 
 function tsSetup() {
-	// "usage_date" should really be: config.column_names.date
-	var markers = [	{"usage_date": new Date(state.startDate), "label": "SCENARIO START DATE"},
-					{"usage_date": new Date(state.endDate), "label": "SCENARIO END DATE"}
+	
+	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START DATE"},
+					{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END DATE"}
 				],
 		query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, allDates=true),
 		encoded_query = encodeURIComponent(query),
@@ -134,6 +136,7 @@ function tsSetup() {
 			min_x: utilityData.rows[0][config.column_names.date], // probably should generate with min and max of dataset, not utility.
 			max_x: utilityData.rows[utilityData.total_rows - 1][config.column_names.date], // this would highlight missing data
 			aggregate_rollover: true,
+			//show_confidence_band: ['l_gal', 'u_gal'],
 			decimals: 0,
         	target: "#ts", // the html element that the graphic is inserted in
         	x_accessor: config.column_names.date,  // the key that accesses the x value
@@ -204,7 +207,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			
 			state.startDate = `${formatter(new Date(startDate))}`
 			state.endDate = `${formatter(new Date(endDate))}`
-			query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 		},
@@ -251,7 +254,7 @@ var placeLayer = {
 	user_name: config.account,
 	type: 'cartodb',
 	sublayers: [{
-		sql: generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
+		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
 		cartocss: cartography.cartocss,
 		interactivity: ['cartodb_id', 'irr_area', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
@@ -284,7 +287,7 @@ var placeLayer = {
     	});
 
     	layer.on('loading', function() {
-    		 query = generateQuery(where_clause=`WHERE usage_date BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+    		 query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
     		 encoded_query = encodeURIComponent(query);
     		 url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
     		 $.getJSON(url, function(utilityData) {
