@@ -89,11 +89,14 @@ var cartography = {
 if (config.geom_type == "point") {
 	cartography.cartocss =
 	`#table {
-		marker-fill-opacity: .8;
+		marker-fill-opacity: .75;
 		marker-line-width: 0;
 		marker-width: 10;
 		marker-fill: #333;
-		marker-allow-overlap: true; }
+		marker-allow-overlap: true;
+		polygon-comp-op: multiply;
+
+		marker-width: ramp([population], range(10, 20), quantiles(5)); }
 
 		#table [ percentdifference > 50] {marker-fill: #D9534F;}
 		#table [ percentdifference <= 50] { marker-fill: #D9C24F; }
