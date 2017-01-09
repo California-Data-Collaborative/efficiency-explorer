@@ -13,7 +13,7 @@ globals = {
 	"sublayers" : [],
 }
 
-//// Set default state values and store global non-state-dependent data
+//// set default state values and store global non-state-dependent data
 function dataSetup(callback) {
 	// choose random place for default placeID
 	query = `	SELECT DISTINCT ${config.column_names.unique_id}
@@ -51,25 +51,7 @@ function dataSetup(callback) {
 
 var cartography = {
 	"cartocss" : "<GEOM_DEPENDENT>",
-	"legend" : new cdb.geo.ui.Legend({
-		type: "choropleth",
-		show_title: true,
-		title: "Percent over/under Target",
-		data: [{
-			value: "< 0%"
-		}, {
-			value: "> 50%"
-		}, {
-			name: "bin1",
-			value: "#3EAB45"
-		}, {
-			name: "bin2",
-			value: "#D9C24F"
-		}, {
-			name: "bin3",
-			value: "#D9534F"
-		}]
-	}),
+	"legend" : "<GEOM_DEPENDENT>",
 	'tooltip' :
 	`
 	<div class="cartodb-tooltip-content-wrapper light">
@@ -86,6 +68,49 @@ var cartography = {
 
 }
 
+// define legend
+// should probably be contained within some cartographySetup() function
+choropleth = new cdb.geo.ui.Legend({
+	type: "choropleth",
+	show_title: true,
+	title: "Percent over/under Target",
+	data: [{
+			value: "< 0%"
+		}, {
+			value: "> 50%"
+		}, {
+			name: "bin1",
+			value: "#3EAB45"
+		}, {
+			name: "bin2",
+			value: "#D9C24F"
+		}, {
+			name: "bin3",
+			value: "#D9534F"
+		}]
+	})
+
+if (config.geom_type == "point") {
+	var bubble = new cdb.geo.ui.Legend({
+		type: "bubble",
+		show_title: true,
+		title: "District Population",
+		data: [
+			{ value: "Smallest" },
+			{ value: "Largest" },
+			{ name: "graph_color", value: "#ccc" }
+			]
+		})
+	cartography.legend = new cdb.geo.ui.StackedLegend({
+		legends: [bubble, choropleth]
+	})
+}
+
+else if (config.geom_type == "polygon") {
+		cartography.legend = choropleth
+};
+
+// define cartocss
 if (config.geom_type == "point") {
 	cartography.cartocss =
 	`#table {
@@ -103,7 +128,7 @@ if (config.geom_type == "point") {
 		#table [ percentdifference <= 0] { marker-fill: #3EAB45; }
 		`
 	}
-	else if (config.geom_type == "polygon") {
+else if (config.geom_type == "polygon") {
 		cartography.cartocss =
 		`#table {
 			polygon-fill: #333;
