@@ -1,5 +1,6 @@
 var config = {
 	"account" : "<CARTO_ACCOUNT>",
+	"trackingID" : "<ANALYTICS_TRACKING_ID>",
 
 	"geometry_table" : "<BLOCKGROUP_SHAPEFILE>",
 	"zoom" : "<ZOOM_LEVEL>",
@@ -21,6 +22,7 @@ var config = {
 
 //// set config values 
 config.account = ""
+config.trackingID = ""
 
 // cartography related configuration
 config.geometry_table = ""

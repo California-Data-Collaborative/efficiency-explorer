@@ -69,7 +69,7 @@ var cartography = {
 }
 
 // define legend
-// should probably be contained within some cartographySetup() function
+// (should probably be contained within some cartographySetup() function for increased elegance)
 choropleth = new cdb.geo.ui.Legend({
 	type: "choropleth",
 	show_title: true,
