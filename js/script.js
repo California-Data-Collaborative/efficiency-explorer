@@ -136,7 +136,7 @@ function tsSetup() {
 			min_x: utilityData.rows[0][config.column_names.date], // probably should generate with min and max of dataset, not utility.
 			max_x: utilityData.rows[utilityData.total_rows - 1][config.column_names.date], // this would highlight missing data
 			aggregate_rollover: true,
-			//show_confidence_band: ['l_gal', 'u_gal'],
+			show_confidence_band: ['l_gal', 'u_gal'],
 			decimals: 0,
         	target: "#ts", // the html element that the graphic is inserted in
         	x_accessor: config.column_names.date,  // the key that accesses the x value
