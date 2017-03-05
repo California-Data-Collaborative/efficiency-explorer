@@ -27,10 +27,29 @@ function transition(element, content){
 }
 
 // visualization components
-function generateQuery(where_clause, allDates=false) {
+function generateQuery(where_clause, queryType=false) {
 	var milliunix_start = new Date(state.startDate).getTime(),
 		milliunix_end = new Date(state.endDate).getTime(),
 		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
+
+	// Hard-coded V1 for RLF Statewide EE
+	var summaryQuery = `
+	SELECT
+		SUM(report_population * target_gpcd_2020 * 30.437 * report_percent_residential  * 3.0689e-6) sb77_target_af,
+		SUM(report_population * ${state.gpcd} * 30.437 + .5 * report_irr_area_sf * report_eto * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
+		SUM(residential_usage * 3.0689e-6) res_usage_af
+	FROM
+		statewide_baseline_and_target_data_11_14_14 ut
+	RIGHT JOIN
+		current_supplier_report sr
+	ON
+		sr.report_agency_name = ut.urban_water_supplier
+	WHERE
+		report_date BETWEEN '2015-04-15T00:00:00Z' AND '2016-03-15T00:00:00Z'
+	AND
+		target_gpcd_2020 IS NOT NULL
+	`
+	//
 		
 	
 	
@@ -107,9 +126,11 @@ function generateQuery(where_clause, allDates=false) {
 	percentDifference
 	`
 
-	if (allDates == true) {
+	if (queryType == "ts") {
 		return tsQuery
-	} else { 
+	} else if (queryType == "bigSummary") { 
+		return summaryQuery
+	} else {
 		return query
 	}
 };
@@ -119,7 +140,7 @@ function tsSetup() {
 	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START DATE"},
 					{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END DATE"}
 				],
-		query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, allDates=true),
+		query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 	$.getJSON(url, function(utilityData) {
@@ -155,9 +176,10 @@ function standardsSetup() {
 	.keydown(function(e) {
 		if(e.keyCode == 13) {
 			state.pf = $(this).val()
-			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
+			bigpictureSummary();
 		}
 	});
 
@@ -166,9 +188,10 @@ function standardsSetup() {
 	.keydown(function(e) {
 		if(e.keyCode == 13) {
 			state.gpcd = $(this).val()
-			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
+			bigpictureSummary();
 		}
 	});
 };
@@ -207,7 +230,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			
 			state.startDate = `${formatter(new Date(startDate))}`
 			state.endDate = `${formatter(new Date(endDate))}`
-			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 		},
@@ -254,7 +277,7 @@ var placeLayer = {
 	user_name: config.account,
 	type: 'cartodb',
 	sublayers: [{
-		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false),
+		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false),
 		cartocss: cartography.cartocss,
 		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
@@ -287,7 +310,7 @@ var placeLayer = {
     	});
 
     	layer.on('loading', function() {
-    		 query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, allDates=false);
+    		 query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
     		 encoded_query = encodeURIComponent(query);
     		 url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
     		 $.getJSON(url, function(utilityData) {
@@ -341,6 +364,18 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	<b>Efficiency:</b> ${Math.abs(usageDifference)} acre-feet <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
 	`
 	transition("#summarySentence", summary)
+};
+
+function bigpictureSummary(){
+	var query = generateQuery(where_clause="", queryType="bigSummary"),
+		encoded_query = encodeURIComponent(query),
+		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+
+	$.getJSON(url, function(data) {
+		mwelo_target_af_no_commas = Math.round(data.rows[0].mwelo_target_af)
+		mwelo_target_af = mwelo_target_af_no_commas.toLocaleString('en-US') + " AF"
+		transition("#summaryTarget", mwelo_target_af)
+	});
 };
 
 

@@ -121,7 +121,7 @@ if (config.geom_type == "point") {
 		marker-allow-overlap: true;
 		polygon-comp-op: multiply;
 
-		marker-width: ramp([population], range(5, 30), jenks(5)); }
+		marker-width: ramp([population], range(5, 30), jenks(10)); }
 
 		#table [ percentdifference > 50] {marker-fill: #D9534F;}
 		#table [ percentdifference <= 50] { marker-fill: #D9C24F; }
