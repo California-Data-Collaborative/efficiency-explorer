@@ -35,17 +35,17 @@ function generateQuery(where_clause, queryType=false) {
 	// Hard-coded V1 for RLF Statewide EE
 	var summaryQuery = `
 	SELECT
-		SUM(report_population * target_gpcd_2020 * 30.437 * report_percent_residential  * 3.0689e-6) sb77_target_af,
-		SUM(report_population * ${state.gpcd} * 30.437 + .5 * report_irr_area_sf * report_eto * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
-		SUM(residential_usage * 3.0689e-6) res_usage_af
+		SUM(${config.column_names.population} * target_gpcd_2020 * 30.437 * report_percent_residential  * 3.0689e-6) sb77_target_af,
+		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 + .5 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
+		SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
 	FROM
 		statewide_baseline_and_target_data_11_14_14 ut
 	RIGHT JOIN
-		current_supplier_report sr
+		${config.attribute_table} at
 	ON
-		sr.report_agency_name = ut.urban_water_supplier
+		at.report_agency_name = ut.urban_water_supplier
 	WHERE
-		report_date BETWEEN '2015-04-15T00:00:00Z' AND '2016-03-15T00:00:00Z'
+		${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
 	AND
 		target_gpcd_2020 IS NOT NULL
 	`
@@ -128,7 +128,8 @@ function generateQuery(where_clause, queryType=false) {
 
 	if (queryType == "ts") {
 		return tsQuery
-	} else if (queryType == "bigSummary") { 
+	} else if (queryType == "bigSummary") {
+		console.log(summaryQuery) 
 		return summaryQuery
 	} else {
 		return query
@@ -366,7 +367,7 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	transition("#summarySentence", summary)
 };
 
-function bigpictureSummary(){
+function bigpictureSummary(setup=false){
 	var query = generateQuery(where_clause="", queryType="bigSummary"),
 		encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
@@ -375,6 +376,16 @@ function bigpictureSummary(){
 		mwelo_target_af_no_commas = Math.round(data.rows[0].mwelo_target_af)
 		mwelo_target_af = mwelo_target_af_no_commas.toLocaleString('en-US') + " AF"
 		transition("#summaryTarget", mwelo_target_af)
+
+		sb77_target_af_no_commas = Math.round(data.rows[0].sb77_target_af)
+		sb77_target_af = sb77_target_af_no_commas.toLocaleString('en-US') + " AF"
+
+		summary_usage_af_no_commas = Math.round(data.rows[0].res_usage_af)
+		summary_usage_af = summary_usage_af_no_commas.toLocaleString('en-US') + " AF"
+		if (setup == true) {
+			transition("#sb77Target", sb77_target_af)
+			transition("#summaryUsage", summary_usage_af)
+		}
 	});
 };
 
@@ -391,4 +402,5 @@ function main(){
 	standardsSetup();
 	tsSetup();
 	mapSetup_dm();
+	bigpictureSummary(setup=true);
 }
