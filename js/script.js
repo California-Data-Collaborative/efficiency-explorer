@@ -32,7 +32,7 @@ function generateQuery(where_clause, queryType=false) {
 		milliunix_end = new Date(state.endDate).getTime(),
 		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
 
-	// Hard-coded V1 for RLF Statewide EE
+	// Hard-coded for RLF Statewide EE
 	var summaryQuery = `
 	SELECT
 		SUM(${config.column_names.population} * target_gpcd_2020 * 30.437 * report_percent_residential  * 3.0689e-6) sb77_target_af,
@@ -129,7 +129,6 @@ function generateQuery(where_clause, queryType=false) {
 	if (queryType == "ts") {
 		return tsQuery
 	} else if (queryType == "bigSummary") {
-		console.log(summaryQuery) 
 		return summaryQuery
 	} else {
 		return query
