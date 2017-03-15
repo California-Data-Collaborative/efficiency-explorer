@@ -40,14 +40,12 @@ function generateQuery(where_clause, queryType=false) {
 		SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
 	FROM
 		statewide_baseline_and_target_data_11_14_14 ut
-	RIGHT JOIN
+	JOIN
 		${config.attribute_table} at
 	ON
 		at.report_agency_name = ut.urban_water_supplier
 	WHERE
 		${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
-	AND
-		target_gpcd_2020 IS NOT NULL
 	`
 	//
 		
