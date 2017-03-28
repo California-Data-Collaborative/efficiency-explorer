@@ -73,19 +73,25 @@ var cartography = {
 choropleth = new cdb.geo.ui.Legend({
 	type: "choropleth",
 	show_title: true,
-	title: "Percent over/under Target",
+	title: "Percent Over Target",
 	data: [{
-			value: "< 0%"
+			value: "------------ 0% -------- 16% ------- 33% ------- 50% ----------"
 		}, {
-			value: "> 50%"
+			value: ""
 		}, {
 			name: "bin1",
 			value: "#3EAB45"
 		}, {
 			name: "bin2",
-			value: "#D9C24F"
+			value: "#B9D14C"
 		}, {
 			name: "bin3",
+			value: "#D9C24F"
+		}, {
+			name: "bin4",
+			value: "#D99F4F"
+		},		{
+			name: "bin5",
 			value: "#D9534F"
 		}]
 	})
@@ -117,15 +123,19 @@ if (config.geom_type == "point") {
 		marker-fill-opacity: .75;
 		marker-line-width: 0;
 		marker-width: 10;
-		marker-fill: #333;
 		marker-allow-overlap: true;
 		polygon-comp-op: multiply;
 
-		marker-width: ramp([population], range(5, 30), jenks(10)); }
+		marker-width: ramp([population], range(5, 30), jenks(10));
 
-		#table [ percentdifference > 50] {marker-fill: #D9534F;}
-		#table [ percentdifference <= 50] { marker-fill: #D9C24F; }
-		#table [ percentdifference <= 0] { marker-fill: #3EAB45; }
+		marker-fill: #333;
+	}
+
+		#table [ percentdifference <= 0 ] {marker-fill: #3EAB45}
+		#table [ percentdifference > 0 ] {marker-fill: #B9D14C}
+		#table [ percentdifference > 16 ] {marker-fill: #D9C24F}
+		#table [ percentdifference > 33 ] {marker-fill: #D99F4F}
+		#table [ percentdifference > 50 ] {marker-fill: #D9534F}
 		`
 	}
 else if (config.geom_type == "polygon") {
@@ -138,8 +148,10 @@ else if (config.geom_type == "polygon") {
 			line-opacity: 0.8;
 		}
 
-		#table [ percentdifference >= 50] {polygon-fill: #D9534F;}
-		#table [ percentdifference < 50] {polygon-fill: #D9C24F;}
 		#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}
+		#table [ percentdifference > 0] {polygon-fill: #B9D14C;}
+		#table [ percentdifference > 16] {polygon-fill: #D9C24F;}
+		#table [ percentdifference > 33] {polygon-fill: #D99F4F;}
+		#table [ percentdifference > 50] {polygon-fill: #D9534F;}
 		`
 	};
