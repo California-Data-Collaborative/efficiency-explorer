@@ -116,6 +116,13 @@ td {
   box-shadow: rgba(0,0,0,.2) 0 0 4px 2px;
 }
 
+#toolButton {
+    border: 1px solid #A2A2A2;
+    background: #C8C8C8;
+    font-weight: normal;
+    color: #000;
+}
+
 .pointer {
 	cursor: pointer !important;
 }

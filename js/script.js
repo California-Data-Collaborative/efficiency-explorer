@@ -57,8 +57,8 @@ function generateQuery(where_clause, queryType=false) {
 		*,
 		${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
 		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal,
-		${config.column_names.population} * ${state.gpcd} * 30.437 + 1.1*${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
-		${config.column_names.population} * ${state.gpcd} * 30.437 + .9*${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
+		${config.column_names.population} * ${state.gpcd} * 30.437 * 1.03 + 1.4 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
+		${config.column_names.population} * ${state.gpcd} * 30.437 * .97  + .73 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
 		FROM ${config.attribute_table}
 		)
 	SELECT
