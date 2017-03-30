@@ -392,7 +392,7 @@ function main(){
 
 	// style setup
 	styleSetup()	
-	smoothScroll('#intraUtility') // prescribe starting div
+	smoothScroll('#extraUtility') // prescribe starting div
 
 	// visualization setup
 	sliderSetup();
