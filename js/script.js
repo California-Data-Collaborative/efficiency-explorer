@@ -352,7 +352,7 @@ var placeLayer = {
 
 function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName){
 	if (usageDifference < 0) {
-		var differenceDescription = 'under'
+		var differenceDescription = 'within'
 	} else {
 		var differenceDescription = 'over'
 	}
