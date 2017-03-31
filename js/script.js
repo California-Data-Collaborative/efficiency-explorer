@@ -347,7 +347,8 @@ var placeLayer = {
     		 	usagedifference = data.usagedifference,
     		 	percentdifference = data.percentdifference,
     		 	hrName = data.hr_name;
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName);
+    		 	usage = utilityData.rows[row].af_usage_round;
+    		 	summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		tsSetup(data.af_usage)
     		console.log(`irrigated area: ${data.irr_area}`)
     		console.log(`average eto: ${data.avg_eto}`)

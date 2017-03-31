@@ -118,12 +118,7 @@ td {
 }
 
 #toolButton {
-    /*border: 1px solid #A2A2A2;*/
-    background: #C8C8C8;
-    /*font-weight: normal;
-    color: #000;
-    
-  /*background-color:#ffffff;*/
+  background: #C8C8C8;
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
   border-radius:10px;
@@ -137,6 +132,7 @@ td {
   margin-top: 10px;
   margin-bottom: 15px;
 }
+
 
 .pointer {
 	cursor: pointer !important;
