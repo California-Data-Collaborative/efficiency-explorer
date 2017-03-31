@@ -282,7 +282,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage','af_usage_round', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -347,8 +347,9 @@ var placeLayer = {
     		 	usagedifference = data.usagedifference,
     		 	percentdifference = data.percentdifference,
     		 	hrName = data.hr_name;
-    		 	usage = utilityData.rows[row].af_usage_round;
-    		 	summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
+    		 	usage = data.af_usage_round;
+    		
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		tsSetup(data.af_usage)
     		console.log(`irrigated area: ${data.irr_area}`)
     		console.log(`average eto: ${data.avg_eto}`)
