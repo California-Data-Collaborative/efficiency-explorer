@@ -250,7 +250,8 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 function mapSetup_dm() {
 	var map = new L.Map("map", {
 		center: config.coordinates,
-		zoom: config.zoom
+		zoom: config.zoom,
+		scrollWheelZoom:false
 	});
 
 // Highlight feature setup below based on: http://bl.ocks.org/javisantana/d20063afd2c96a733002
