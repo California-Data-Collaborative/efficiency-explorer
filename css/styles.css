@@ -117,10 +117,22 @@ td {
 }
 
 #toolButton {
-    border: 1px solid #A2A2A2;
+    /*border: 1px solid #A2A2A2;*/
     background: #C8C8C8;
-    font-weight: normal;
+    /*font-weight: normal;
     color: #000;
+    margin-top: 30px;*/
+  /*background-color:#ffffff;*/
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  border-radius:10px;
+  display:inline-block;
+  cursor:pointer;
+  color:#000000;
+  font-size:24px;
+  padding:10px 35px;
+  text-decoration:none;
+  outline: none !important;
 }
 
 .pointer {
