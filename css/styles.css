@@ -1,6 +1,7 @@
 body {
 	background-color: #222;
-  overflow: hidden;
+  /*scroll lock*/
+  /*overflow: hidden; */ 
   font-size: 130%;
 }
 
@@ -98,7 +99,7 @@ td {
 }
 
 #summary {
-  z-index: 100000000000000000000000000000;
+  z-index: 1000;
   top: 10px;
   position: absolute;
   right: 10px;
@@ -121,7 +122,7 @@ td {
     background: #C8C8C8;
     /*font-weight: normal;
     color: #000;
-    margin-top: 30px;*/
+    
   /*background-color:#ffffff;*/
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
@@ -133,6 +134,8 @@ td {
   padding:10px 35px;
   text-decoration:none;
   outline: none !important;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .pointer {

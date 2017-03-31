@@ -3,9 +3,12 @@ nav_height = $(".navbar").height();
 
 function styleSetup() {
 	$("body").css("padding-top", nav_height);
-	$(".section, #map").css("height", `calc(100vh - ${nav_height}px)`);
+	var section_height = $("#extraUtility").height();
+	$("#map").css("height", section_height);
+
+	// $(".section, #map").css("height", `calc(100vh - ${nav_height}px)`);
 	var ts_height = $("#map").height() - $("#filters").height() - $("#tsTitles").height() - 146; // the last term depends on the size of the elements above the chart
-	$("#ts").css("height", ts_height);
+	//$("#ts").css("height", ts_height);
 	$(window).resize(function(){location.reload()});
 };
 
@@ -113,7 +116,8 @@ function generateQuery(where_clause, queryType=false) {
 	*,
 	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
 	ROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,
-	ROUND(CAST(target_af AS NUMERIC), 2) target_af_round
+	ROUND(CAST(target_af AS NUMERIC), 2) target_af_round,
+	ROUND(CAST(af_usage AS NUMERIC), 2) af_usage_round
 
 	FROM
 	cte_targets
@@ -146,7 +150,7 @@ function tsSetup() {
 		MG.data_graphic({
 			data: tsData,
 			full_width: true,
-			full_height: true,
+			//full_height: true,
 			y_extended_ticks: true,
 			x_extended_ticks: true,
 			markers: markers,
@@ -318,7 +322,8 @@ var placeLayer = {
     		 				usagedifference = utilityData.rows[row].usagedifference,
     		 				percentdifference = utilityData.rows[row].percentdifference,
     		 				hrName = utilityData.rows[row].hr_name;
-    		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName);
+    		 				usage = utilityData.rows[row].af_usage_round;
+    		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		 			showFeature(utilityData.rows[row].cartodb_id);
     		 		};
     		 	};
@@ -350,7 +355,7 @@ var placeLayer = {
     });
 };
 
-function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName){
+function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage){
 	if (usageDifference < 0) {
 		var differenceDescription = 'within'
 	} else {
@@ -358,6 +363,7 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	}
 	var summary = `
 	<b>Place:</b> ${hrName}<br>
+	<b>Residential Usage:</b> ${usage}<br>
 	<b>Residential Usage Target:</b> ${targetValue} acre-feet<br>
 	<b>Efficiency:</b> ${Math.abs(usageDifference)} acre-feet <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
 	`
