@@ -2691,7 +2691,12 @@ MG.button_layout = function(target) {
             //rollover text
             svg.append('g')
                 .attr('class', 'mg-active-datapoint-container')
-                .attr('transform', 'translate(' + (args.width - args.right) + ',' + (args.top / 2) + ')')
+                // start david's custom work ;)
+                // original:
+                // .attr('transform', 'translate(' + (args.width - args.right) + ',' + (args.top / 2) + ')')
+                // new
+                .attr('transform', 'translate(' + (60 + args.right) + ',' + (args.top / 5) + ')')
+                // end custom work
                 .append('text')
                     .attr('class', 'mg-active-datapoint')
                     .classed('mg-active-datapoint-small', args.use_small_class)

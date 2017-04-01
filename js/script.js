@@ -139,8 +139,8 @@ function generateQuery(where_clause, queryType=false) {
 
 function tsSetup() {
 	
-	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START DATE"},
-					{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END DATE"}
+	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START"},
+					{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END"}
 				],
 		query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
 		encoded_query = encodeURIComponent(query),
