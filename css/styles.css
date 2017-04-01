@@ -125,12 +125,12 @@ td {
   display:inline-block;
   cursor:pointer;
   color:#000000;
-  font-size:24px;
+  font-size:22px;
   padding:10px 35px;
   text-decoration:none;
   outline: none !important;
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 

@@ -366,9 +366,9 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	}
 	var summary = `
 	<b>Place:</b> ${hrName}<br>
-	<b>Residential Usage:</b> ${usage}<br>
-	<b>Residential Usage Target:</b> ${targetValue} acre-feet<br>
-	<b>Efficiency:</b> ${Math.abs(usageDifference)} acre-feet <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
+	<b>Residential Target:</b> ${targetValue} AF<br>
+	<b>Residential Production:</b> ${usage} AF<br>
+	<b>Efficiency:</b> ${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
 	`
 	transition("#summarySentence", summary)
 };
