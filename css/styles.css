@@ -141,3 +141,7 @@ td {
 .pointer {
 	cursor: pointer !important;
 }
+
+.cartodb-logo {
+  display: none !important;
+}
