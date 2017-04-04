@@ -15,7 +15,8 @@ var config = {
 		"irrigable_area": "<COL_NAME>",
 		"average_eto": "<COL_NAME>",
 		"usage": "<COL_NAME>",
-		"hr_name": "<COL_NAME>"
+		"hr_name": "<COL_NAME>",
+		"month_days" : "<COL_NAME>"
 	},
 	"conversion_to_gal" : "<CONVERSION_FACTOR>"
 }
@@ -34,6 +35,7 @@ config.geom_type = "" // "point" or "polygon"
 config.attribute_table = ""
 config.column_names.unique_id = ""
 config.column_names.hr_name = "" // human-readable name. use unique_id if no human-readable column exists
+config.column_names.month_days = ""
 config.column_names.date = ""
 config.column_names.population = ""
 config.column_names.irrigable_area = "" // square footage of irrigable area

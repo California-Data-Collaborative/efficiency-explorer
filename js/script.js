@@ -38,30 +38,30 @@ function generateQuery(where_clause, queryType=false) {
 	// Hard-coded for RLF Statewide EE
 	var summaryQuery = `
 	SELECT
-		SUM(${config.column_names.population} * target_gpcd_2020 * 30.437 * report_percent_residential  * 3.0689e-6) sb77_target_af,
-		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 + .5 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
-		SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
+	SUM(${config.column_names.population} * target_gpcd_2020 * cast(${config.column_names.month_days} as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,
+	SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + .5 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
+	SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
 	FROM
-		statewide_baseline_and_target_data_11_14_14 ut
+	statewide_baseline_and_target_data_11_14_14 ut
 	JOIN
-		${config.attribute_table} at
+	${config.attribute_table} at
 	ON
-		at.report_agency_name = ut.urban_water_supplier
+	at.report_agency_name = ut.urban_water_supplier
 	WHERE
-		${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
+	${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
 	`
 	//
-		
+
 	
 	
 	var tsQuery = `
 	WITH cte_targets AS
 	(SELECT
 		*,
-		${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
-		${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal,
-		${config.column_names.population} * ${state.gpcd} * 30.437 * 1.03 + 1.4 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
-		${config.column_names.population} * ${state.gpcd} * 30.437 * .97  + .73 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
+		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
+		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal,
+		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 1.03 + 1.4 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
+		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * .97  + .73 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
 		FROM ${config.attribute_table}
 		)
 	SELECT
@@ -86,7 +86,9 @@ function generateQuery(where_clause, queryType=false) {
 		${config.attribute_table}.${config.column_names.average_eto},
 		${config.attribute_table}.${config.column_names.usage},
 		${config.attribute_table}.${config.column_names.date},
-		${config.attribute_table}.${config.column_names.hr_name} hr_name
+		${config.attribute_table}.${config.column_names.hr_name} hr_name,
+		${config.column_names.month_days}
+
 		FROM
 		${config.geometry_table},
 		${config.attribute_table}
@@ -105,8 +107,8 @@ function generateQuery(where_clause, queryType=false) {
 		SUM(${config.column_names.usage}*${config.conversion_to_gal}) gal_usage,
 		AVG(${config.column_names.average_eto}) avg_eto,
 		AVG(${config.column_names.irrigable_area}) irr_area,
-		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
-		SUM(${config.column_names.population} * ${state.gpcd} * 30.437 + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
+		SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
+		SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
 		FROM cte_otf
 		${where_clause}
 		
@@ -140,12 +142,12 @@ function generateQuery(where_clause, queryType=false) {
 function tsSetup() {
 	
 	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START"},
-					{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END"}
-				],
-		query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
-		encoded_query = encodeURIComponent(query),
+	{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END"}
+	],
+	query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
+	encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
-	$.getJSON(url, function(utilityData) {
+		$.getJSON(url, function(utilityData) {
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
 			data: tsData,
@@ -200,24 +202,24 @@ function standardsSetup() {
 
 function sliderSetup(datesTarget, tsTarget, legendTarget) {
 	var formatter = d3.time.format("%b %Y"),
-		parser = d3.time.format("%Y-%m-%dT%XZ"),
-		dates = $.map(globals.dateData.rows, function(el) {
-					var tempDate = parser.parse(el[config.column_names.date]);
-					return (tempDate.getTime())
-				}).sort()
+	parser = d3.time.format("%Y-%m-%dT%XZ"),
+	dates = $.map(globals.dateData.rows, function(el) {
+		var tempDate = parser.parse(el[config.column_names.date]);
+		return (tempDate.getTime())
+	}).sort()
 
 	var datesLength = dates.length - 1,
-		startPosition = (
-			dates.indexOf(
-				parser.parse(state.startDate).getTime()
-				)
-			),
-		endPosition = (
-			dates.indexOf(
-				parser.parse(state.endDate).getTime()
+	startPosition = (
+		dates.indexOf(
+			parser.parse(state.startDate).getTime()
+			)
+		),
+	endPosition = (
+		dates.indexOf(
+			parser.parse(state.endDate).getTime()
 			)
 		);
-		
+
 
 	$("#range_slider").slider({
 		range: true,
@@ -227,8 +229,8 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		values: [startPosition, endPosition],
 		stop: function (event, ui) {
 			var formatter = d3.time.format("%Y-%m-%dT%XZ"),
-				startDate = dates[ui.values[0]],
-				endDate = dates[ui.values[1]]
+			startDate = dates[ui.values[0]],
+			endDate = dates[ui.values[1]]
 			
 			state.startDate = `${formatter(new Date(startDate))}`
 			state.endDate = `${formatter(new Date(endDate))}`
@@ -238,12 +240,12 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		},
 		slide: function(event, ui) {
 			var start = new Date(dates[ui.values[0]]),
-				end = new Date(dates[ui.values[1]]);
+			end = new Date(dates[ui.values[1]]);
 			$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
 		}
 	});
 	var start = new Date(dates[$("#range_slider").slider("values", 0)]),
-		end = new Date(dates[$("#range_slider").slider("values", 1)])
+	end = new Date(dates[$("#range_slider").slider("values", 1)])
 	$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
 }
 
@@ -313,23 +315,23 @@ var placeLayer = {
     	});
 
     	layer.on('loading', function() {
-    		 query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
-    		 encoded_query = encodeURIComponent(query);
+    		query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+    		encoded_query = encodeURIComponent(query);
     		 url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
     		 $.getJSON(url, function(utilityData) {
     		 	for (row in utilityData.rows) {
     		 		if (utilityData.rows[row][config.column_names.unique_id] == state.placeID) {
     		 			var target_af = utilityData.rows[row].target_af_round,
-    		 				usagedifference = utilityData.rows[row].usagedifference,
-    		 				percentdifference = utilityData.rows[row].percentdifference,
-    		 				hrName = utilityData.rows[row].hr_name;
-    		 				usage = utilityData.rows[row].af_usage_round;
+    		 			usagedifference = utilityData.rows[row].usagedifference,
+    		 			percentdifference = utilityData.rows[row].percentdifference,
+    		 			hrName = utilityData.rows[row].hr_name;
+    		 			usage = utilityData.rows[row].af_usage_round;
     		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		 			showFeature(utilityData.rows[row].cartodb_id);
     		 		};
     		 	};
     		 });
-    	});
+    		});
 
     	
     	globals.sublayers[0].on('featureOver', function(e, latlng, pos, data) {
@@ -344,10 +346,10 @@ var placeLayer = {
     		showFeature(data.cartodb_id)
     		state.placeID = data[config.column_names.unique_id];
     		var target_af = data.target_af_round,
-    		 	usagedifference = data.usagedifference,
-    		 	percentdifference = data.percentdifference,
-    		 	hrName = data.hr_name;
-    		 	usage = data.af_usage_round;
+    		usagedifference = data.usagedifference,
+    		percentdifference = data.percentdifference,
+    		hrName = data.hr_name;
+    		usage = data.af_usage_round;
     		
     		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		tsSetup(data.af_usage)
@@ -375,25 +377,25 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 
 function bigpictureSummary(setup=false){
 	var query = generateQuery(where_clause="", queryType="bigSummary"),
-		encoded_query = encodeURIComponent(query),
+	encoded_query = encodeURIComponent(query),
 		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 
-	$.getJSON(url, function(data) {
-		mwelo_target_af_no_commas = Math.round(data.rows[0].mwelo_target_af)
-		mwelo_target_af = mwelo_target_af_no_commas.toLocaleString('en-US') + " AF"
-		transition("#summaryTarget", mwelo_target_af)
+		$.getJSON(url, function(data) {
+			mwelo_target_af_no_commas = Math.round(data.rows[0].mwelo_target_af)
+			mwelo_target_af = mwelo_target_af_no_commas.toLocaleString('en-US') + " AF"
+			transition("#summaryTarget", mwelo_target_af)
 
-		sb77_target_af_no_commas = Math.round(data.rows[0].sb77_target_af)
-		sb77_target_af = sb77_target_af_no_commas.toLocaleString('en-US') + " AF"
+			sb77_target_af_no_commas = Math.round(data.rows[0].sb77_target_af)
+			sb77_target_af = sb77_target_af_no_commas.toLocaleString('en-US') + " AF"
 
-		summary_usage_af_no_commas = Math.round(data.rows[0].res_usage_af)
-		summary_usage_af = summary_usage_af_no_commas.toLocaleString('en-US') + " AF"
-		if (setup == true) {
-			transition("#sb77Target", sb77_target_af)
-			transition("#summaryUsage", summary_usage_af)
-		}
-	});
-};
+			summary_usage_af_no_commas = Math.round(data.rows[0].res_usage_af)
+			summary_usage_af = summary_usage_af_no_commas.toLocaleString('en-US') + " AF"
+			if (setup == true) {
+				transition("#sb77Target", sb77_target_af)
+				transition("#summaryUsage", summary_usage_af)
+			}
+		});
+	};
 
 
 // app build
