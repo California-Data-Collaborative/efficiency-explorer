@@ -148,6 +148,10 @@ td {
   top:1px;
 }
 
+#extraUtility {
+  padding-bottom: 20px;
+}
+
 
 .pointer {
 	cursor: pointer !important;
