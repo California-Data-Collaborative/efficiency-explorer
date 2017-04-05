@@ -36,99 +36,14 @@ function generateQuery(where_clause, queryType=false) {
 		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
 
 	// Hard-coded for RLF Statewide EE
-	var summaryQuery = `
-	SELECT
-	SUM(${config.column_names.population} * target_gpcd_2020 * cast(${config.column_names.month_days} as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,
-	SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + .5 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
-	SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
-	FROM
-	statewide_baseline_and_target_data_11_14_14 ut
-	JOIN
-	${config.attribute_table} at
-	ON
-	at.report_agency_name = ut.urban_water_supplier
-	WHERE
-	${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
-	`
+	var summaryQuery = "\n\tSELECT\n\tSUM(" + config.column_names.population + " * target_gpcd_2020 * cast(" + config.column_names.month_days + " as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,\n\tSUM(" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) + .5 * " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62) * 3.0689e-6 mwelo_target_af,\n\tSUM(" + config.column_names.usage + " * 3.0689e-6) res_usage_af\n\tFROM\n\tstatewide_baseline_and_target_data_11_14_14 ut\n\tJOIN\n\t" + config.attribute_table + " at\n\tON\n\tat.report_agency_name = ut.urban_water_supplier\n\tWHERE\n\t" + config.column_names.date + " BETWEEN '" + globals.dateData.rows[12][config.column_names.date] + "' AND '" + globals.dateData.rows[1][config.column_names.date] + "'\n\t";
 	//
 
 	
 	
-	var tsQuery = `
-	WITH cte_targets AS
-	(SELECT
-		*,
-		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6) AS target_af,
-		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS target_gal,
-		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 1.03 + 1.4 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS u_gal,
-		${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * .97  + .73 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 AS l_gal
-		FROM ${config.attribute_table}
-		)
-	SELECT
-	*,
-	ROUND(100 * (${config.column_names.usage}*${config.conversion_to_gal} * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,
-	ROUND(${config.column_names.usage}*${config.conversion_to_gal} * 3.06889*10^(-6)) af_usage,
-	${config.column_names.usage}*${config.conversion_to_gal} gal_usage
-	FROM
-	cte_targets
-	${where_clause}
-	ORDER BY ${config.column_names.date}
-	`
+	var tsQuery = "\n\tWITH cte_targets AS\n\t(SELECT\n\t\t*,\n\t\t" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) * 3.06889*10^(-6) + " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62 * 3.06889*10^(-6) AS target_af,\n\t\t" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) + " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62 AS target_gal,\n\t\t" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) * 1.03 + 1.4 * " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62 AS u_gal,\n\t\t" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) * .97  + .73 * " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62 AS l_gal\n\t\tFROM " + config.attribute_table + "\n\t\t)\n\tSELECT\n\t*,\n\tROUND(100 * (" + config.column_names.usage + "*" + config.conversion_to_gal + " * 3.06889*10^(-6) - target_af) / CAST(target_af AS FLOAT)) percentDifference,\n\tROUND(" + config.column_names.usage + "*" + config.conversion_to_gal + " * 3.06889*10^(-6)) af_usage,\n\t" + config.column_names.usage + "*" + config.conversion_to_gal + " gal_usage\n\tFROM\n\tcte_targets\n\t" + where_clause + "\n\tORDER BY " + config.column_names.date + "\n\t";
 
-	var query = `
-	WITH cte_otf AS
-	(SELECT
-		${config.geometry_table}.the_geom_webmercator,
-		${config.geometry_table}.cartodb_id,
-		${config.geometry_table}.${config.column_names.unique_id},
-		${config.attribute_table}.${config.column_names.population},
-		${config.attribute_table}.${config.column_names.irrigable_area},
-		${config.attribute_table}.${config.column_names.average_eto},
-		${config.attribute_table}.${config.column_names.usage},
-		${config.attribute_table}.${config.column_names.date},
-		${config.attribute_table}.${config.column_names.hr_name} hr_name,
-		${config.column_names.month_days}
-
-		FROM
-		${config.geometry_table},
-		${config.attribute_table}
-		WHERE
-		${config.geometry_table}.${config.column_names.unique_id} = ${config.attribute_table}.${config.column_names.unique_id}
-		
-		),
-	cte_targets AS
-	(SELECT     
-		the_geom_webmercator,
-		Min(cartodb_id) cartodb_id,
-		Min(hr_name) hr_name,
-		${config.column_names.unique_id},
-		ROUND(AVG(${config.column_names.population})) population,
-		SUM(${config.column_names.usage}*${config.conversion_to_gal}) * 3.06889*10^(-6) af_usage,
-		SUM(${config.column_names.usage}*${config.conversion_to_gal}) gal_usage,
-		AVG(${config.column_names.average_eto}) avg_eto,
-		AVG(${config.column_names.irrigable_area}) irr_area,
-		SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) * 3.06889*10^(-6) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62 * 3.06889*10^(-6)) AS target_af,
-		SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
-		FROM cte_otf
-		${where_clause}
-		
-		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
-
-	SELECT
-	*,
-	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
-	ROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,
-	ROUND(CAST(target_af AS NUMERIC), 2) target_af_round,
-	ROUND(CAST(af_usage AS NUMERIC), 2) af_usage_round
-
-	FROM
-	cte_targets
-
-
-
-	ORDER BY
-	percentDifference
-	`
+	var query = "\n\tWITH cte_otf AS\n\t(SELECT\n\t\t" + config.geometry_table + ".the_geom_webmercator,\n\t\t" + config.geometry_table + ".cartodb_id,\n\t\t" + config.geometry_table + "." + config.column_names.unique_id + ",\n\t\t" + config.attribute_table + "." + config.column_names.population + ",\n\t\t" + config.attribute_table + "." + config.column_names.irrigable_area + ",\n\t\t" + config.attribute_table + "." + config.column_names.average_eto + ",\n\t\t" + config.attribute_table + "." + config.column_names.usage + ",\n\t\t" + config.attribute_table + "." + config.column_names.date + ",\n\t\t" + config.attribute_table + "." + config.column_names.hr_name + " hr_name,\n\t\t" + config.column_names.month_days + "\n\n\t\tFROM\n\t\t" + config.geometry_table + ",\n\t\t" + config.attribute_table + "\n\t\tWHERE\n\t\t" + config.geometry_table + "." + config.column_names.unique_id + " = " + config.attribute_table + "." + config.column_names.unique_id + "\n\t\t\n\t\t),\n\tcte_targets AS\n\t(SELECT     \n\t\tthe_geom_webmercator,\n\t\tMin(cartodb_id) cartodb_id,\n\t\tMin(hr_name) hr_name,\n\t\t" + config.column_names.unique_id + ",\n\t\tROUND(AVG(" + config.column_names.population + ")) population,\n\t\tSUM(" + config.column_names.usage + "*" + config.conversion_to_gal + ") * 3.06889*10^(-6) af_usage,\n\t\tSUM(" + config.column_names.usage + "*" + config.conversion_to_gal + ") gal_usage,\n\t\tAVG(" + config.column_names.average_eto + ") avg_eto,\n\t\tAVG(" + config.column_names.irrigable_area + ") irr_area,\n\t\tSUM(" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) * 3.06889*10^(-6) + " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62 * 3.06889*10^(-6)) AS target_af,\n\t\tSUM(" + config.column_names.population + " * " + state.gpcd + " * cast(" + config.column_names.month_days + " as float) + " + config.column_names.irrigable_area + " * " + config.column_names.average_eto + " * " + state.pf + " * .62) AS target_gal\n\t\tFROM cte_otf\n\t\t" + where_clause + "\n\t\t\n\t\tGROUP BY " + config.column_names.unique_id + ", the_geom_webmercator)\n\n\tSELECT\n\t*,\n\tROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,\n\tROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,\n\tROUND(CAST(target_af AS NUMERIC), 2) target_af_round,\n\tROUND(CAST(af_usage AS NUMERIC), 2) af_usage_round\n\n\tFROM\n\tcte_targets\n\n\n\n\tORDER BY\n\tpercentDifference\n\t";
 
 	if (queryType == "ts") {
 		return tsQuery
@@ -141,12 +56,12 @@ function generateQuery(where_clause, queryType=false) {
 
 function tsSetup() {
 	
-	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START"},
-	{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END"}
+	var markers = [	{[config.column_names.date]: new Date(state.startDate), "label": "SCENARIO START"},
+	{[config.column_names.date]: new Date(state.endDate), "label": "SCENARIO END"}
 	],
-	query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
+	query = generateQuery(where_clause="WHERE " + config.column_names.unique_id + " = " + state.placeID, queryType="ts"),
 	encoded_query = encodeURIComponent(query),
-		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+		url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
 		$.getJSON(url, function(utilityData) {
 		var tsData = MG.convert.date(utilityData.rows, config.column_names.date, '%Y-%m-%dT%XZ'); // is this necessary?
 		MG.data_graphic({
@@ -180,7 +95,7 @@ function standardsSetup() {
 	.keydown(function(e) {
 		if(e.keyCode == 13) {
 			state.pf = $(this).val()
-			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+			var query = generateQuery(where_clause="WHERE " + config.column_names.date + " BETWEEN '" + state.startDate + "' AND '" + state.endDate + "'", queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 			bigpictureSummary();
@@ -192,7 +107,7 @@ function standardsSetup() {
 	.keydown(function(e) {
 		if(e.keyCode == 13) {
 			state.gpcd = $(this).val()
-			var query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+			var query = generateQuery(where_clause="WHERE " + config.column_names.date + " BETWEEN '" + state.startDate + "' AND '" + state.endDate + "'", queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 			bigpictureSummary();
@@ -232,9 +147,9 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			var startDate = dates[ui.values[0]],
 				endDate = dates[ui.values[1]]
 			
-			state.startDate = `${formatter_long(new Date(startDate))}`
-			state.endDate = `${formatter_long(new Date(endDate))}`
-			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+			state.startDate = formatter_long(new Date(startDate))
+			state.endDate = formatter_long(new Date(endDate))
+			query = generateQuery(where_clause="WHERE " + config.column_names.date + " BETWEEN '" + state.startDate + "' AND '" + state.endDate + "'", queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 		},
@@ -243,17 +158,17 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			var startDate = dates[ui.values[0]],
 				endDate = dates[ui.values[1]]
 			
-			state.startDate = `${formatter_long(new Date(startDate))}`
-			state.endDate = `${formatter_long(new Date(endDate))}`
+			state.startDate = formatter_long(new Date(startDate))
+			state.endDate = formatter_long(new Date(endDate))
 			tsSetup()
 			var start = new Date(dates[ui.values[0]]),
 			end = new Date(dates[ui.values[1]]);
-			$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
+			$("#cal").val(formatter_short(start) + " - " + formatter_short(end));
 		}
 	});
 	var start = new Date(dates[$("#range_slider").slider("values", 0)]),
 	end = new Date(dates[$("#range_slider").slider("values", 1)])
-	$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
+	$("#cal").val(formatter_short(start) + " - " + formatter_short(end));
 }
 
 function mapSetup_dm() {
@@ -271,7 +186,7 @@ var polygon;
 
 function showFeature(cartodb_id) {
 
-	sql.execute(`select ST_Centroid(the_geom) as the_geom from ${config.geometry_table} where cartodb_id = {{cartodb_id}}`, {cartodb_id: cartodb_id} )
+	sql.execute("select ST_Centroid(the_geom) as the_geom from " + config.geometry_table + " where cartodb_id = {{cartodb_id}}", {cartodb_id: cartodb_id} )
 	.done(function(geojson) {
 		if (polygon) {
 			
@@ -289,9 +204,9 @@ var placeLayer = {
 	user_name: config.account,
 	type: 'cartodb',
 	sublayers: [{
-		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false),
+		sql: generateQuery(where_clause="WHERE " + config.column_names.date + " BETWEEN '" + state.startDate + "' AND '" + state.endDate + "'", queryType=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage','af_usage_round', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
+		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage','af_usage_round', 'target_gal', 'hr_name', config.column_names.unique_id]
 	}]
 };
 
@@ -322,9 +237,9 @@ var placeLayer = {
     	});
 
     	layer.on('loading', function() {
-    		query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+    		query = generateQuery(where_clause="WHERE " + config.column_names.date + " BETWEEN '" + state.startDate + "' AND '" + state.endDate + "'", queryType=false);
     		encoded_query = encodeURIComponent(query);
-    		 url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+    		 url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
     		 $.getJSON(url, function(utilityData) {
     		 	for (row in utilityData.rows) {
     		 		if (utilityData.rows[row][config.column_names.unique_id] == state.placeID) {
@@ -361,8 +276,8 @@ var placeLayer = {
     		
     		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
     		tsSetup(data.af_usage)
-    		console.log(`irrigated area: ${data.irr_area}`)
-    		console.log(`average eto: ${data.avg_eto}`)
+    		console.log("irrigated area: " + data.irr_area);
+    		console.log("average eto: " + data.avg_eto);
     		
     	});
     });
@@ -374,15 +289,10 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	} else {
 		var differenceDescription = 'over'
 	}
-	var summary = `
-	<b>Place:</b> ${hrName}<br>
-	<b>Residential Target:</b> ${targetValue} AF<br>
-	<b>Residential Production:</b> ${usage} AF<br>
-	<b>Efficiency:</b> ${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
-	`
+	var summary = "\n\t<b>Place:</b> " + hrName + "<br>\n\t<b>Residential Target:</b> " + targetValue + " AF<br>\n\t<b>Residential Production:</b> " + usage + " AF<br>\n\t<b>Efficiency:</b> " + Math.abs(usageDifference) + " AF <em>" + differenceDescription + "</em> target in this scenario | " + percentDifference + "%\n\t";
 	transition("#targetValue", targetValue + " AF")
 	transition("#usage", usage + " AF")
-	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%`)
+	transition("#efficiency", Math.abs(usageDifference) + " AF <em>" + differenceDescription + "</em> target in this scenario | " + percentDifference + "%")
 
 	if (place_change == true){
 		transition("#hrName", hrName)
@@ -393,7 +303,7 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 function bigpictureSummary(setup=false){
 	var query = generateQuery(where_clause="", queryType="bigSummary"),
 	encoded_query = encodeURIComponent(query),
-		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+		url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
 
 		$.getJSON(url, function(data) {
 			mwelo_target_af_no_commas = Math.round(data.rows[0].mwelo_target_af)

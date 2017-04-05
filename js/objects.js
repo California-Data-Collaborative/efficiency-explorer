@@ -16,12 +16,10 @@ var globals = {
 //// set default state values and store global non-state-dependent data
 function dataSetup(callback) {
 	// choose random place for default placeID
-	var query = `
-		SELECT DISTINCT ${config.column_names.unique_id}, ${config.column_names.hr_name} 
-		FROM ${config.attribute_table}`,
+	var query = "\n\t\tSELECT DISTINCT " + config.column_names.unique_id + ", " + config.column_names.hr_name + " \n\t\tFROM " + config.attribute_table,
 
 		encoded_query = encodeURIComponent(query),
-		url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+		url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
 	$.support.cors = true;
 	$.getJSON(url, function(idData) {
 		var	min = 0,
@@ -34,13 +32,10 @@ function dataSetup(callback) {
 			transition("#hrName", randomName)
 		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
 		// ^*I exclude the actual most recent month because not every block contains these data
-		var query = `
-			SELECT DISTINCT ${config.column_names.date}
-			FROM ${config.attribute_table}
-			ORDER BY ${config.column_names.date} DESC`,
+		var query = "\n\t\t\tSELECT DISTINCT " + config.column_names.date + "\n\t\t\tFROM " + config.attribute_table + "\n\t\t\tORDER BY " + config.column_names.date + " DESC",
 
 			encoded_query = encodeURIComponent(query),
-			url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
+			url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
 		$.getJSON(url, function(dateData) {
 			state.endDate = dateData.rows[1][config.column_names.date];
 			state.startDate = dateData.rows[12][config.column_names.date]; 
@@ -61,18 +56,7 @@ var cartography = {
 	"cartocss" : "<GEOM_DEPENDENT>",
 	"legend" : "<GEOM_DEPENDENT>",
 	'tooltip' :
-	`
-	<div class="cartodb-tooltip-content-wrapper light">
-	<div class="cartodb-tooltip-content">
-	<h4>Place</h4>
-	<p>{{hr_name}}</p>
-	<h4>Percent Over/Under Target</h4>
-	<p>{{percentdifference}}%</p>
-	<h4>Population</h4>
-	<p>{{population}}</p>
-	</div>
-	</div>
-	`
+	"\n\t<div class=\"cartodb-tooltip-content-wrapper light\">\n\t<div class=\"cartodb-tooltip-content\">\n\t<h4>Place</h4>\n\t<p>{{hr_name}}</p>\n\t<h4>Percent Over/Under Target</h4>\n\t<p>{{percentdifference}}%</p>\n\t<h4>Population</h4>\n\t<p>{{population}}</p>\n\t</div>\n\t</div>\n\t"
 
 }
 
@@ -127,39 +111,9 @@ else if (config.geom_type == "polygon") {
 // define cartocss
 if (config.geom_type == "point") {
 	cartography.cartocss =
-	`#table {
-		marker-fill-opacity: .75;
-		marker-line-width: 0;
-		marker-width: 10;
-		marker-allow-overlap: true;
-		polygon-comp-op: multiply;
-
-		marker-width: ramp([population], range(5, 30), jenks(10));
-
-		marker-fill: #333;
-	}
-
-		#table [ percentdifference <= 0 ] {marker-fill: #3EAB45}
-		#table [ percentdifference > 0 ] {marker-fill: #B9D14C}
-		#table [ percentdifference > 16 ] {marker-fill: #D9C24F}
-		#table [ percentdifference > 33 ] {marker-fill: #D99F4F}
-		#table [ percentdifference > 50 ] {marker-fill: #D9534F}
-		`
+	"#table {\n\t\tmarker-fill-opacity: .75;\n\t\tmarker-line-width: 0;\n\t\tmarker-width: 10;\n\t\tmarker-allow-overlap: true;\n\t\tpolygon-comp-op: multiply;\n\n\t\tmarker-width: ramp([population], range(5, 30), jenks(10));\n\n\t\tmarker-fill: #333;\n\t}\n\n\t\t#table [ percentdifference <= 0 ] {marker-fill: #3EAB45}\n\t\t#table [ percentdifference > 0 ] {marker-fill: #B9D14C}\n\t\t#table [ percentdifference > 16 ] {marker-fill: #D9C24F}\n\t\t#table [ percentdifference > 33 ] {marker-fill: #D99F4F}\n\t\t#table [ percentdifference > 50 ] {marker-fill: #D9534F}\n\t\t"
 	}
 else if (config.geom_type == "polygon") {
 		cartography.cartocss =
-		`#table {
-			polygon-fill: #333;
-			polygon-opacity: 0.6;
-			line-width: 0.2;
-			line-color: #222;
-			line-opacity: 0.8;
-		}
-
-		#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}
-		#table [ percentdifference > 0] {polygon-fill: #B9D14C;}
-		#table [ percentdifference > 16] {polygon-fill: #D9C24F;}
-		#table [ percentdifference > 33] {polygon-fill: #D99F4F;}
-		#table [ percentdifference > 50] {polygon-fill: #D9534F;}
-		`
+		"#table {\n\t\t\tpolygon-fill: #333;\n\t\t\tpolygon-opacity: 0.6;\n\t\t\tline-width: 0.2;\n\t\t\tline-color: #222;\n\t\t\tline-opacity: 0.8;\n\t\t}\n\n\t\t#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}\n\t\t#table [ percentdifference > 0] {polygon-fill: #B9D14C;}\n\t\t#table [ percentdifference > 16] {polygon-fill: #D9C24F;}\n\t\t#table [ percentdifference > 33] {polygon-fill: #D99F4F;}\n\t\t#table [ percentdifference > 50] {polygon-fill: #D9534F;}\n\t\t"
 	};
