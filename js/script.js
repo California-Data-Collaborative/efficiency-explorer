@@ -1,5 +1,5 @@
 // style components
-nav_height = $(".navbar").height();
+var nav_height = $(".navbar").height();
 
 function styleSetup() {
 	$("body").css("padding-top", nav_height);
