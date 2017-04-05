@@ -201,7 +201,8 @@ function standardsSetup() {
 };
 
 function sliderSetup(datesTarget, tsTarget, legendTarget) {
-	var formatter = d3.time.format("%b %Y"),
+	var formatter_short = d3.time.format("%b %Y"),
+		formatter_long = d3.time.format("%Y-%m-%dT%XZ"),
 	parser = d3.time.format("%Y-%m-%dT%XZ"),
 	dates = $.map(globals.dateData.rows, function(el) {
 		var tempDate = parser.parse(el[config.column_names.date]);
@@ -228,25 +229,31 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		step: 1,
 		values: [startPosition, endPosition],
 		stop: function (event, ui) {
-			var formatter = d3.time.format("%Y-%m-%dT%XZ"),
-			startDate = dates[ui.values[0]],
-			endDate = dates[ui.values[1]]
+			var startDate = dates[ui.values[0]],
+				endDate = dates[ui.values[1]]
 			
-			state.startDate = `${formatter(new Date(startDate))}`
-			state.endDate = `${formatter(new Date(endDate))}`
+			state.startDate = `${formatter_long(new Date(startDate))}`
+			state.endDate = `${formatter_long(new Date(endDate))}`
 			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
 			globals.sublayers[0].setSQL(query);
 			tsSetup();
 		},
 		slide: function(event, ui) {
+
+			var startDate = dates[ui.values[0]],
+				endDate = dates[ui.values[1]]
+			
+			state.startDate = `${formatter_long(new Date(startDate))}`
+			state.endDate = `${formatter_long(new Date(endDate))}`
+			tsSetup()
 			var start = new Date(dates[ui.values[0]]),
 			end = new Date(dates[ui.values[1]]);
-			$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
+			$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
 		}
 	});
 	var start = new Date(dates[$("#range_slider").slider("values", 0)]),
 	end = new Date(dates[$("#range_slider").slider("values", 1)])
-	$("#cal").val(`${formatter(start)} - ${formatter(end)}`);
+	$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
 }
 
 function mapSetup_dm() {
@@ -326,6 +333,7 @@ var placeLayer = {
     		 			percentdifference = utilityData.rows[row].percentdifference,
     		 			hrName = utilityData.rows[row].hr_name;
     		 			usage = utilityData.rows[row].af_usage_round;
+
     		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
     		 			showFeature(utilityData.rows[row].cartodb_id);
     		 		};
@@ -351,7 +359,7 @@ var placeLayer = {
     		hrName = data.hr_name;
     		usage = data.af_usage_round;
     		
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
     		tsSetup(data.af_usage)
     		console.log(`irrigated area: ${data.irr_area}`)
     		console.log(`average eto: ${data.avg_eto}`)
@@ -360,7 +368,7 @@ var placeLayer = {
     });
 };
 
-function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage){
+function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage, place_change = false){
 	if (usageDifference < 0) {
 		var differenceDescription = 'within'
 	} else {
@@ -372,7 +380,14 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	<b>Residential Production:</b> ${usage} AF<br>
 	<b>Efficiency:</b> ${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
 	`
-	transition("#summarySentence", summary)
+	transition("#targetValue", targetValue + " AF")
+	transition("#usage", usage + " AF")
+	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%`)
+
+	if (place_change == true){
+		transition("#hrName", hrName)
+	}
+	//transition("#summarySentence", summary)
 };
 
 function bigpictureSummary(setup=false){
