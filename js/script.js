@@ -166,7 +166,7 @@ function tsSetup() {
         	target: "#ts", // the html element that the graphic is inserted in
         	x_accessor: config.column_names.date,  // the key that accesses the x value
         	y_accessor: ['target_gal', 'gal_usage'], // the key that accesses the y value
-        	legend:  ['Target', 'Usage'],
+        	legend:  ['Target', 'Production'],
         	legend_target: "#tsLegend"
         });
 		d3.selectAll('.label')
