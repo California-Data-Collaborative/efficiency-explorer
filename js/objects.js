@@ -1,5 +1,5 @@
 ////// visualization state object and global data object
-state = {
+var state = {
 	"placeID" : "<PLACE_IDENTIFIER>",
 	"hrName" : "<HUMAN_READABLE_IDENTIFIER>",
 	"startDate" : "<SCENARIO_START>",
@@ -8,7 +8,7 @@ state = {
 	"pf" : "<PLANT_FACTOR>"
 }
 
-globals = {
+var globals = {
 	"dateData" : "<DATE_DATA>",
 	"sublayers" : [],
 }
