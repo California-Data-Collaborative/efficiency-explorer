@@ -79,6 +79,8 @@ function generateQuery(where_clause, queryType=false) {
 	WITH cte_otf AS
 	(SELECT
 		${config.geometry_table}.the_geom_webmercator,
+		st_y(${config.geometry_table}.the_geom) lat,
+		st_x(${config.geometry_table}.the_geom) lon,
 		${config.geometry_table}.cartodb_id,
 		${config.geometry_table}.${config.column_names.unique_id},
 		${config.attribute_table}.${config.column_names.population},
@@ -99,6 +101,8 @@ function generateQuery(where_clause, queryType=false) {
 	cte_targets AS
 	(SELECT     
 		the_geom_webmercator,
+		lat,
+		lon,
 		Min(cartodb_id) cartodb_id,
 		Min(hr_name) hr_name,
 		${config.column_names.unique_id},
@@ -112,7 +116,7 @@ function generateQuery(where_clause, queryType=false) {
 		FROM cte_otf
 		${where_clause}
 		
-		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator)
+		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator, lat, lon)
 
 	SELECT
 	*,
@@ -138,6 +142,8 @@ function generateQuery(where_clause, queryType=false) {
 		return query
 	}
 };
+
+
 
 function tsSetup() {
 	
@@ -263,6 +269,57 @@ function mapSetup_dm() {
 		scrollWheelZoom:false
 	});
 
+	function searchSetup() {
+	//reference: http://bl.ocks.org/javisantana/7932459
+	var sql = cartodb.SQL({ user: config.account });
+    $( "#hrName" )
+    .autocomplete({
+      source: function( request, response ) {
+        var s
+        sql.execute(
+        	`
+        	SELECT DISTINCT ${config.column_names.hr_name}
+        	FROM ${config.attribute_table}
+        	WHERE ${config.column_names.hr_name} ilike '${request.term}%'`
+        	).done(function(data) {
+           response(data.rows.map(function(r) {
+              return {
+                label: r[config.column_names.hr_name],
+                value: r[config.column_names.hr_name]
+              }
+            })
+          )
+        })
+      },
+      minLength: 1,
+      select: function( event, ui ) {
+      	state.hrName = ui.item.value;
+      	query = generateQuery(where_clause=`WHERE hr_name = '${state.hrName}' AND ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+      	sql.execute(query).done(function(data){
+
+      		showFeature(data.rows[0].cartodb_id)
+    		state.placeID = data.rows[0][config.column_names.unique_id];
+    		var target_af = data.rows[0].target_af_round,
+    			usagedifference = data.rows[0].usagedifference,
+    			percentdifference = data.rows[0].percentdifference,
+    			hrName = data.rows[0].hr_name;
+    			usage = data.rows[0].af_usage_round,
+
+    			latLng = new L.LatLng(data.rows[0].lat, data.rows[0].lon);
+    		map.panTo(latLng);
+    		
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
+    		tsSetup()
+    		
+    		console.log(`irrigated area: ${data.rows[0].irr_area}`)
+    		console.log(`average eto: ${data.rows[0].avg_eto}`)
+
+      	})
+
+      }
+    });
+};
+
 // Highlight feature setup below based on: http://bl.ocks.org/javisantana/d20063afd2c96a733002
 var sql = new cartodb.SQL( {
 	user: config.account,
@@ -360,11 +417,12 @@ var placeLayer = {
     		usage = data.af_usage_round;
     		
     		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
-    		tsSetup(data.af_usage)
+    		tsSetup()
     		console.log(`irrigated area: ${data.irr_area}`)
     		console.log(`average eto: ${data.avg_eto}`)
     		
     	});
+    searchSetup()
     });
 };
 
@@ -385,7 +443,8 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%`)
 
 	if (place_change == true){
-		transition("#hrName", hrName)
+		$("#hrName").val(hrName)
+		//transition("#hrName", hrName)
 	}
 	//transition("#summarySentence", summary)
 };

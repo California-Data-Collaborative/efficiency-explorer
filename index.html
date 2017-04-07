@@ -46,7 +46,7 @@
     <div id='extraUtility' class='section row'>
       <div class='col-md-12'>
 
-       
+
 
 
         <h3>Context:</h3>
@@ -116,7 +116,7 @@
                   <li><b>GPCD</b> and <b>ET Adjustment Factor</b> - by typing values in the associated forms and pressing enter</li>
                 </ul>
               </li>
-              <li>View results for current scenario for selected supplier
+              <li>View results for current scenario for selected <b>Supplier</b>
                 <ul>
                   <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
                   <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
@@ -159,8 +159,17 @@
       <div id="tsSection">
         <div id="tsTitles">
           <h2>Scenario Builder</h2>
+          <div class="form-group">
+            <label for="hrName">Supplier</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="search-addon">
+                <i class="glyphicon glyphicon-search"></i>
+              </span>
+              <input type="text" class="form-control" id="hrName" aria-describedby="search-addon">
+            </div>
+          </div>
           <p style="display: inline" id='summarySentence'>
-            <b>Place: </b><div style="display: inline"  id="hrName"></div><br>
+            <!-- <b>Place: </b><div style="display: inline"  id="hrName"></div><br> -->
             <b>Residential Target: </b><div style="display: inline" id="targetValue"></div><br>
             <b>Residential Production: </b> <div style="display: inline" id="usage"></div><br>
             <b>Efficiency: </b><div style="display: inline" id="efficiency"></div>
@@ -221,6 +230,7 @@
         <b>Total Residential Target:</b> <div style="display: inline" id="summaryTarget"></div><br>
         <b>Total Residential Production:</b> <div style="display: inline" id="summaryUsage"></div>
       </div>
+
       <div id="map"></div>
     </div>
   </div>

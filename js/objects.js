@@ -31,7 +31,7 @@ function dataSetup(callback) {
 			state.placeID = randomPlace
 			randomName = idData.rows[randIdx][config.column_names.hr_name];
 			state.hrName = randomName
-			transition("#hrName", randomName)
+			$("#hrName").val(randomName)
 		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
 		// ^*I exclude the actual most recent month because not every block contains these data
 		var query = `
