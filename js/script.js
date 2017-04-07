@@ -2,14 +2,19 @@
 var nav_height = $(".navbar").height();
 
 function styleSetup() {
-	$("body").css("padding-top", nav_height);
+	
 	var section_height = $("#extraUtility").height();
 	$("#map").css("height", section_height);
+	$("body").css("padding-top", nav_height)
 
 	// $(".section, #map").css("height", `calc(100vh - ${nav_height}px)`);
 	var ts_height = $("#map").height() - $("#filters").height() - $("#tsTitles").height() - 146; // the last term depends on the size of the elements above the chart
 	//$("#ts").css("height", ts_height);
-	$(window).resize(function(){location.reload()});
+	$(window).resize(function(){
+		nav_height = $(".navbar").height();
+		$("body").css("padding-top", nav_height);
+	}
+		);
 };
 
 function makeSelected(element) {
