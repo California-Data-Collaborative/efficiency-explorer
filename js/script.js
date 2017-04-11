@@ -285,7 +285,7 @@ function mapSetup_dm() {
         	`
         	SELECT DISTINCT ${config.column_names.hr_name}
         	FROM ${config.attribute_table}
-        	WHERE ${config.column_names.hr_name} ilike '${request.term}%'`
+        	WHERE ${config.column_names.hr_name} ilike '%${request.term}%'`
         	).done(function(data) {
            response(data.rows.map(function(r) {
               return {
@@ -296,7 +296,7 @@ function mapSetup_dm() {
           )
         })
       },
-      minLength: 1,
+      minLength: 2,
       select: function( event, ui ) {
       	state.hrName = ui.item.value;
       	query = generateQuery(where_clause=`WHERE hr_name = '${state.hrName}' AND ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
