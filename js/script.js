@@ -490,4 +490,5 @@ function main(){
 	tsSetup();
 	mapSetup_dm();
 	bigpictureSummary(setup=true);
+	console.log("Designed, developed, and deployed by:\n\nDavid Marulli,\nChristopher Tull,\nPatrick Atwater,\nGraham Henke,\nand Varun Adibhatla\n\n...of Team ARGO.");
 }
