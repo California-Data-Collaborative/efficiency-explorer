@@ -88,19 +88,19 @@ choropleth = new cdb.geo.ui.Legend({
 			value: ""
 		}, {
 			name: "bin1",
-			value: "#3EAB45"
+			value: "#A0CB4A"
 		}, {
 			name: "bin2",
-			value: "#B9D14C"
+			value: "#3FAE3F"
 		}, {
 			name: "bin3",
-			value: "#D9C24F"
+			value: "#2F8282"
 		}, {
 			name: "bin4",
-			value: "#D99F4F"
+			value: "#3E5792"
 		},		{
 			name: "bin5",
-			value: "#D9534F"
+			value: "#554196"
 		}]
 	})
 
@@ -128,7 +128,7 @@ else if (config.geom_type == "polygon") {
 if (config.geom_type == "point") {
 	cartography.cartocss =
 	`#table {
-		marker-fill-opacity: .75;
+		marker-fill-opacity: .8;
 		marker-line-width: 0;
 		marker-width: 10;
 		marker-allow-overlap: true;
@@ -139,11 +139,11 @@ if (config.geom_type == "point") {
 		marker-fill: #333;
 	}
 
-		#table [ percentdifference <= 0 ] {marker-fill: #3EAB45}
-		#table [ percentdifference > 0 ] {marker-fill: #B9D14C}
-		#table [ percentdifference > 16 ] {marker-fill: #D9C24F}
-		#table [ percentdifference > 33 ] {marker-fill: #D99F4F}
-		#table [ percentdifference > 50 ] {marker-fill: #D9534F}
+		#table [ percentdifference <= 0 ] {marker-fill: #A0CB4A}
+		#table [ percentdifference > 0 ] {marker-fill: #3FAE3F}
+		#table [ percentdifference > 16 ] {marker-fill: #2F8282}
+		#table [ percentdifference > 33 ] {marker-fill: #3E5792}
+		#table [ percentdifference > 50 ] {marker-fill: #554196}
 		`
 	}
 else if (config.geom_type == "polygon") {
@@ -156,10 +156,10 @@ else if (config.geom_type == "polygon") {
 			line-opacity: 0.8;
 		}
 
-		#table [ percentdifference <= 0] {polygon-fill: #3EAB45;}
-		#table [ percentdifference > 0] {polygon-fill: #B9D14C;}
-		#table [ percentdifference > 16] {polygon-fill: #D9C24F;}
-		#table [ percentdifference > 33] {polygon-fill: #D99F4F;}
-		#table [ percentdifference > 50] {polygon-fill: #D9534F;}
+		#table [ percentdifference <= 0] {polygon-fill: #A0CB4A;}
+		#table [ percentdifference > 0] {polygon-fill: #3FAE3F;}
+		#table [ percentdifference > 16] {polygon-fill: #2F8282;}
+		#table [ percentdifference > 33] {polygon-fill: #3E5792;}
+		#table [ percentdifference > 50] {polygon-fill: #554196;}
 		`
 	};
