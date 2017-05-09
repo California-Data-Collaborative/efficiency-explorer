@@ -70,6 +70,8 @@ var cartography = {
 	<p>{{percentdifference}}%</p>
 	<h4>Population</h4>
 	<p>{{population}}</p>
+	<h4>Data Quality Uncertainty</h4>
+	<p>{{uncertainty}}</p>
 	</div>
 	</div>
 	`
@@ -136,7 +138,7 @@ if (config.geom_type == "point") {
 
 		marker-width: ramp([population], range(5, 30), jenks(10));
 
-		marker-fill: #333;
+		marker-fill: gray;
 	}
 
 		#table [ percentdifference <= 0 ] {marker-fill: #A0CB4A}
@@ -144,6 +146,8 @@ if (config.geom_type == "point") {
 		#table [ percentdifference > 16 ] {marker-fill: #2F8282}
 		#table [ percentdifference > 33 ] {marker-fill: #3E5792}
 		#table [ percentdifference > 50 ] {marker-fill: #554196}
+
+		#table [ uncertainty != 'low' ] {marker-fill: gray}
 		`
 	}
 else if (config.geom_type == "polygon") {
@@ -161,5 +165,7 @@ else if (config.geom_type == "polygon") {
 		#table [ percentdifference > 16] {polygon-fill: #2F8282;}
 		#table [ percentdifference > 33] {polygon-fill: #3E5792;}
 		#table [ percentdifference > 50] {polygon-fill: #554196;}
+
+		#table [ uncertainty != 'low' ] {polygon-fill: gray}
 		`
 	};

@@ -54,6 +54,7 @@ function generateQuery(where_clause, queryType=false) {
 	at.report_agency_name = ut.urban_water_supplier
 	WHERE
 	${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
+	AND ${config.column_names.uncertainty} = 'low'
 	`
 	//
 
@@ -94,6 +95,7 @@ function generateQuery(where_clause, queryType=false) {
 		${config.attribute_table}.${config.column_names.usage},
 		${config.attribute_table}.${config.column_names.date},
 		${config.attribute_table}.${config.column_names.hr_name} hr_name,
+		${config.attribute_table}.${config.column_names.uncertainty} uncertainty,
 		${config.column_names.month_days}
 
 		FROM
@@ -110,6 +112,7 @@ function generateQuery(where_clause, queryType=false) {
 		lon,
 		Min(cartodb_id) cartodb_id,
 		Min(hr_name) hr_name,
+		Min(uncertainty) uncertainty,
 		${config.column_names.unique_id},
 		ROUND(AVG(${config.column_names.population})) population,
 		SUM(${config.column_names.usage}*${config.conversion_to_gal}) * 3.06889*10^(-6) af_usage,
@@ -309,11 +312,12 @@ function mapSetup_dm() {
     			percentdifference = data.rows[0].percentdifference,
     			hrName = data.rows[0].hr_name;
     			usage = data.rows[0].af_usage_round,
+    			uncertainty = data.rows[0].uncertainty,
 
     			latLng = new L.LatLng(data.rows[0].lat, data.rows[0].lon);
     		map.panTo(latLng);
     		
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
     		tsSetup()
     		
     		console.log(`irrigated area: ${data.rows[0].irr_area}`)
@@ -353,7 +357,7 @@ var placeLayer = {
 	sublayers: [{
 		sql: generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false),
 		cartocss: cartography.cartocss,
-		interactivity: ['cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage','af_usage_round', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
+		interactivity: ['uncertainty','cartodb_id', 'irr_area', 'avg_eto', 'usagedifference', 'percentdifference', 'target_af_round', 'target_af', 'population', 'gal_usage', 'af_usage','af_usage_round', 'target_gal', 'hr_name', `${config.column_names.unique_id}`]
 	}]
 };
 
@@ -395,8 +399,9 @@ var placeLayer = {
     		 			percentdifference = utilityData.rows[row].percentdifference,
     		 			hrName = utilityData.rows[row].hr_name;
     		 			usage = utilityData.rows[row].af_usage_round;
+    		 			uncertainty = utilityData.rows[row].uncertainty;
 
-    		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage);
+    		 			summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty);
     		 			showFeature(utilityData.rows[row].cartodb_id);
     		 		};
     		 	};
@@ -418,10 +423,11 @@ var placeLayer = {
     		var target_af = data.target_af_round,
     		usagedifference = data.usagedifference,
     		percentdifference = data.percentdifference,
-    		hrName = data.hr_name;
-    		usage = data.af_usage_round;
+    		hrName = data.hr_name,
+    		usage = data.af_usage_round
+    		uncertainty = data.uncertainty;
     		
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, place_change = true);
+    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
     		tsSetup()
     		console.log(`irrigated area: ${data.irr_area}`)
     		console.log(`average eto: ${data.avg_eto}`)
@@ -431,21 +437,22 @@ var placeLayer = {
     });
 };
 
-function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage, place_change = false){
+function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage, uncertainty, place_change = false){
 	if (usageDifference < 0) {
 		var differenceDescription = 'within'
 	} else {
 		var differenceDescription = 'over'
 	}
-	var summary = `
-	<b>Place:</b> ${hrName}<br>
-	<b>Residential Target:</b> ${targetValue} AF<br>
-	<b>Residential Production:</b> ${usage} AF<br>
-	<b>Efficiency:</b> ${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
-	`
+	// var summary = `
+	// <b>Place:</b> ${hrName}<br>
+	// <b>Residential Target:</b> ${targetValue} AF<br>
+	// <b>Residential Production:</b> ${usage} AF<br>
+	// <b>Efficiency:</b> ${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%
+	// `
 	transition("#targetValue", targetValue + " AF")
 	transition("#usage", usage + " AF")
 	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%`)
+	transition("#uncertainty", uncertainty)
 
 	if (place_change == true){
 		$("#hrName").val(hrName)
