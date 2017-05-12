@@ -98,6 +98,10 @@ td {
 	width: 100%;
 }
 
+#scenarioBuilder {
+  overflow-y: scroll !important;
+}
+
 #summary {
   z-index: 1000;
   top: 10px;

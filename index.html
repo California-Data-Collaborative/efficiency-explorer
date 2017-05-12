@@ -34,8 +34,8 @@
       </div>
       <ul class="nav navbar-nav">
         <!-- I use href="javascript:..." because href default cursor property is pointer -->
-        <li><a class='selected' onclick='makeSelected(this)' href="javascript: smoothScroll('#extraUtility');">About</a></li>
-        <li><a id='intraULink' onclick='makeSelected(this)' href="javascript: smoothScroll('#intraUtility');">Efficiency Explorer</a></li>
+        <li><a id='aboutLink' href="javascript: smoothScroll('#extraUtility');">About</a></li>
+        <li><a id='intraULink' href="javascript: smoothScroll('#intraUtility');">Efficiency Explorer</a></li>
       </ul>
     </div>
   </nav>
@@ -95,7 +95,7 @@
 
       <div class='centered'>
         <div aria-label="..." class="btn-group" role="group">
-          <button class="btn btn-default" id="toolButton" onclick="smoothScroll('#intraUtility'); makeSelected('#intraULink')" type="button">
+          <button class="btn btn-default" id="toolButton" onclick="smoothScroll('#intraUtility');" type="button">
             <b>Just show me the Efficiency Explorer!</b>
           </button>
         </div>
@@ -155,7 +155,7 @@
   </div>
 
   <div id='intraUtility' class='section row'>
-    <div class="col-md-4">
+    <div id='scenarioBuilder'class="col-md-4">
       <div id="tsSection">
         <div id="tsTitles">
           <h2>Scenario Builder</h2>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div id="coefficientSelection">
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label for="gpcd">GPCD</label>
             <div class="input-group">
               <span class="input-group-addon" id="gpcd-addon">
@@ -209,7 +209,7 @@
               <input type="text" class="form-control" id="gpcd" aria-describedby="gpcd-addon">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-6">
             <label for="pf">ET Adjustment Factor</label>
             <div class="input-group">
               <span class="input-group-addon" id="pf-addon">

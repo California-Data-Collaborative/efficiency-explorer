@@ -2,17 +2,34 @@
 var nav_height = $(".navbar").height();
 
 function styleSetup() {
+
+	// make sure correct section is highlighted
+	function selectSection(){
+		var window_top = 1.5*$(window).scrollTop();
+    	var div_top = $('#intraUtility').offset().top - nav_height;
+		if (window_top < div_top) {
+			makeSelected('#aboutLink')
+    	} else {
+    		makeSelected('#intraULink')
+    	}
+	}
+
+	$(function() {
+    $(window).scroll(selectSection);
+    selectSection();
+	});
+	//
 	
 	var section_height = $("#extraUtility").height();
-	$("#map").css("height", section_height);
+	// $("#map").css("height", section_height);
+	$("#map, #scenarioBuilder").css("height", `calc(100vh - ${nav_height}px)`);
 	$("body").css("padding-top", nav_height)
 
-	// $(".section, #map").css("height", `calc(100vh - ${nav_height}px)`);
+	// $("#map").css("height", `calc(100vh - ${nav_height}px)`);
 	var ts_height = $("#map").height() - $("#filters").height() - $("#tsTitles").height() - 146; // the last term depends on the size of the elements above the chart
 	//$("#ts").css("height", ts_height);
 	$(window).resize(function(){
 		nav_height = $(".navbar").height();
-		$("body").css("padding-top", nav_height);
 	}
 		);
 };
