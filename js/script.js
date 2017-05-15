@@ -61,7 +61,7 @@ function generateQuery(where_clause, queryType=false) {
 	var summaryQuery = `
 	SELECT
 	SUM(${config.column_names.population} * target_gpcd_2020 * cast(${config.column_names.month_days} as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,
-	SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + .5 * ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
+	SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
 	SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
 	FROM
 	statewide_baseline_and_target_data_11_14_14 ut
