@@ -1,16 +1,16 @@
 body {
-	background-color: #222;
+  background-color: #222;
   /*scroll lock*/
   /*overflow: hidden; */ 
   font-size: 130%;
 }
 
 nav {
-	z-index: 100000000000 !important;
+  z-index: 100000000000 !important;
 }
 
 a:hover {
-	color: #CECECE !important
+  color: #CECECE !important
 }
 a.selected {
   color: white !important; 
@@ -26,50 +26,40 @@ td {
   text-align: center;
 }
 
-.myButton {
-  margin-top: 30px;
-  background-color:#ffffff;
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  border-radius:10px;
-  display:inline-block;
-  cursor:pointer;
-  color:#000000;
-  font-size:24px;
-  padding:10px 35px;
-  text-decoration:none;
-  outline: none !important;
-}
-.myButton:hover {
-  color:#000000;
-  background-color:#337ab7;
-}
-.myButton:active {
-  position:relative;
-  top:1px;
-}
-
 #summarySentence label {
-	white-space: nowrap;
+  white-space: nowrap;
   font-size: 93%;
 }
 
 .navbar-inverse .navbar-brand {
-    color: white;
-    padding-left: 0px !important;
+  color: white;
+  padding-left: 0px !important;
+}
+
+.noleftpadding {
+ padding-left: 0 !important;
+ margin: 0 !important;
+}
+.norightpadding {
+ padding-right: 0 !important;
+ margin: 0 !important;
 }
 
 .nopadding {
-   padding: 0 !important;
-   margin: 0 !important;
+ padding: 0 !important;
+ margin: 0 !important;
+}
+.norightpadding {
+ padding-right: 0 !important;
+ margin: 0 !important;
 }
 
 .section {
-	background-color: white;
+  background-color: white;
 }
 
 #cal {
-	cursor: default;
+  cursor: default;
 }
 
 
@@ -78,14 +68,14 @@ td {
 }
 
 #tsContainer {
-	background-color: #eee;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    -webkit-box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-	
+  background-color: #eee;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  
 }
 
 #tsLegend {
@@ -95,7 +85,7 @@ td {
 }
 
 #map {
-	width: 100%;
+  width: 100%;
 }
 
 #scenarioBuilder {
@@ -134,6 +124,7 @@ td {
   text-decoration:none;
   outline: none !important;
   margin-top: 10px;
+  margin-bottom: 20px;
   /*margin-bottom: 10px;*/
   border-color: #66afe9;
   -webkit-box-shadow: outset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
@@ -156,11 +147,17 @@ td {
   /*padding-bottom: 20px;*/
 }
 
+.equation{
+/*  margin-top: 30px;
+margin-bottom: 30px;*/
+overflow: scroll;
+}
+
 .ui-autocomplete {
   padding: 6px 12px;
   border-radius: 4px;
   webkit-border-radius: 4px;
-    -moz-border-radius: 4px;  
+  -moz-border-radius: 4px;  
 }
 
 .ui-autocomplete .ui-state-hover,
@@ -174,15 +171,58 @@ td {
   padding: 1px 2px;
   border-radius: 4px;
   webkit-border-radius: 4px;
-    -moz-border-radius: 4px; 
+  -moz-border-radius: 4px; 
   background-color: #eee !important;
   border: none !important;
 }
 
 .pointer {
-	cursor: pointer !important;
+  cursor: pointer !important;
 }
 
 .cartodb-logo {
   display: none !important;
+}
+
+.panel.panel-horizontal {
+  display:table;
+  width:100%;
+  margin-bottom: 0px;
+  min-height: 66px !important;
+}
+
+.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
+  display:table-cell;
+  vertical-align: middle;
+  text-align: center;
+
+  padding: 5px;
+}
+.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
+  /*width: 25%;*/
+  border:0;
+  vertical-align: middle;
+
+}
+.panel.panel-horizontal > .panel-heading {
+  border-right: 1px solid #ddd;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 4px;
+}
+.panel.panel-horizontal > .panel-footer {
+  border-left: 1px solid #ddd;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 4px;
+}
+
+.popover-content {
+  height: 186px;
+  overflow-y: scroll;
+}
+
+.clickable {
+  cursor: pointer; cursor: hand;
+}
+.clickable:focus {
+  outline:0;
 }
