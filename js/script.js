@@ -2,36 +2,66 @@
 var nav_height = $(".navbar").height();
 
 function styleSetup() {
-
+	
 	// make sure correct section is highlighted
 	function selectSection(){
 		var window_top = 1.5*$(window).scrollTop();
-    	var div_top = $('#intraUtility').offset().top - nav_height;
+		var div_top = $('#intraUtility').offset().top - nav_height;
 		if (window_top < div_top) {
 			makeSelected('#aboutLink')
-    	} else {
-    		makeSelected('#intraULink')
-    	}
+		} else {
+			makeSelected('#intraULink')
+		}
 	}
 
 	$(function() {
-    $(window).scroll(selectSection);
-    selectSection();
+		$(window).scroll(selectSection);
+		selectSection();
 	});
-	//
-	
-	var section_height = $("#extraUtility").height();
-	// $("#map").css("height", section_height);
-	$("#map, #scenarioBuilder").css("height", `calc(100vh - ${nav_height}px)`);
-	$("body").css("padding-top", nav_height)
 
-	// $("#map").css("height", `calc(100vh - ${nav_height}px)`);
-	var ts_height = $("#map").height() - $("#filters").height() - $("#tsTitles").height() - 146; // the last term depends on the size of the elements above the chart
-	//$("#ts").css("height", ts_height);
+	// dynamic padding and div sizing on window resize
+	function dynamicPadding() {
+		if ($(window).width() < 993){
+			$(".noleftpadding")
+			.removeClass("noleftpadding")
+			.addClass("tempPadding")
+
+		} else {
+			$(".tempPadding")
+			.removeClass("tempPadding")
+			.addClass("noleftpadding")
+		}
+	}
+
+	function dynamicSizing() {
+		$("#extraUtility").css("min-height", `calc(100vh - ${nav_height}px)`);
+		$("#map, #scenarioBuilder").css("height", `calc(100vh - ${nav_height}px)`);
+		$("body").css("padding-top", nav_height)
+
+	}
+
+	dynamicPadding()
+	dynamicSizing()
+
 	$(window).resize(function(){
 		nav_height = $(".navbar").height();
-	}
-		);
+		dynamicSizing()
+		dynamicPadding()
+		tsSetup()
+	});
+
+	// turn popovers on, and open landscape area quality considerations
+	$(function () {
+		$('[data-toggle="popover"]').popover()
+		$('#landscapeArea').popover({
+			'placement':'bottom',
+			'trigger': 'focus',
+			'tabindex': "0"
+		})
+		.popover('show')
+		.focus()
+		$('.popover-content').scrollTop(730);
+	})
 };
 
 function makeSelected(element) {
@@ -54,7 +84,7 @@ function transition(element, content){
 // visualization components
 function generateQuery(where_clause, queryType=false) {
 	var milliunix_start = new Date(state.startDate).getTime(),
-		milliunix_end = new Date(state.endDate).getTime(),
+	milliunix_end = new Date(state.endDate).getTime(),
 		dayRange = (milliunix_end - milliunix_start)*1.1574*.00000001 + 30.437; // convert milliunix to days
 
 	// Hard-coded for RLF Statewide EE
@@ -143,29 +173,29 @@ function generateQuery(where_clause, queryType=false) {
 		
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator, lat, lon)
 
-	SELECT
-	*,
-	ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
-	ROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,
-	ROUND(CAST(target_af AS NUMERIC), 2) target_af_round,
-	ROUND(CAST(af_usage AS NUMERIC), 2) af_usage_round
+SELECT
+*,
+ROUND(100 * (gal_usage - target_gal) / CAST(target_gal AS FLOAT)) percentDifference,
+ROUND(CAST(af_usage AS NUMERIC), 2) - ROUND(CAST(target_af AS NUMERIC), 2) usageDifference,
+ROUND(CAST(target_af AS NUMERIC), 2) target_af_round,
+ROUND(CAST(af_usage AS NUMERIC), 2) af_usage_round
 
-	FROM
-	cte_targets
+FROM
+cte_targets
 
 
 
-	ORDER BY
-	percentDifference
-	`
+ORDER BY
+percentDifference
+`
 
-	if (queryType == "ts") {
-		return tsQuery
-	} else if (queryType == "bigSummary") {
-		return summaryQuery
-	} else {
-		return query
-	}
+if (queryType == "ts") {
+	return tsQuery
+} else if (queryType == "bigSummary") {
+	return summaryQuery
+} else {
+	return query
+}
 };
 
 
@@ -233,7 +263,7 @@ function standardsSetup() {
 
 function sliderSetup(datesTarget, tsTarget, legendTarget) {
 	var formatter_short = d3.time.format("%b %Y"),
-		formatter_long = d3.time.format("%Y-%m-%dT%XZ"),
+	formatter_long = d3.time.format("%Y-%m-%dT%XZ"),
 	parser = d3.time.format("%Y-%m-%dT%XZ"),
 	dates = $.map(globals.dateData.rows, function(el) {
 		var tempDate = parser.parse(el[config.column_names.date]);
@@ -261,7 +291,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		values: [startPosition, endPosition],
 		stop: function (event, ui) {
 			var startDate = dates[ui.values[0]],
-				endDate = dates[ui.values[1]]
+			endDate = dates[ui.values[1]]
 			
 			state.startDate = `${formatter_long(new Date(startDate))}`
 			state.endDate = `${formatter_long(new Date(endDate))}`
@@ -272,7 +302,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		slide: function(event, ui) {
 
 			var startDate = dates[ui.values[0]],
-				endDate = dates[ui.values[1]]
+			endDate = dates[ui.values[1]]
 			
 			state.startDate = `${formatter_long(new Date(startDate))}`
 			state.endDate = `${formatter_long(new Date(endDate))}`
@@ -282,9 +312,9 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 			$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
 		}
 	});
-	var start = new Date(dates[$("#range_slider").slider("values", 0)]),
-	end = new Date(dates[$("#range_slider").slider("values", 1)])
-	$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
+var start = new Date(dates[$("#range_slider").slider("values", 0)]),
+end = new Date(dates[$("#range_slider").slider("values", 1)])
+$("#cal").val(`${formatter_short(start)} - ${formatter_short(end)}`);
 }
 
 function mapSetup_dm() {
@@ -297,53 +327,53 @@ function mapSetup_dm() {
 	function searchSetup() {
 	//reference: http://bl.ocks.org/javisantana/7932459
 	var sql = cartodb.SQL({ user: config.account });
-    $( "#hrName" )
-    .autocomplete({
-      source: function( request, response ) {
-        var s
-        sql.execute(
-        	`
-        	SELECT DISTINCT ${config.column_names.hr_name}
-        	FROM ${config.attribute_table}
-        	WHERE ${config.column_names.hr_name} ilike '%${request.term}%'`
-        	).done(function(data) {
-           response(data.rows.map(function(r) {
-              return {
-                label: r[config.column_names.hr_name],
-                value: r[config.column_names.hr_name]
-              }
-            })
-          )
-        })
-      },
-      minLength: 2,
-      select: function( event, ui ) {
-      	state.hrName = ui.item.value;
-      	query = generateQuery(where_clause=`WHERE hr_name = '${state.hrName}' AND ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
-      	sql.execute(query).done(function(data){
+	$( "#hrName" )
+	.autocomplete({
+		source: function( request, response ) {
+			var s
+			sql.execute(
+				`
+				SELECT DISTINCT ${config.column_names.hr_name}
+				FROM ${config.attribute_table}
+				WHERE ${config.column_names.hr_name} ilike '%${request.term}%'`
+				).done(function(data) {
+					response(data.rows.map(function(r) {
+						return {
+							label: r[config.column_names.hr_name],
+							value: r[config.column_names.hr_name]
+						}
+					})
+					)
+				})
+			},
+			minLength: 2,
+			select: function( event, ui ) {
+				state.hrName = ui.item.value;
+				query = generateQuery(where_clause=`WHERE hr_name = '${state.hrName}' AND ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
+				sql.execute(query).done(function(data){
 
-      		showFeature(data.rows[0].cartodb_id)
-    		state.placeID = data.rows[0][config.column_names.unique_id];
-    		var target_af = data.rows[0].target_af_round,
-    			usagedifference = data.rows[0].usagedifference,
-    			percentdifference = data.rows[0].percentdifference,
-    			hrName = data.rows[0].hr_name;
-    			usage = data.rows[0].af_usage_round,
-    			uncertainty = data.rows[0].uncertainty,
+					showFeature(data.rows[0].cartodb_id)
+					state.placeID = data.rows[0][config.column_names.unique_id];
+					var target_af = data.rows[0].target_af_round,
+					usagedifference = data.rows[0].usagedifference,
+					percentdifference = data.rows[0].percentdifference,
+					hrName = data.rows[0].hr_name;
+					usage = data.rows[0].af_usage_round,
+					uncertainty = data.rows[0].uncertainty,
 
-    			latLng = new L.LatLng(data.rows[0].lat, data.rows[0].lon);
-    		map.panTo(latLng);
-    		
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
-    		tsSetup()
-    		
-    		console.log(`irrigated area: ${data.rows[0].irr_area}`)
-    		console.log(`average eto: ${data.rows[0].avg_eto}`)
+					latLng = new L.LatLng(data.rows[0].lat, data.rows[0].lon);
+					map.panTo(latLng);
 
-      	})
+					summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
+					tsSetup()
 
-      }
-    });
+					console.log(`irrigated area: ${data.rows[0].irr_area}`)
+					console.log(`average eto: ${data.rows[0].avg_eto}`)
+
+				})
+
+			}
+		});
 };
 
 // Highlight feature setup below based on: http://bl.ocks.org/javisantana/d20063afd2c96a733002
@@ -425,33 +455,33 @@ var placeLayer = {
     		 });
     		});
 
-    	
-    	globals.sublayers[0].on('featureOver', function(e, latlng, pos, data) {
-    		$("#map").css('cursor', 'pointer')
-    	});
 
-    	globals.sublayers[0].on('featureOut', function(e, latlng, pos, data) {
-    		$("#map").css('cursor','')
-    	});
+globals.sublayers[0].on('featureOver', function(e, latlng, pos, data) {
+	$("#map").css('cursor', 'pointer')
+});
 
-    	globals.sublayers[0].on('featureClick', function(e, latlng, pos, data) {
-    		showFeature(data.cartodb_id)
-    		state.placeID = data[config.column_names.unique_id];
-    		var target_af = data.target_af_round,
-    		usagedifference = data.usagedifference,
-    		percentdifference = data.percentdifference,
-    		hrName = data.hr_name,
-    		usage = data.af_usage_round
-    		uncertainty = data.uncertainty;
-    		
-    		summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
-    		tsSetup()
-    		console.log(`irrigated area: ${data.irr_area}`)
-    		console.log(`average eto: ${data.avg_eto}`)
-    		
-    	});
-    searchSetup()
-    });
+globals.sublayers[0].on('featureOut', function(e, latlng, pos, data) {
+	$("#map").css('cursor','')
+});
+
+globals.sublayers[0].on('featureClick', function(e, latlng, pos, data) {
+	showFeature(data.cartodb_id)
+	state.placeID = data[config.column_names.unique_id];
+	var target_af = data.target_af_round,
+	usagedifference = data.usagedifference,
+	percentdifference = data.percentdifference,
+	hrName = data.hr_name,
+	usage = data.af_usage_round
+	uncertainty = data.uncertainty;
+
+	summarySentence_dm(usagedifference, percentdifference, target_af, hrName, usage, uncertainty, place_change = true);
+	tsSetup()
+	console.log(`irrigated area: ${data.irr_area}`)
+	console.log(`average eto: ${data.avg_eto}`)
+
+});
+searchSetup()
+});
 };
 
 function summarySentence_dm(usageDifference, percentDifference, targetValue, hrName, usage, uncertainty, place_change = false){
