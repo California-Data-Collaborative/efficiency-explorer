@@ -89,327 +89,348 @@
                 </tr>
               </table><br>
               <p><em>Source: National Academies of Sciences, Engineering, and Medicine; <a href="https://www.nap.edu/catalog/21866/using-graywater-and-stormwater-to-enhance-local-water-supplies-an">"Using Graywater and Stormwater to Enhance Local Water Supplies: An Assessment of Risks, Costs, and Benefits</a></em></p>'>
-            <br>GPCD<br>&nbsp
+              <br>GPCD<br>&nbsp
+            </div>
+            <div class="panel-body">x</div>
+            <div class="panel-body clickable"
+            aria-expanded="true"
+            data-container="body"
+            data-toggle="popover" data-trigger="focus" tabindex="0"
+            data-placement="bottom"
+            title="Unique Agency Condition"
+            aria-expanded="true"
+            data-html="true"
+            data-content="
+            <h5>Parameter Description</h5>
+            <p>Suppliers serving more residential customers will have greater indoor residential production demands. Their indoor residential production budgets are scaled accordingly.</p><br>
+            <h5>Data Source(s)</h5>
+            <p>The population data reported to the State Water Resources Control Board for the monthly <a href='https://data.ca.gov/dataset/drinking-water-%E2%80%93-urban-water-supplier-monitoring-%E2%80%93-drinc/resource/00fa49b9-9e0f-4c65-bfab#{}'>Urban Water Supplier Report</a> are used in this tool.</p><br>
+            <h5><b class='highlight'>Quality Consideration(s)</b></h5>
+            <p>Some areas with high tourism have seasonal population variations. Service area deviation from census boundaries can also lead to data quality uncertainty.</p>">
+            <br>Population<br>&nbsp</div>
           </div>
+          <div class="panel-footer centered">
+            <i class="glyphicon glyphicon-tint"></i>
+            <i class="glyphicon glyphicon-user"></i>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-6 noleftpadding'>
+        <div class="panel panel-default equation">
+          <div class="panel-heading">
+            <h3 class="panel-title centered">
+              Outdoor Budget
+            </h3>
+          </div>
+          <div class="panel panel-horizontal">
+           <div class="panel-body clickable"
+           aria-expanded="true"
+           data-container="body"
+           data-toggle="popover" data-trigger="focus" tabindex="0"
+           data-placement="bottom"
+           title="Unique Agency Condition"
+           data-html="true"
+           data-content="
+           <h5>Parameter Description</h5>
+           <p>
+            Suppliers with greater environmental demands for evaporation and plant transpiration will feel a greater demand for outdoor water production. Reference evapotranspiration captures this demand and scales the outdoor budget accordingly.
+          </p><br>
+          <h5>Data Source(s)</h5>
+          <p>
+            Data from the Department of Water Resources' <a href='http://www.cimis.water.ca.gov/Default.aspx'>CIMIS stations</a> are used to calculate inverse distance-weighted averages of nearby stations for each supplier as a function of time.
+          </p><br>
+          <h5><b class='highlight'>Quality Consideration(s)</b></h5>
+          <p>
+            Not all suppliers are within close proximity to CIMIS stations. Suppliers with no CIMIS stations within 20 kilometers, or with obvious intervening obstructions such as mountain ranges, have been flagged with data quality uncertainty. 
+          </p>">
+          Sum of daily reference evapotranspiration</div>
           <div class="panel-body">x</div>
           <div class="panel-body clickable"
           aria-expanded="true"
           data-container="body"
           data-toggle="popover" data-trigger="focus" tabindex="0"
           data-placement="bottom"
+          title="Pending Policy Decision"
+          data-html="true"
+          data-content='
+          <h5>Parameter Description</h5>
+          <p>
+            Landscapes naturally transfer water to the atmosphere through evapotranspiration. Policy prescriptions regarding <em>reasonable</em> landscape types can be stated in terms of the percent of this water transfer that a supplier must replace with water production for irrigation. The ET Adjustment Factor (ETAF) captures this prescription, and scales the outdoor budget accordingly.
+          </p>
+          <p>
+            For reference, below are example ETAFs for various types of landscapes.
+          </p>
+          <table style="width:100%">
+            <tr>
+              <th>ETAF</th>
+              <th>Plant Type</th>
+            </tr>
+            <tr>
+              <td>.8</td>
+              <td>Cool-season turf</td>
+            </tr>
+            <tr>
+              <td>.7</td>
+              <td>Arid climate trees/shrubs</td>
+            </tr>
+            <tr>
+              <td>.6</td>
+              <td>Warm-season turf</td>
+            </tr>
+            <tr>
+              <td>.5</td>
+              <td>Humid climate trees/shrubs</td>
+            </tr>
+            <tr>
+              <td>.3</td>
+              <td>Desert Plants</td>
+            </tr>
+          </table><br>
+          <p><em>Source: UNIVERSITY OF CALIFORNIA Division of Agriculture and Natural Resources, <a href="http://ucanr.edu/sites/UrbanHort/files/217692.pdf">"Making Sense of ET Adjustment Factors for Budgeting and Managing Landscape Irrigation"</a></em></p>'>
+          ET Adjustment Factor</div>
+          <div class="panel-body">x</div>
+          <div class="panel-body clickable"
+          id='landscapeArea'
+          data-container="body"
+          data-toggle="popover" data-trigger="focus" tabindex="0"
+          data-placement="bottom"
           title="Unique Agency Condition"
-          aria-expanded="true"
           data-html="true"
           data-content="
           <h5>Parameter Description</h5>
-          <p>Suppliers serving more residential customers will have greater indoor residential production demands. Their indoor residential production budgets are scaled accordingly.</p><br>
+          <p>
+            Suppliers with more landscaped area may have greater outdoor residential water production demands. Their outdoor residential production budgets are scaled accordingly.
+          </p><br>
           <h5>Data Source(s)</h5>
-          <p>The population data reported to the State Water Resources Control Board for the monthly <a href='https://data.ca.gov/dataset/drinking-water-%E2%80%93-urban-water-supplier-monitoring-%E2%80%93-drinc/resource/00fa49b9-9e0f-4c65-bfab#{}'>Urban Water Supplier Report</a> are used in this tool.</p><br>
-          <h5><b style='color: #66afe9;'>Quality Consideration(s)</b></h5>
-          <p>Some areas with high tourism have seasonal population variations.</p>">
-          <br>Population<br>&nbsp</div>
+          <p>
+            There are ongoing discussions to finalize a definition of landscaped area appropriate for setting an outdoor water production standard. Here, <em>landscaped area</em> is defined as the sum of photosynthetically active turf, and bushes and trees. These data were collected through remote-sensing in partnership with Claremont Graduate University.
+          </p><br>
+          <p>
+            Administrative boundary data were required to demarcate and allocate residential parcels between and to suppliers. For this iteration, residential parcel data were obtained from the Office of Planning and Research's <a href='http://services.gis.ca.gov/arcgis/rest/services/Boundaries/Parcels_Residential/MapServer'>residential parcel dataset</a>. Service area boundaries were obtained from Department of Water Resources' <a href='https://gis.water.ca.gov/app/boundaries/'>Water Management Planning Tool</a> as well as the California Environmental Health Tracking Program's <a href='http://cehtp.org/page/water/water_system_map_viewer'> Water System Map Viewer</a>.
+          </p><br>
+          <h5><b class='highlight'>Quality Consideration(s)</b></h5>
+          <p>
+            There are several important considerations for this parameter. While the landscapes of typical suburbs without brown lawns are captured well with the photosynthetically active remote sensing approach used, there generally exists greater data quality uncertainty for rural and wooded areas. Additionally, the adminstative boundary data available must be delibrately validated.
+          </p>
+          <p>
+            For these reasons, suppliers with a significant percentage of large, green, and un-irrigated residential parcels; and/or an unreasonable average number of people per residential parcel have been flagged with data quality uncertainty.
+          </p>">
+          Residential landscaped area</div>
+          <div class="panel-body">x</div>
+          <div class="panel-body">Unit Conversion Factor</div>
         </div>
         <div class="panel-footer centered">
-          <i class="glyphicon glyphicon-tint"></i>
-          <i class="glyphicon glyphicon-user"></i>
+          <i class="glyphicon glyphicon-leaf"></i>
+          <i class="glyphicon glyphicon-tree-deciduous"></i>
         </div>
-      </div>
-    </div>
-    <div class='col-md-6 noleftpadding'>
-      <div class="panel panel-default equation">
-        <div class="panel-heading">
-          <h3 class="panel-title centered">
-            Outdoor Budget
-          </h3>
-        </div>
-        <div class="panel panel-horizontal">
-         <div class="panel-body clickable"
-         aria-expanded="true"
-         data-container="body"
-         data-toggle="popover" data-trigger="focus" tabindex="0"
-         data-placement="bottom"
-         title="Unique Agency Condition"
-         data-html="true"
-         data-content="
-         <h5>Parameter Description</h5>
-         <p>
-          Suppliers with greater environmental demands for evaporation and plant transpiration will feel a greater demand for outdoor water production. Reference evapotranspiration captures this demand and scales the outdoor budget accordingly.
-        </p><br>
-        <h5>Data Source(s)</h5>
-        <p>
-          Data from the Department of Water Resources' <a href='http://www.cimis.water.ca.gov/Default.aspx'>CIMIS stations</a> are used to calculate inverse distance-weighted averages of nearby stations for each supplier as a function of time.
-        </p><br>
-        <h5><b style='color: #66afe9;'>Quality Consideration(s)</b></h5>
-        <p>
-          Not all suppliers are within close proximity to CIMIS stations. Suppliers with no CIMIS stations within 20 kilometers, or with obvious intervening obstructions such as mountain ranges, have been flagged with data quality uncertainty. 
-        </p>">
-        Sum of daily reference evapotranspiration</div>
-        <div class="panel-body">x</div>
-        <div class="panel-body clickable"
-        aria-expanded="true"
-        data-container="body"
-        data-toggle="popover" data-trigger="focus" tabindex="0"
-        data-placement="bottom"
-        title="Pending Policy Decision"
-        data-html="true"
-        data-content='
-        <h5>Parameter Description</h5>
-        <p>
-          Landscapes naturally transfer water to the atmosphere through evapotranspiration. Policy prescriptions regarding <em>reasonable</em> landscape types can be stated in terms of the percent of this water transfer that a supplier must replace with water production for irrigation. The ET Adjustment Factor (ETAF) captures this prescription, and scales the outdoor budget accordingly.
-        </p>
-        <p>
-          For reference, below are example ETAFs for various types of landscapes.
-        </p>
-        <table style="width:100%">
-          <tr>
-            <th>ETAF</th>
-            <th>Plant Type</th>
-          </tr>
-          <tr>
-            <td>.8</td>
-            <td>Cool-season turf</td>
-          </tr>
-          <tr>
-            <td>.7</td>
-            <td>Arid climate trees/shrubs</td>
-          </tr>
-          <tr>
-            <td>.6</td>
-            <td>Warm-season turf</td>
-          </tr>
-          <tr>
-            <td>.5</td>
-            <td>Humid climate trees/shrubs</td>
-          </tr>
-          <tr>
-            <td>.3</td>
-            <td>Desert Plants</td>
-          </tr>
-        </table><br>
-        <p><em>Source: UNIVERSITY OF CALIFORNIA Division of Agriculture and Natural Resources, <a href="http://ucanr.edu/sites/UrbanHort/files/217692.pdf">"Making Sense of ET Adjustment Factors for Budgeting and Managing Landscape Irrigation"</a></em></p>'>
-        ET Adjustment Factor</div>
-        <div class="panel-body">x</div>
-        <div class="panel-body clickable"
-        id='landscapeArea'
-        data-container="body"
-        data-toggle="popover" data-trigger="focus" tabindex="0"
-        data-placement="bottom"
-        title="Unique Agency Condition"
-        data-html="true"
-        data-content="
-        <h5>Parameter Description</h5>
-        <p>
-          Suppliers with more landscaped area may have greater outdoor residential water production demands. Their outdoor residential production budgets are scaled accordingly.
-        </p><br>
-        <h5>Data Source(s)</h5>
-        <p>
-          There are ongoing discussions to finalize a definition of landscaped area appropriate for setting an outdoor water production standard. Here, <em>landscaped area</em> is defined as the sum of photosynthetically active turf, and bushes and trees. These data were collected through remote-sensing in partnership with Claremont Graduate University.
-        </p><br>
-        <p>
-          Administrative boundary data were required to demarcate and allocate residential parcels between and to suppliers. For this iteration, residential parcel data were obtained from the Office of Planning and Research's <a href='http://services.gis.ca.gov/arcgis/rest/services/Boundaries/Parcels_Residential/MapServer'>residential parcel dataset</a>. Service area boundaries were obtained from Department of Water Resources' <a href='https://gis.water.ca.gov/app/boundaries/'>Water Management Planning Tool</a> as well as the California Environmental Health Tracking Program's <a href='http://cehtp.org/page/water/water_system_map_viewer'> Water System Map Viewer</a>.
-        </p><br>
-        <h5><b style='color: #66afe9;'>Quality Consideration(s)</b></h5>
-        <p>
-          There are several important considerations for this parameter. While the irrigated landscapes of typical suburbs without brown lawns are captured well with the remote sensing approach used, there exists greater ambiguity for rural and wooded areas. Additionally, the adminstative boundary data available  must be delibrately validated.
-        </p>
-        <p>
-          For these reasons, suppliers with a significant percentage of large, green, and un-irrigated residential parcels; and/or an unreasonable average number of people per residential parcel have been flagged with data quality uncertainty.
-        </p>">
-        Residential landscaped area</div>
-        <div class="panel-body">x</div>
-        <div class="panel-body">Unit Conversion Factor</div>
-      </div>
-      <div class="panel-footer centered">
-        <i class="glyphicon glyphicon-leaf"></i>
-        <i class="glyphicon glyphicon-tree-deciduous"></i>
       </div>
     </div>
   </div>
+  <div class="panel panel-default">
+    <div class="panel-heading"></div>
+    <div class="panel-body">
+      <div class='centered'>
+        <div aria-label="..." class="btn-group" role="group">
+          <button class="btn btn-default" id="toolButton" onclick="smoothScroll('#intraUtility');" type="button">
+            <b>Just show me the Efficiency Explorer!</b>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer centered"></div>
+  </div>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="contextHeading">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#contextCollapse" aria-expanded="false" aria-controls="contextCollapse">
+            Context
+          </a>
+        </h4>
+      </div>
+      <div id="contextCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="contextHeading">
+        <div class="panel-body">
+          <p>
+            The CaDC Efficiency Explorer is a <b class="highlight">planning and education tool</b> for local water managers and the wider California water community. This tool is the result of a rapid first assessment of Governor Brown's Executive Order B-37-16, which calls for the development of water use targets customized to the unique conditions of each urban water agency as part of a new, permanent efficiency framework.
+          </p>
+          <p>
+            For v1.0 of the Efficiency Explorer, the CaDC <b class="highlight">focused on the <em>residential</em> component of an agency's efficiency target.</b> This target is calculated as the sum of indoor and outdoor residential production budgets, and can vary according to unique agency conditions as well as pending policy decisions.
+          </p>
+
+          <p>
+            The parameters of these two budgets are displayed above. <b class="highlight">Click for parameter descriptions, data sources, and data quality considerations</b> for this iteration of the CaDC Efficiency Explorer.</p>
+
+            <p>Data quality is an important dimension for this rapid first assessment, and data quality uncertainty flags are included for each agency. For additional technical details, please see the <b><a href="http://californiadatacollaborative.org/blog/2017/4/28/cadc-statewide-efficiency-explorer-methodology">CaDC Statewide Efficiency Explorer Methodology Documentation</a></b>.
+            </p>
+
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="instructionsHeading">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#instructionsCollapse" aria-expanded="false" aria-controls="instructionsCollapse">
+              Detailed Instructions
+            </a>
+          </h4>
+        </div>
+        <div id="instructionsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="instructionsHeading">
+          <div class="panel-body">
+            <p>
+              By setting values for <em>GPCD</em> and <em>ET Adjustment Factor</em>, users can investigate how different standards for residential water use affect their agencies over different periods of time.
+              <ul>
+                <li>
+                  Use the <b>Scenario Builder</b> panel to:
+                  <ul>
+                    <li>Set scenario parameters
+                      <ul>
+                        <li><b>Date Range</b> - by clicking and dragging the slider knobs</li>
+                        <li><b>GPCD</b> and <b>ET Adjustment Factor</b> - by typing values in the associated forms and pressing enter</li>
+                      </ul>
+                    </li>
+                    <li>View results for current scenario for selected <b>Supplier</b>
+                      <ul>
+                        <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
+                        <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
+                        <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within target. Negative percentages represent percentage within target</li>
+                        <li><b>Data Quality Uncertainty</b> - a 3-tiered flag indicating supplier-level data quality concerns</li>
+                        <li>Time Series Graph - the historical relationship between target production and actual production. Grey bands are included around target line to indicate confidence region</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Use the map panel to:
+                  <ul>
+                    <li>Select suppliers</li>
+                    <li>View geographic context</li>
+                    <li>View the <b>Big Picture</b>
+                      <ul>
+                        <li><b>SBx7-7 2020 Residential Target</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 targets. The Residential Target is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 target for that supplier</li>
+                        <li><b>Total Residential Target</b> - the sum of all residential targets for the same suppliers as the SBx7 2020 Residential Target for the previous twelve months</li>
+                        <li><b>Total Residential Production</b> - the sum of all residential production for the same suppliers as the SBx7-7 2020 Residential Target for the previous twelve months</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      <b>For best experience, please use Chrome and set your browser window to fullscreen.</b><br><br>
+    </p>
+
+
+
+
+  </div>
 </div>
-<div class="panel panel-default">
-  <div class="panel-heading"></div>
-  <div class="panel-body">
+
+<div id='intraUtility' class='section row'>
+ <div id='splash'>
+  <div class='col-md-3'></div>
+  <div class='col-md-6 vcenter'>
+    <div>
+      <h1 class="highlight">
+        Important Consideration:
+      </h1>
+      <h4>
+        While the landscapes of typical suburbs without brown lawns are captured well with the photosynthetically active remote sensing approach used, there generally exists greater data quality uncertainty for rural and wooded areas.
+      </h4>
+    </div>
     <div class='centered'>
       <div aria-label="..." class="btn-group" role="group">
-        <button class="btn btn-default" id="toolButton" onclick="smoothScroll('#intraUtility');" type="button">
-          <b>Just show me the Efficiency Explorer!</b>
+        <button class="btn btn-default" id="toolButton" onclick="$('#splash').fadeOut()" type="button">
+          <b>Got it.</b>
         </button>
       </div>
     </div>
   </div>
-  <div class="panel-footer centered"></div>
+  <div class='col-md-3'></div>
 </div>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="contextHeading">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#contextCollapse" aria-expanded="false" aria-controls="contextCollapse">
-          Context
-        </a>
-      </h4>
-    </div>
-    <div id="contextCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="contextHeading">
-      <div class="panel-body">
-        <p>
-          The CaDC Efficiency Explorer is a <b style="color: #66afe9;">planning and education tool</b> for local water managers and the wider California water community. This tool is the result of a rapid first assessment of Governor Brown's Executive Order B-37-16, which calls for the development of water use targets customized to the unique conditions of each urban water agency as part of a new, permanent efficiency framework.
-        </p>
-        <p>
-          For v1.0 of the Efficiency Explorer, the CaDC <b style="color: #66afe9;">focused on the <em>residential</em> component of an agency's efficiency target.</b> This target is calculated as the sum of indoor and outdoor residential production budgets, and can vary according to unique agency conditions as well as pending policy decisions.
-        </p>
-
-        <p>
-          The parameters of these two budgets are displayed above. <b style="color: #66afe9;">Click for parameter descriptions, data sources, and data quality considerations</b> for this iteration of the CaDC Efficiency Explorer.</p>
-
-          <p>Data quality is an important dimension for this rapid first assessment, and data quality uncertainty flags are included for each agency. For additional technical details, please see the <b><a href="http://californiadatacollaborative.org/blog/2017/4/28/cadc-statewide-efficiency-explorer-methodology">CaDC Statewide Efficiency Explorer Methodology Documentation</a></b>.
-          </p>
-
+<div id='scenarioBuilder'class="col-md-4">
+  <div id="tsSection">
+    <div id="tsTitles">
+      <h2>Scenario Builder</h2>
+      <div class="form-group">
+        <label for="hrName">Supplier</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="search-addon">
+            <i class="glyphicon glyphicon-search"></i>
+          </span>
+          <input type="text" class="form-control" id="hrName" aria-describedby="search-addon">
         </div>
       </div>
+      <p style="display: inline" id='summarySentence'>
+        <!-- <b>Place: </b><div style="display: inline"  id="hrName"></div><br> -->
+        <b>Residential Target: </b><div style="display: inline" id="targetValue"></div><br>
+        <b>Residential Production: </b> <div style="display: inline" id="usage"></div><br>
+        <b>Efficiency: </b><div style="display: inline" id="efficiency"></div><br>
+        <b>Data Quality Uncertainty: </b><div style="display: inline" id="uncertainty"></div>
+      </p>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="instructionsHeading">
-        <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#instructionsCollapse" aria-expanded="false" aria-controls="instructionsCollapse">
-            Detailed Instructions
-          </a>
-        </h4>
+    <div id='tsContainer'>
+      <div id="ts"></div>
+      <div id="tsLegend"></div>
+    </div>
+  </div>
+
+  <div id="filters">
+    <div id="dateSelection">
+      <div class="form-group">
+        <label for="cal">Date Range</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="cal-addon">
+            <i class="glyphicon glyphicon-calendar"></i>
+            <i class="glyphicon glyphicon-resize-horizontal"></i>
+          </span>
+          <input type="text" class="form-control" id="cal" aria-describedby="cal-addon" disabled>
+        </div>
       </div>
-      <div id="instructionsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="instructionsHeading">
-        <div class="panel-body">
-          <p>
-            By setting values for <em>GPCD</em> and <em>ET Adjustment Factor</em>, users can investigate how different standards for residential water use affect their agencies over different periods of time.
-            <ul>
-              <li>
-                Use the <b>Scenario Builder</b> panel to:
-                <ul>
-                  <li>Set scenario parameters
-                    <ul>
-                      <li><b>Date Range</b> - by clicking and dragging the slider knobs</li>
-                      <li><b>GPCD</b> and <b>ET Adjustment Factor</b> - by typing values in the associated forms and pressing enter</li>
-                    </ul>
-                  </li>
-                  <li>View results for current scenario for selected <b>Supplier</b>
-                    <ul>
-                      <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
-                      <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
-                      <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within target. Negative percentages represent percentage within target</li>
-                      <li><b>Data Quality Uncertainty</b> - a 3-tiered flag indicating supplier-level data quality concerns</li>
-                      <li>Time Series Graph - the historical relationship between target production and actual production. Grey bands are included around target line to indicate confidence region</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Use the map panel to:
-                <ul>
-                  <li>Select suppliers</li>
-                  <li>View geographic context</li>
-                  <li>View the <b>Big Picture</b>
-                    <ul>
-                      <li><b>SBx7-7 2020 Residential Target</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 targets. The Residential Target is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 target for that supplier</li>
-                      <li><b>Total Residential Target</b> - the sum of all residential targets for the same suppliers as the SBx7 2020 Residential Target for the previous twelve months</li>
-                      <li><b>Total Residential Production</b> - the sum of all residential production for the same suppliers as the SBx7-7 2020 Residential Target for the previous twelve months</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </p>
+      <div class="form-group">
+        <div id='range_slider'></div>
+      </div>
+    </div>
+    <div id="coefficientSelection" class="row">
+      <div class="form-group col-md-6">
+        <label for="gpcd">GPCD</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="gpcd-addon">
+            <i class="glyphicon glyphicon-tint"></i>
+            <i class="glyphicon glyphicon-user"></i>
+          </span>
+          <input type="text" class="form-control" id="gpcd" aria-describedby="gpcd-addon">
+        </div>
+      </div>
+      <div class="form-group col-md-6 noleftpadding">
+        <label for="pf">ET Adjustment Factor</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="pf-addon">
+            <i class="glyphicon glyphicon-leaf"></i>
+            <i class="glyphicon glyphicon-tree-deciduous"></i>
+          </span>
+          <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
         </div>
       </div>
     </div>
   </div>
-
-  <p>
-    <b>For best experience, please use Chrome and set your browser window to fullscreen.</b><br><br>
-  </p>
-
-
-
-
 </div>
+<div class="col-md-8 nopadding">
+  <div id="summary">
+    <h3>Big Picture</h3>
+    <!-- Not all districts -->
+    <b>SBx7-7 2020 Residential Target:</b> <div style="display: inline" id="sb77Target"></div><br>
+    <i>Over past 12 months</i><br>
+    <b>Total Residential Target:</b> <div style="display: inline" id="summaryTarget"></div><br>
+    <b>Total Residential Production:</b> <div style="display: inline" id="summaryUsage"></div>
+  </div>
+
+  <div id="map"></div>
 </div>
-
-<div id='intraUtility' class='section row'>
-  <div id='scenarioBuilder'class="col-md-4">
-    <div id="tsSection">
-      <div id="tsTitles">
-        <h2>Scenario Builder</h2>
-        <div class="form-group">
-          <label for="hrName">Supplier</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="search-addon">
-              <i class="glyphicon glyphicon-search"></i>
-            </span>
-            <input type="text" class="form-control" id="hrName" aria-describedby="search-addon">
-          </div>
-        </div>
-        <p style="display: inline" id='summarySentence'>
-          <!-- <b>Place: </b><div style="display: inline"  id="hrName"></div><br> -->
-          <b>Residential Target: </b><div style="display: inline" id="targetValue"></div><br>
-          <b>Residential Production: </b> <div style="display: inline" id="usage"></div><br>
-          <b>Efficiency: </b><div style="display: inline" id="efficiency"></div><br>
-          <b>Data Quality Uncertainty: </b><div style="display: inline" id="uncertainty"></div>
-        </p>
-      </div>
-      <div id='tsContainer'>
-        <div id="ts"></div>
-        <div id="tsLegend"></div>
-      </div>
-    </div>
-
-    <div id="filters">
-      <div id="dateSelection">
-        <div class="form-group">
-          <label for="cal">Date Range</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="cal-addon">
-              <i class="glyphicon glyphicon-calendar"></i>
-              <i class="glyphicon glyphicon-resize-horizontal"></i>
-            </span>
-            <input type="text" class="form-control" id="cal" aria-describedby="cal-addon" disabled>
-          </div>
-        </div>
-        <div class="form-group">
-          <div id='range_slider'></div>
-        </div>
-      </div>
-      <div id="coefficientSelection" class="row">
-        <div class="form-group col-md-6">
-          <label for="gpcd">GPCD</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="gpcd-addon">
-              <i class="glyphicon glyphicon-tint"></i>
-              <i class="glyphicon glyphicon-user"></i>
-            </span>
-            <input type="text" class="form-control" id="gpcd" aria-describedby="gpcd-addon">
-          </div>
-        </div>
-        <div class="form-group col-md-6 noleftpadding">
-          <label for="pf">ET Adjustment Factor</label>
-          <div class="input-group">
-            <span class="input-group-addon" id="pf-addon">
-              <i class="glyphicon glyphicon-leaf"></i>
-              <i class="glyphicon glyphicon-tree-deciduous"></i>
-            </span>
-            <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-8 nopadding">
-    <div id="summary">
-      <h3>Big Picture</h3>
-      <!-- Not all districts -->
-      <b>SBx7-7 2020 Residential Target:</b> <div style="display: inline" id="sb77Target"></div><br>
-      <i>Over past 12 months</i><br>
-      <b>Total Residential Target:</b> <div style="display: inline" id="summaryTarget"></div><br>
-      <b>Total Residential Production:</b> <div style="display: inline" id="summaryUsage"></div>
-    </div>
-
-    <div id="map"></div>
-  </div>
 </div>
 
 </div>
