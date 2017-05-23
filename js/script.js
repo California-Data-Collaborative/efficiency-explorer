@@ -35,7 +35,7 @@ function styleSetup() {
 
 	function dynamicSizing() {
 		$("#extraUtility").css("min-height", `calc(100vh - ${nav_height}px)`);
-		$("#map, #scenarioBuilder").css("height", `calc(100vh - ${nav_height}px)`);
+		$("#map, #scenarioBuilder, #splash").css("height", `calc(100vh - ${nav_height}px)`);
 		$("body").css("padding-top", nav_height)
 
 	}

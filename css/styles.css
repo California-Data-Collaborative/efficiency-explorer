@@ -21,14 +21,33 @@ td {
   font-style: italic;
 }
 
-
-.centered {
-  text-align: center;
+#splash{
+  position: absolute;
+  /*height: 100vh;*/
+  /*width: 100vw;*/
+  background-color: #222;
+  color: white; 
+  opacity: .9;
+  z-index: 1000000000 !important;
 }
 
 #summarySentence label {
   white-space: nowrap;
   font-size: 93%;
+}
+
+.highlight{
+  color: #66afe9;
+}
+
+.centered {
+  text-align: center;
+}
+
+.vcenter {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .navbar-inverse .navbar-brand {
