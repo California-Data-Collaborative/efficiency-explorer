@@ -262,7 +262,7 @@
           </p>
 
           <p>
-            Data quality is an important dimension for this rapid first assessment, and data quality uncertainty flags are included for each agency. For additional technical details, please see the <b><a style="text-decoration: underline;" href="http://californiadatacollaborative.org/blog/2017/4/28/cadc-statewide-efficiency-explorer-methodology">CaDC Statewide Efficiency Explorer Methodology Documentation</a></b>.
+            Since data quality is an important dimension for this rapid first assessment data quality uncertainty flags are included for each agency. These flags are explained in the <em>Data Quality</em> section below. For additional technical details, please see the <b><a style="text-decoration: underline;" href="http://californiadatacollaborative.org/blog/2017/4/28/cadc-statewide-efficiency-explorer-methodology">CaDC Statewide Efficiency Explorer Methodology Documentation</a></b>.
           </p>
           <p>
             For all other questions and feedback, users are encouraged to reach out to info@CaliforniaDataCollaborative.com!
@@ -271,7 +271,7 @@
         </div>
       </div>
     </div>
-<!--     <div class="panel panel-default">
+    <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="qualityHeading">
         <h4 class="panel-title">
           <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#qualityCollapse" aria-expanded="false" aria-controls="qualityCollapse">
@@ -281,70 +281,76 @@
       </div>
       <div id="qualityCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="qualityHeading">
         <div class="panel-body">
-          <div class="col-md-2"></div>
-          <div class="col-md-4">
-          <div class='centered'>
-           <svg version="1.1"
-           baseProfile="full"
-          width="140" height="160"
-           xmlns="http://www.w3.org/2000/svg"
-           >
+          <p>
+            There are two distinct senses in which efficiency target calculations can deviate from ground truth: precision and accuracy.<br>
+          </p>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <div class='centered'>
+               <svg version="1.1"
+               baseProfile="full"
+               width="200" height="200"
+               xmlns="http://www.w3.org/2000/svg">
 
-           <circle cx='70' cy='70' r="70" fill="#222" />
+                <circle cx='100' cy='100' r="70" fill="#222" />
+                <circle cx='100' cy='100' r='55' fill="#66afe9" />
+                <circle cx='100' cy='100' r="40" fill="#222" />
+                <circle cx='100' cy='100' r="25" fill="#66afe9" />
+                <circle cx='100' cy='100' r="10" fill="#222" />
 
-           <circle cx='70' cy='70' r='55' fill="#66afe9" />
-
-           <circle cx='70' cy='70' r="40" fill="#222" />
-
-           <circle cx='70' cy='70' r="25" fill="#66afe9" />
-
-           <circle cx='70' cy='70' r="10" fill="#222" />
-
-           <circle cx='102' cy='49' r="5" fill="#ffffff" />
-           <circle cx='74' cy='21' r="5" fill="#ffffff" />
-           <circle cx='30' cy='78' r="5" fill="#ffffff" />
-           <circle cx='75' cy='100' r="5" fill="#ffffff" />
-
-           <text x='75' y='160' text-anchor='middle'>
-              Accurate, Not Precise
-            </text>
-
-         </svg>
-       </div>
-     </div>
-          <div class="col-md-4">
-            <div class='centered'>
-              <svg version="1.1"
-              baseProfile="full"
-              width="155" height="160"
-              xmlns="http://www.w3.org/2000/svg">
-
-              <circle cx='75' cy='75' r="70" fill="#222" />
-
-              <circle cx='75' cy='75' r='55' fill="#66afe9" />
-
-              <circle cx='75' cy='75' r="40" fill="#222" />
-
-              <circle cx='75' cy='75' r="25" fill="#66afe9" />
-
-              <circle cx='75' cy='75' r="10" fill="#222" />
-
-
-              <circle cx='72' cy='28' r="5" fill="#ffffff" />
-              <circle cx='41' cy='24' r="5" fill="#ffffff" />
-              <circle cx='22' cy='93' r="5" fill="#ffffff" />
-              <circle cx='56' cy='63' r="5" fill="#ffffff" />
-              <text x='75' y='160' text-anchor='middle'>
-                Not Accurate, Not Precise
-              </text>
+                <circle cx='132' cy='79' r="5" fill="#ffffff" />
+                <circle cx='104' cy='51' r="5" fill="#ffffff" />
+                <circle cx='60' cy='108' r="5" fill="#ffffff" />
+                <circle cx='105' cy='130' r="5" fill="#ffffff" />
+                <text x='100' y='183' text-anchor='middle'>
+                  Figure (a)
+                </text>
+                <text x='100' y='198' text-anchor='middle'>
+                  Accurate, Not Precise
+                </text>
 
             </svg>
           </div>
         </div>
-     <div class="col-md-2"></div>
-   </div>
- </div>
-</div> -->
+        <div class="col-md-4">
+          <div class='centered'>
+            <svg version="1.1"
+            baseProfile="full"
+            width="200" height="200"
+            xmlns="http://www.w3.org/2000/svg">
+
+            <circle cx='100' cy='100' r="70" fill="#222" />
+            <circle cx='100' cy='100' r='55' fill="#66afe9" />
+            <circle cx='100' cy='100' r="40" fill="#222" />
+            <circle cx='100' cy='100' r="25" fill="#66afe9" />
+            <circle cx='100' cy='100' r="10" fill="#222" />
+
+            <circle cx='97' cy='52' r="5" fill="#ffffff" />
+            <circle cx='66' cy='54' r="5" fill="#ffffff" />
+            <circle cx='47' cy='118' r="5" fill="#ffffff" />
+            <circle cx='81' cy='88' r="5" fill="#ffffff" />
+            <text x='100' y='183' text-anchor='middle'>
+              Figure (b)
+            </text>
+            <text x='100' y='198' text-anchor='middle'>
+              Not Accurate, Not Precise
+            </text>
+
+          </svg>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <p>
+      <br>Parameter data used to calculate targets can be <em>imprecise.</em> Imprecision reflects deviations around some ground truth value. The Efficiency Explorer's graphs include gray confidence bands around each agency's calculated target to indicate the imprecision resulting from the compounded statistical error for all parameter data sources. Analogous to the relationship between the darts and the bullseye in figure (a) above, one should expect the ground truth efficiency target values to lie somewhere within the confidence bands. <b class="highlight">Imprecise target calculations are good estimates of ground truth, though ones that can be further refined.</b>
+    </p>
+    <p>
+      However, parameter data used to calculate targets can also be <em>inaccurate.</em> Inaccuracy reflects a more systematic bias away from ground truth. Figure (b) above graphically illustrates this type of error. Non-random inaccuracies can arise from situations such as the prevalence of large rural residential parcels in certain districts, which would result in systematic overestimation of target calculations in those districts. The prevalence of brown lawns in other districts would result in systematic underestimation of target calculations in those districts. These types of data quality uncertainties will be elaborated in an upcoming CaDC blog post. <b class="highlight">Targets flagged as systemically bias away from ground truth should be interpreted as being potentially inaccurate.</b>
+    </p>
+  </div>
+</div>
+</div>
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="instructionsHeading">
     <h4 class="panel-title">
