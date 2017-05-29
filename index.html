@@ -271,63 +271,137 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="instructionsHeading">
+<!--     <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="qualityHeading">
         <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#instructionsCollapse" aria-expanded="false" aria-controls="instructionsCollapse">
-            Detailed Instructions
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#qualityCollapse" aria-expanded="false" aria-controls="qualityCollapse">
+            Data Quality
           </a>
         </h4>
       </div>
-      <div id="instructionsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="instructionsHeading">
+      <div id="qualityCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="qualityHeading">
         <div class="panel-body">
-          <p>
-            By setting values for <em>GPCD</em> and <em>ET Adjustment Factor</em>, users can investigate how different standards for residential water use affect their agencies over different periods of time.
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+          <div class='centered'>
+           <svg version="1.1"
+           baseProfile="full"
+          width="140" height="160"
+           xmlns="http://www.w3.org/2000/svg"
+           >
+
+           <circle cx='70' cy='70' r="70" fill="#222" />
+
+           <circle cx='70' cy='70' r='55' fill="#66afe9" />
+
+           <circle cx='70' cy='70' r="40" fill="#222" />
+
+           <circle cx='70' cy='70' r="25" fill="#66afe9" />
+
+           <circle cx='70' cy='70' r="10" fill="#222" />
+
+           <circle cx='102' cy='49' r="5" fill="#ffffff" />
+           <circle cx='74' cy='21' r="5" fill="#ffffff" />
+           <circle cx='30' cy='78' r="5" fill="#ffffff" />
+           <circle cx='75' cy='100' r="5" fill="#ffffff" />
+
+           <text x='75' y='160' text-anchor='middle'>
+              Accurate, Not Precise
+            </text>
+
+         </svg>
+       </div>
+     </div>
+          <div class="col-md-4">
+            <div class='centered'>
+              <svg version="1.1"
+              baseProfile="full"
+              width="155" height="160"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <circle cx='75' cy='75' r="70" fill="#222" />
+
+              <circle cx='75' cy='75' r='55' fill="#66afe9" />
+
+              <circle cx='75' cy='75' r="40" fill="#222" />
+
+              <circle cx='75' cy='75' r="25" fill="#66afe9" />
+
+              <circle cx='75' cy='75' r="10" fill="#222" />
+
+
+              <circle cx='72' cy='28' r="5" fill="#ffffff" />
+              <circle cx='41' cy='24' r="5" fill="#ffffff" />
+              <circle cx='22' cy='93' r="5" fill="#ffffff" />
+              <circle cx='56' cy='63' r="5" fill="#ffffff" />
+              <text x='75' y='160' text-anchor='middle'>
+                Not Accurate, Not Precise
+              </text>
+
+            </svg>
+          </div>
+        </div>
+     <div class="col-md-2"></div>
+   </div>
+ </div>
+</div> -->
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="instructionsHeading">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#instructionsCollapse" aria-expanded="false" aria-controls="instructionsCollapse">
+        Detailed Instructions
+      </a>
+    </h4>
+  </div>
+  <div id="instructionsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="instructionsHeading">
+    <div class="panel-body">
+      <p>
+        By setting values for <em>GPCD</em> and <em>ET Adjustment Factor</em>, users can investigate how different standards for residential water use affect their agencies over different periods of time.
+        <ul>
+          <li>
+            Use the <b>Scenario Builder</b> panel to:
             <ul>
-              <li>
-                Use the <b>Scenario Builder</b> panel to:
+              <li>Set scenario parameters
                 <ul>
-                  <li>Set scenario parameters
-                    <ul>
-                      <li><b>Date Range</b> - by clicking and dragging the slider knobs</li>
-                      <li><b>GPCD</b> and <b>ET Adjustment Factor</b> - by typing values in the associated forms and pressing enter</li>
-                    </ul>
-                  </li>
-                  <li>View results for current scenario for selected <b>Supplier</b>
-                    <ul>
-                      <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
-                      <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
-                      <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within target. Negative percentages represent percentage within target</li>
-                      <li><b>Data Quality Uncertainty</b> - a 3-tiered flag indicating supplier-level data quality concerns</li>
-                      <li>Time Series Graph - the historical relationship between target production and actual production. Grey bands are included around target line to indicate confidence region</li>
-                    </ul>
-                  </li>
+                  <li><b>Date Range</b> - by clicking and dragging the slider knobs</li>
+                  <li><b>GPCD</b> and <b>ET Adjustment Factor</b> - by typing values in the associated forms and pressing enter</li>
                 </ul>
               </li>
-              <li>
-                Use the map panel to:
+              <li>View results for current scenario for selected <b>Supplier</b>
                 <ul>
-                  <li>Select suppliers</li>
-                  <li>View geographic context</li>
-                  <li>View the <b>Big Picture</b>
-                    <ul>
-                      <li><b>SBx7-7 2020 Residential Target</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 targets. The Residential Target is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 target for that supplier</li>
-                      <li><b>Total Residential Target</b> - the sum of all residential targets for the same suppliers as the SBx7 2020 Residential Target for the previous twelve months</li>
-                      <li><b>Total Residential Production</b> - the sum of all residential production for the same suppliers as the SBx7-7 2020 Residential Target for the previous twelve months</li>
-                    </ul>
-                  </li>
+                  <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
+                  <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
+                  <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within target. Negative percentages represent percentage within target</li>
+                  <li><b>Data Quality Uncertainty</b> - a 3-tiered flag indicating supplier-level data quality concerns</li>
+                  <li>Time Series Graph - the historical relationship between target production and actual production. Grey bands are included around target line to indicate confidence region</li>
                 </ul>
               </li>
             </ul>
-          </p>
-        </div>
-      </div>
+          </li>
+          <li>
+            Use the map panel to:
+            <ul>
+              <li>Select suppliers</li>
+              <li>View geographic context</li>
+              <li>View the <b>Big Picture</b>
+                <ul>
+                  <li><b>SBx7-7 2020 Residential Target</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 targets. The Residential Target is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 target for that supplier</li>
+                  <li><b>Total Residential Target</b> - the sum of all residential targets for the same suppliers as the SBx7 2020 Residential Target for the previous twelve months</li>
+                  <li><b>Total Residential Production</b> - the sum of all residential production for the same suppliers as the SBx7-7 2020 Residential Target for the previous twelve months</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </p>
     </div>
   </div>
+</div>
+</div>
 
-  <p>
-    <b>For best experience, please use Chrome and set your browser window to fullscreen.</b><br><br>
-  </p>
+<p>
+  <b>For best experience, please use Chrome and set your browser window to fullscreen.</b><br><br>
+</p>
 
 </div>
 </div>
