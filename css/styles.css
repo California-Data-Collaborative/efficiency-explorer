@@ -1,7 +1,7 @@
 body {
   background-color: #222;
   /*scroll lock*/
-  /*overflow: hidden; */ 
+  /*overflow: hidden; */
   font-size: 130%;
 }
 
@@ -27,6 +27,7 @@ td {
   /*width: 100vw;*/
   background-color: #222;
   color: white; 
+  overflow: scroll;
   opacity: .9;
   z-index: 1000000000 !important;
 }
