@@ -147,7 +147,7 @@ if (config.geom_type == "point") {
 		#table [ percentdifference > 33 ] {marker-fill: #3E5792}
 		#table [ percentdifference > 50 ] {marker-fill: #554196}
 
-		#table [ uncertainty != 'low' ] {marker-fill: gray}
+		#table [ uncertainty != 'Little to no evidence of systematic bias' ] {marker-fill: gray}
 		`
 	}
 else if (config.geom_type == "polygon") {
@@ -166,6 +166,6 @@ else if (config.geom_type == "polygon") {
 		#table [ percentdifference > 33] {polygon-fill: #3E5792;}
 		#table [ percentdifference > 50] {polygon-fill: #554196;}
 
-		#table [ uncertainty != 'low' ] {polygon-fill: gray}
+		#table [ uncertainty != 'Little to no evidence of systematic bias' ] {polygon-fill: gray}
 		`
 	};
