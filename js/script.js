@@ -101,7 +101,7 @@ function generateQuery(where_clause, queryType=false) {
 	at.report_agency_name = ut.urban_water_supplier
 	WHERE
 	${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
-	AND ${config.column_names.uncertainty} = 'low'
+	AND ${config.column_names.uncertainty} = 'Little to no evidence of systematic bias'
 	`
 	//
 
