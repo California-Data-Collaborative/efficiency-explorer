@@ -14,7 +14,7 @@ The minimum requirements to run an Efficiency Explorer are this repo and a [cart
 Once you have hosted your data on carto, copy "js/ss_config_example.js" to "js/ss_config.js" and update this new file with your specific configuration information (carto account name, table names, column names, etc.).
 
 ### Automating Data Updates
-To keep data up-to-date, users will likely want to create an automated or semi-automated ETL pipeline. The ETL process we use with CaDC agencies is specific to our [SCUBA database](https://github.com/California-Data-Collaborative/scuba-schema), but the general concepts are all contained within the processing_file/update_etl.ipynb notebook. Below is a data flow diagram for our Neighborhood-Level Efficiency Explorer.
+To keep data up-to-date, users will likely want to create an automated or semi-automated ETL pipeline. The ETL process we use with CaDC agencies is specific to our SCUBA database, but the general concepts are all contained within the processing_file/update_etl.ipynb notebook. Below is a data flow diagram for our Neighborhood-Level Efficiency Explorer.
 
 ![hood_efficiency_data_flows.png](processing_files/hood_efficiency_data_flows.png)
 
