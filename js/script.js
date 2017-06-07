@@ -53,14 +53,14 @@ function styleSetup() {
 	// turn popovers on, and open landscape area quality considerations
 	$(function () {
 		$('[data-toggle="popover"]').popover()
-		$('#landscapeArea').popover({
-			'placement':'bottom',
-			'trigger': 'focus',
-			'tabindex': "0"
-		})
-		.popover('show')
-		.focus()
-		$('.popover-content').scrollTop(730);
+		// $('#landscapeArea').popover({
+		// 	'placement':'bottom',
+		// 	'trigger': 'focus',
+		// 	'tabindex': "0"
+		// })
+		// .popover('show')
+		// .focus()
+		// $('.popover-content').scrollTop(730);
 	})
 };
 
