@@ -9,7 +9,7 @@ The video [here](http://californiadatacollaborative.com/statewide-efficiency) de
 
 ## How do I get set up?
 ### Minimum Requirements
-The minimum requirements to run an Efficiency Explorer are this repo and a [carto](carto.com) account to host geometry and attribute tables. See js/ss_config_example.js for required attribute table columns.
+The minimum requirements to run an Efficiency Explorer are this repo and a [carto](www.carto.com) account to host geometry and attribute tables. See js/ss_config_example.js for required attribute table columns.
 
 Once you have hosted your data on carto, copy "js/ss_config_example.js" to "js/ss_config.js" and update this new file with your specific configuration information (carto account name, table names, column names, etc.).
 
