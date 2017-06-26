@@ -12,7 +12,7 @@
   ga('send', 'pageview');
 
   </script>
-  <title>Efficiency Explorer v1.1</title>
+  <title>Efficiency Explorer v1.2</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
@@ -35,7 +35,7 @@
       <ul class="nav navbar-nav">
         <!-- I use href="javascript:..." because href default cursor property is pointer -->
         <li><a id='aboutLink' href="javascript: smoothScroll('#extraUtility');">About</a></li>
-        <li><a id='intraULink' href="javascript: smoothScroll('#intraUtility');">Efficiency Explorer  v1.1</a></li>
+        <li><a id='intraULink' href="javascript: smoothScroll('#intraUtility');">Efficiency Explorer  v1.2</a></li>
       </ul>
     </div>
   </nav>
@@ -64,7 +64,7 @@
                data-html="true"
                data-content='
                <h5>Parameter Description</h5>
-               <p>Suppliers produce water for their residential customers. Policy prescriptions regarding <em>reasonable</em> residential water production can be captured by setting a "gallons per capita per day" (GPCD) standard to scale the indoor budget accordingly.</p>
+               <p>Residential customers use water. Policy prescriptions regarding <em>reasonable</em> residential water use can be captured by setting a "gallons per capita per day" (GPCD) standard to scale the indoor budget accordingly.</p>
                <p>For reference, below are historical GPCDs for different groups of water users.</p>
                <table style="width:100%">
                 <tr>
@@ -102,7 +102,7 @@
             data-html="true"
             data-content="
             <h5>Parameter Description</h5>
-            <p>Suppliers serving more residential customers will have greater indoor residential production demands. Their indoor residential production budgets are scaled accordingly.</p><br>
+            <p>Suppliers serving more residential customers will have greater indoor residential use demands. Their indoor residential use budgets are scaled accordingly.</p><br>
             <h5>Data Source(s)</h5>
             <p>The population data reported to the State Water Resources Control Board for the monthly <a href='https://data.ca.gov/dataset/drinking-water-%E2%80%93-urban-water-supplier-monitoring-%E2%80%93-drinc/resource/00fa49b9-9e0f-4c65-bfab#{}'>Urban Water Supplier Report</a> are used in this tool.</p><br>
             <h5><b class='highlight'>Quality Consideration(s)</b></h5>
@@ -133,7 +133,7 @@
            data-content="
            <h5>Parameter Description</h5>
            <p>
-            Suppliers with greater environmental demands for evaporation and plant transpiration will feel a greater demand for outdoor water production. Reference evapotranspiration captures this demand and scales the outdoor budget accordingly.
+            Suppliers with greater environmental demands for evaporation and plant transpiration will feel a greater demand for outdoor water use in their districts. Reference evapotranspiration captures this demand and scales the outdoor budget accordingly.
           </p><br>
           <h5>Data Source(s)</h5>
           <p>
@@ -155,7 +155,7 @@
           data-content='
           <h5>Parameter Description</h5>
           <p>
-            Landscapes naturally transfer water to the atmosphere through evapotranspiration. Policy prescriptions regarding <em>reasonable</em> landscape types can be stated in terms of the percent of this water transfer that a supplier must replace with water production for irrigation. The ET Adjustment Factor (ETAF) captures this prescription, and scales the outdoor budget accordingly.
+            Landscapes naturally transfer water to the atmosphere through evapotranspiration. Policy prescriptions regarding <em>reasonable</em> landscape types can be stated in terms of the percent of this water transfer that must replaced with water use for irrigation. The ET Adjustment Factor (ETAF) captures this prescription, and scales the outdoor budget accordingly.
           </p>
           <p>
             For reference, below are example ETAFs for various types of landscapes.
@@ -199,18 +199,18 @@
           data-content="
           <h5>Parameter Description</h5>
           <p>
-            Suppliers with more landscaped area may have greater outdoor residential water production demands. Their outdoor residential production budgets are scaled accordingly.
+            Suppliers with more landscaped area may have greater outdoor residential water use demands. Their outdoor residential water use budgets are scaled accordingly.
           </p><br>
           <h5>Data Source(s)</h5>
           <p>
-            There are ongoing discussions to finalize a definition of landscaped area appropriate for setting an outdoor water production standard. Here, <em>landscaped area</em> is defined as the sum of photosynthetically active turf, and bushes and trees. These data were collected through remote-sensing in partnership with Claremont Graduate University.
+            There are ongoing discussions to finalize a definition of landscaped area appropriate for setting an outdoor water use standard. Here, <em>landscaped area</em> is defined as the sum of photosynthetically active turf, and bushes and trees. These data were collected through remote-sensing in partnership with Claremont Graduate University.
           </p><br>
           <p>
             Administrative boundary data were required to demarcate and allocate residential parcels between and to suppliers. For this iteration, residential parcel data were obtained from the Office of Planning and Research's <a href='http://services.gis.ca.gov/arcgis/rest/services/Boundaries/Parcels_Residential/MapServer'>residential parcel dataset</a>. Service area boundaries were obtained from Department of Water Resources' <a href='https://gis.water.ca.gov/app/boundaries/'>Water Management Planning Tool</a> as well as the California Environmental Health Tracking Program's <a href='http://cehtp.org/page/water/water_system_map_viewer'> Water System Map Viewer</a>.
           </p><br>
           <h5><b class='highlight'>Quality Consideration(s)</b></h5>
           <p>
-            There are several important considerations for this parameter. While the landscapes of typical suburbs without brown lawns are captured well with the photosynthetically active remote sensing approach used, there generally exists greater data quality uncertainty for rural and wooded areas. Additionally, the adminstative boundary data available must be delibrately validated.
+            There are several important considerations for this parameter. While the landscapes of typical suburbs without brown lawns are captured well with the photosynthetically active remote sensing approach used, there generally exists greater data quality uncertainty for rural and wooded areas. Additionally, the administrative boundary data available must be deliberately validated.
           </p>
           <p>
             For these reasons, suppliers with a significant percentage of large, green, and un-irrigated residential parcels; and/or an unreasonable average number of people per residential parcel have been flagged for data quality concerns.
@@ -228,11 +228,14 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading"></div>
-    <div class="panel-body equation">
+    <div class="panel-body equation" style="background-color: #222">
+       <h3 style="color: white">
+            The Efficiency Explorer Tool was developed with publically available data to offer water managers a first glance at water use compared to potential water efficiency goals. It is for educational and illustrative purposes only. The Efficiency Explorer Tool was not intended and is not able to calculate water agency budgets at a level of accuracy appropriate for establishing policy. Several areas for improvement were identified as this tool was developed and the CaDC is dedicated to working with members and stakeholders to improve the accuracy and precision of this tool. 
+        </h3>
       <div class='centered'>
         <div aria-label="..." class="btn-group" role="group">
           <button class="btn btn-default" id="toolButton" onclick="smoothScroll('#intraUtility');" type="button">
-            <b>Just show me the Efficiency Explorer!</b>
+            <b>Show me the Efficiency Explorer!</b>
           </button>
         </div>
       </div>
@@ -248,13 +251,13 @@
           </a>
         </h4>
       </div>
-      <div id="contextCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="contextHeading">
+      <div id="contextCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="contextHeading">
         <div class="panel-body">
           <p>
-            The CaDC Efficiency Explorer is a <b class="highlight">planning and education tool</b> for local water managers and the wider California water community. This tool is the result of a rapid first assessment of Governor Brown's Executive Order B-37-16, which calls for the development of water use targets customized to the unique conditions of each urban water agency as part of a new, permanent efficiency framework.
+            The CaDC Efficiency Explorer is a <b class="highlight">planning and education tool</b> for local water managers and the wider California water community. This tool is the result of a rapid first assessment of Governor Brown's Executive Order B-37-16, which calls for the development of water use efficiency goals customized to the unique conditions of each urban water agency as part of a new, permanent efficiency framework.
           </p>
           <p>
-            For version one of the Efficiency Explorer, the CaDC <b class="highlight">focused on the <em>residential</em> component of an agency's efficiency target.</b> This target is calculated as the sum of indoor and outdoor residential production budgets, and can vary according to unique agency conditions as well as pending policy decisions.
+            For version one of the Efficiency Explorer, the CaDC <b class="highlight">focused on the <em>residential</em> component of an agency's efficiency efficiency goal.</b> This goal is calculated as the sum of indoor and outdoor residential water use budgets, and can vary according to unique agency conditions as well as pending policy decisions.
           </p>
 
           <p>
@@ -282,7 +285,7 @@
       <div id="qualityCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="qualityHeading">
         <div class="panel-body">
           <p>
-            There are two distinct senses in which efficiency target calculations can deviate from ground truth: precision and accuracy.<br>
+            There are two distinct senses in which efficiency goal calculations can deviate from ground truth: precision and accuracy.<br>
           </p>
           <div class="row">
             <div class="col-md-2"></div>
@@ -310,7 +313,7 @@
                   Systematically Accurate, Not Precise
                 </text>
                 <text x='150' y='280' text-anchor='middle'>
-                  325 of 404 Target Calculations | ~80%
+                  325 of 404 Efficiency Goal Calculations | ~80%
                 </text>
 
             </svg>
@@ -340,7 +343,7 @@
               Not Systematically Accurate, Not Precise
             </text>
             <text x='150' y='280' text-anchor='middle'>
-              79 of 404 Target Calculations | ~20%
+              79 of 404 Efficiency Goal Calculations | ~20%
             </text>
 
           </svg>
@@ -349,10 +352,10 @@
       <div class="col-md-2"></div>
     </div>
     <p>
-      <br>Parameter data used to calculate targets can be <em>imprecise.</em> Imprecision reflects deviations around a true value. The Efficiency Explorer's graphs include gray confidence bands around each agency's calculated target to indicate the imprecision resulting from the compounded statistical error for all parameter data sources. Analogous to the relationship between the darts and the bullseye in figure (a) above, one should expect the ground truth efficiency target values to lie somewhere within the confidence bands (for agencies not flagged as showing evidence of systematic inaccuracy). For technical details on each component error source, please see our <a href="https://github.com/California-Data-Collaborative/statewide-efficiency-error-model/blob/master/Statewide%20Efficiency%20Framework%20Errors.ipynb">error model.</a> One key result from this error analysis is the break down of the aggregate target error by budget: indoor budgets are expected to lie within approximately 3% of their estimates, while outdoor budgets are within 40%. <b class="highlight">Takeaway: while imprecise target calculations can be further refined, they are useful first approximations of ground truth.</b>
+      <br>Parameter data used to calculate efficiency goals can be <em>imprecise.</em> Imprecision reflects deviations around a true value. The Efficiency Explorer's graphs include gray confidence bands around each agency's calculated goal to indicate the imprecision resulting from the compounded statistical error for all parameter data sources. Analogous to the relationship between the darts and the bullseye in figure (a) above, one should expect the ground truth efficiency goal values to lie somewhere within the confidence bands (for agencies not flagged as showing evidence of systematic inaccuracy). For technical details on each component error source, please see our <a href="https://github.com/California-Data-Collaborative/statewide-efficiency-error-model/blob/master/Statewide%20Efficiency%20Framework%20Errors.ipynb">error model.</a> One key result from this error analysis is the break down of the aggregate goal error by budget: indoor budgets are expected to lie within approximately 3% of their estimates, while outdoor budgets are within 40%. <b class="highlight">Takeaway: while imprecise efficiency goal calculations can be further refined, they are useful first approximations of ground truth.</b>
     </p>
     <p>
-      As alluded to above, in certain situations parameter data used to calculate targets can be not only imprecise, but also <em>inaccurate.</em> Inaccuracy reflects a more systematic bias away from ground truth. Figure (b) above graphically illustrates this type of error. Non-random inaccuracies can arise from situations such as the prevalence of large rural residential parcels in certain districts, which would result in systematic overestimation of target calculations in those districts. The prevalence of brown lawns in other districts would result in systematic underestimation of target calculations in those districts. Roughly 20% of agency target calculations show evidence of this more problematic source of error. The component data inaccuracies are broken down in our <a href="https://docs.google.com/spreadsheets/d/1VD_CuCzZ7MZx8AKle9k8aRkSMtCHAy5VpZIuNvD1Rrw/edit?usp=sharing">aggregate data quality assessment rubric</a>, and will be elaborated in an upcoming CaDC blog post. <b class="highlight">Takeaway: targets flagged as systematically inaccurate should not be interpreted as useful approximations and have been grayed out on the map.</b>
+      As alluded to above, in certain situations parameter data used to calculate efficiency goals can be not only imprecise, but also <em>inaccurate.</em> Inaccuracy reflects a more systematic bias away from ground truth. Figure (b) above graphically illustrates this type of error. Non-random inaccuracies can arise from situations such as the prevalence of large rural residential parcels in certain districts, which would result in systematic overestimation of goal calculations in those districts. The prevalence of brown lawns in other districts would result in systematic underestimation of goal calculations in those districts. Roughly 20% of agency efficiency goal calculations show evidence of this more problematic source of error. The component data inaccuracies are broken down in a CaDC <a href="http://californiadatacollaborative.org/blog/2017/6/8/residential-water-efficiency-and-the-california-data-quality-landscape">data quality blog post.</a> <b class="highlight">Takeaway: efficiency goals flagged as systematically inaccurate should not be interpreted as useful approximations and have been grayed out on the map.</b>
     </p>
   </div>
 </div>
@@ -381,11 +384,11 @@
               </li>
               <li>View results for current scenario for selected <b>Supplier</b>
                 <ul>
-                  <li><b>Residential Target</b> - the target residential production calculated using the selected indoor and outdoor water efficiency standards</li>
-                  <li><b>Residential Production</b> - the total production reported by the supplier multiplied by the percentage that went to residential customers</li>
-                  <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within target. Negative percentages represent percentage within target</li>
+                  <li><b>Residential Efficiency Goal</b> - the residential water use efficiency goal calculated using the selected indoor and outdoor water efficiency standards</li>
+                  <li><b>Residential Use</b> - the total water use reported by the supplier multiplied by the percentage that went to residential customers</li>
+                  <li><b>Efficiency</b> - the number of acre-feet (and percentage) over or within efficiency goal. Negative percentages represent percentage within goal</li>
                   <li><b>Data Quality</b> - a 3-tiered flag indicating supplier-level data quality concerns</li>
-                  <li>Time Series Graph - the historical relationship between target production and actual production. Grey bands are included around target line to indicate confidence region</li>
+                  <li>Time Series Graph - the historical relationship between efficiency goal and actual use. Grey bands are included around efficiency goal line to indicate confidence region</li>
                 </ul>
               </li>
             </ul>
@@ -397,9 +400,9 @@
               <li>View geographic context</li>
               <!-- <li>View the <b>Big Picture</b>
                 <ul>
-                  <li><b>SBx7-7 2020 Residential Target</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 targets. The Residential Target is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 target for that supplier</li>
-                  <li><b>Total Residential Target</b> - the sum of all residential targets for the same suppliers as the SBx7 2020 Residential Target for the previous twelve months</li>
-                  <li><b>Total Residential Production</b> - the sum of all residential production for the same suppliers as the SBx7-7 2020 Residential Target for the previous twelve months</li>
+                  <li><b>SBx7-7 2020 Residential Efficiency Goal</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 efficiency goals. The Residential Efficiency Goal is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 goal for that supplier</li>
+                  <li><b>Total Residential Efficiency Goal</b> - the sum of all residential goals for the same suppliers as the SBx7 2020 Residential Goals for the previous twelve months</li>
+                  <li><b>Total Residential Use</b> - the sum of all residential use for the same suppliers as the SBx7-7 2020 Residential Efficiency Goal for the previous twelve months</li>
                 </ul>
               </li> -->
             </ul>
@@ -461,8 +464,8 @@
       </div>
       <p style="display: inline" id='summarySentence'>
         <!-- <b>Place: </b><div style="display: inline"  id="hrName"></div><br> -->
-        <b>Residential Target: </b><div style="display: inline" id="targetValue"></div><br>
-        <b>Residential Production: </b> <div style="display: inline" id="usage"></div><br>
+        <b>Residential Efficiency Goal: </b><div style="display: inline" id="targetValue"></div><br>
+        <b>Residential Use: </b> <div style="display: inline" id="usage"></div><br>
         <b>Efficiency: </b><div style="display: inline" id="efficiency"></div><br>
         <b>Data Quality: </b><div class="highlight" style="display: inline" id="uncertainty"></div>
       </p>
@@ -517,10 +520,10 @@
   <div id="summary" style='display:none'>
     <h3>Big Picture</h3>
     <!-- Not all districts -->
-    <b>SBx7-7 2020 Residential Target:</b> <div style="display: inline" id="sb77Target"></div><br>
+    <b>SBx7-7 2020 Residential Efficiency Goal:</b> <div style="display: inline" id="sb77Target"></div><br>
     <i>Over past 12 months</i><br>
-    <b>Total Residential Target:</b> <div style="display: inline" id="summaryTarget"></div><br>
-    <b>Total Residential Production:</b> <div style="display: inline" id="summaryUsage"></div>
+    <b>Total Residential Efficiency Goal:</b> <div style="display: inline" id="summaryTarget"></div><br>
+    <b>Total Residential Use:</b> <div style="display: inline" id="summaryUsage"></div>
   </div>
 
   <div id="map"></div>

@@ -66,7 +66,7 @@ var cartography = {
 	<div class="cartodb-tooltip-content">
 	<h4>Place</h4>
 	<p>{{hr_name}}</p>
-	<h4>Percent Over/Under Target</h4>
+	<h4>Percent Over/Under Goal</h4>
 	<p>{{percentdifference}}%</p>
 	<h4>Population</h4>
 	<p>{{population}}</p>
@@ -83,7 +83,7 @@ var cartography = {
 choropleth = new cdb.geo.ui.Legend({
 	type: "choropleth",
 	show_title: true,
-	title: "Percent Over Target",
+	title: "Percent Over Goal",
 	data: [{
 			value: "------------ 0% -------- 16% ------- 33% ------- 50% ----------"
 		}, {
