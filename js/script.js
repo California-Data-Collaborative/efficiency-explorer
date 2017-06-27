@@ -227,7 +227,7 @@ function tsSetup() {
         	target: "#ts", // the html element that the graphic is inserted in
         	x_accessor: config.column_names.date,  // the key that accesses the x value
         	y_accessor: ['target_gal', 'gal_usage'], // the key that accesses the y value
-        	legend:  ['Target', 'Production'],
+        	legend:  ['Efficiency Goal', 'Water Use'],
         	legend_target: "#tsLegend"
         });
 		d3.selectAll('.label')
@@ -498,7 +498,7 @@ function summarySentence_dm(usageDifference, percentDifference, targetValue, hrN
 	// `
 	transition("#targetValue", targetValue + " AF")
 	transition("#usage", usage + " AF")
-	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> target in this scenario | ${percentDifference}%`)
+	transition("#efficiency", `${Math.abs(usageDifference)} AF <em>${differenceDescription}</em> goal in this scenario | ${percentDifference}%`)
 	transition("#uncertainty", uncertainty)
 
 	if (place_change == true){
