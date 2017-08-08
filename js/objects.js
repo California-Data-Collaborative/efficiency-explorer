@@ -42,8 +42,8 @@ function dataSetup(callback) {
 			encoded_query = encodeURIComponent(query),
 			url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 		$.getJSON(url, function(dateData) {
-			state.endDate = dateData.rows[1][config.column_names.date];
-			state.startDate = dateData.rows[12][config.column_names.date]; 
+			state.endDate = dateData.rows[0][config.column_names.date];
+			state.startDate = dateData.rows[11][config.column_names.date]; 
 			state.gpcd = 55
 			state.pf = .8
 

@@ -100,7 +100,7 @@ function generateQuery(where_clause, queryType=false) {
 	ON
 	at.report_agency_name = ut.urban_water_supplier
 	WHERE
-	${config.column_names.date} BETWEEN '${globals.dateData.rows[12][config.column_names.date]}' AND '${globals.dateData.rows[1][config.column_names.date]}'
+	${config.column_names.date} BETWEEN '${globals.dateData.rows[11][config.column_names.date]}' AND '${globals.dateData.rows[0][config.column_names.date]}'
 	AND ${config.column_names.uncertainty} = 'Little to no evidence of systematic bias'
 	`
 	//
@@ -202,8 +202,8 @@ if (queryType == "ts") {
 
 function tsSetup() {
 	
-	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "SCENARIO START"},
-	{[`${config.column_names.date}`]: new Date(state.endDate), "label": "SCENARIO END"}
+	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "START"},
+	{[`${config.column_names.date}`]: new Date(state.endDate), "label": "END"}
 	],
 	query = generateQuery(where_clause=`WHERE ${config.column_names.unique_id} = ${state.placeID}`, queryType="ts"),
 	encoded_query = encodeURIComponent(query),
