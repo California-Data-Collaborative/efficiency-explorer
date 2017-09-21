@@ -2,6 +2,19 @@
 var nav_height = $(".navbar").height();
 
 function styleSetup() {
+
+	$(".navbar-brand")
+	.effect("shake", {
+		direction: "up",
+		distance: 5,
+		times: 3
+
+	}, 1000)
+	.animate({
+		color: "#CECECE"
+		},
+		1000
+	)
 	
 	// make sure correct section is highlighted
 	function selectSection(){

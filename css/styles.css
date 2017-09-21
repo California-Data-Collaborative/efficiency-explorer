@@ -52,7 +52,11 @@ td {
 }
 
 .navbar-inverse .navbar-brand {
-  color: white;
+  /*color: white;*/
+  /*font-size: larger;*/
+  width: 200px;
+  font-weight: lighter;
+  color: #66afe9;
   padding-left: 0px !important;
 }
 
