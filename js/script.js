@@ -3,7 +3,7 @@ var nav_height = $(".navbar").height();
 
 function styleSetup() {
 
-	$(".navbar-brand")
+	$("#argoBrand")
 	.effect("shake", {
 		direction: "up",
 		distance: 5,

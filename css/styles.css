@@ -52,12 +52,18 @@ td {
 }
 
 .navbar-inverse .navbar-brand {
-  /*color: white;*/
+  color: white;
   /*font-size: larger;*/
-  width: 200px;
-  font-weight: lighter;
-  color: #66afe9;
   padding-left: 0px !important;
+}
+
+#argoBrand{
+  font-weight: lighter;
+  width: 200px;
+  color: #66afe9;
+  float: right;
+  text-align: right;
+  padding-right: 0px !important;
 }
 
 .noleftpadding {
