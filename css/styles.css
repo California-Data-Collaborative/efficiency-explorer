@@ -122,6 +122,12 @@ td {
   overflow-y: scroll !important;
 }
 
+.cartodb-legend-stack {
+  height: 188px !important;
+  top: 10px !important;;
+  right: 10px !important;
+}
+
 #summary {
   z-index: 1000;
   top: 10px;

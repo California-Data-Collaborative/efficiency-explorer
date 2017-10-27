@@ -85,7 +85,7 @@ choropleth = new cdb.geo.ui.Legend({
 	show_title: true,
 	title: "Percent Over Goal",
 	data: [{
-			value: "------------ 0% -------- 16% ------- 33% ------- 50% ----------"
+			value: "--------- 0% ----- 16% ---- 33% ---- 50% ----- Data Concern"
 		}, {
 			value: ""
 		}, {
@@ -100,9 +100,15 @@ choropleth = new cdb.geo.ui.Legend({
 		}, {
 			name: "bin4",
 			value: "#3E5792"
-		},		{
+		},	{
 			name: "bin5",
 			value: "#554196"
+		}, {
+			name: "space",
+			value: "gray"
+		}, {
+			name: "nodata",
+			value: "gray"
 		}]
 	})
 
