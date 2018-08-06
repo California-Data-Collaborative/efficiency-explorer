@@ -32,7 +32,7 @@
           Efficiency Explorer v1.2
         </span>
       </div>
-      
+
       <ul class="nav navbar-nav col-md-6">
         <!-- I use href="javascript:..." because href default cursor property is pointer -->
         <li><a id='aboutLink' href="javascript: smoothScroll('#extraUtility');">About</a></li>
@@ -147,7 +147,7 @@
           </p><br>
           <h5><b class='highlight'>Quality Consideration(s)</b></h5>
           <p>
-            Not all suppliers are within close proximity to CIMIS stations. Suppliers with no CIMIS stations within 20 kilometers, or with obvious intervening obstructions such as mountain ranges, have been flagged for data quality concerns. 
+            Not all suppliers are within close proximity to CIMIS stations. Suppliers with no CIMIS stations within 20 kilometers, or with obvious intervening obstructions such as mountain ranges, have been flagged for data quality concerns.
           </p>">
           Sum of daily reference evapotranspiration</div>
           <div class="panel-body">x</div>
@@ -226,8 +226,9 @@
           <div class="panel-body">Unit Conversion Factor</div>
         </div>
         <div class="panel-footer centered">
+          <i class="glyphicon glyphicon-tint"></i>
           <i class="glyphicon glyphicon-leaf"></i>
-          <i class="glyphicon glyphicon-tree-deciduous"></i>
+          <!-- <i class="glyphicon glyphicon-tree-deciduous"></i> -->
         </div>
       </div>
     </div>
@@ -404,13 +405,13 @@
             <ul>
               <li>Select suppliers</li>
               <li>View geographic context</li>
-              <!-- <li>View the <b>Big Picture</b>
+              <li>View the <b>Big Picture</b>
                 <ul>
-                  <li><b>SBx7-7 2020 Residential Efficiency Goal</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 efficiency goals. The Residential Efficiency Goal is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 goal for that supplier</li>
-                  <li><b>Total Residential Efficiency Goal</b> - the sum of all residential goals for the same suppliers as the SBx7 2020 Residential Goals for the previous twelve months</li>
-                  <li><b>Total Residential Use</b> - the sum of all residential use for the same suppliers as the SBx7-7 2020 Residential Efficiency Goal for the previous twelve months</li>
+                  <!-- <li><b>SBx7-7 2020 Residential Efficiency Goal</b> - the amount of water in acre-feet for the previous twelve months for suppliers with SBx7-7 efficiency goals. The Residential Efficiency Goal is calculated as the percent residential reported in the supplier report multiplied by the total SBx7-7 goal for that supplier</li> -->
+                  <li><b>Total Residential Efficiency Goal</b> - the sum of all residential goals not flagged as systematically inaccurate for the previous twelve months</li>
+                  <li><b>Total Residential Use</b> - the sum of all residential use of those suppliers for the previous twelve months</li>
                 </ul>
-              </li> -->
+              </li>
             </ul>
           </li>
         </ul>
@@ -513,8 +514,9 @@
         <label for="pf">ET Adjustment Factor</label>
         <div class="input-group">
           <span class="input-group-addon" id="pf-addon">
+            <i class="glyphicon glyphicon-tint"></i>
             <i class="glyphicon glyphicon-leaf"></i>
-            <i class="glyphicon glyphicon-tree-deciduous"></i>
+            <!-- <i class="glyphicon glyphicon-tree-deciduous"></i> -->
           </span>
           <input type="text" class="form-control" id="pf" aria-describedby="pf-addon">
         </div>
@@ -523,11 +525,11 @@
   </div>
 </div>
 <div class="col-md-8 nopadding">
-  <div id="summary" style='display:none'>
+  <div id="summary"> <!--style='display:none'> -->
     <h3>Big Picture</h3>
     <!-- Not all districts -->
-    <b>SBx7-7 2020 Residential Efficiency Goal:</b> <div style="display: inline" id="sb77Target"></div><br>
-    <i>Over past 12 months</i><br>
+    <!-- <b>SBx7-7 2020 Residential Efficiency Goal:</b> <div style="display: inline" id="sb77Target"></div><br> -->
+    <i><b class='highlight'>Useful first approximation</b> agencies over past 12 months</i><br>
     <b>Total Residential Efficiency Goal:</b> <div style="display: inline" id="summaryTarget"></div><br>
     <b>Total Residential Use:</b> <div style="display: inline" id="summaryUsage"></div>
   </div>

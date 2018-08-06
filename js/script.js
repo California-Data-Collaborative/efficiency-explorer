@@ -15,7 +15,7 @@ function styleSetup() {
 		},
 		1000
 	)
-	
+
 	// make sure correct section is highlighted
 	function selectSection(){
 		var window_top = 1.5*$(window).scrollTop();
@@ -102,24 +102,35 @@ function generateQuery(where_clause, queryType=false) {
 
 	// Hard-coded for RLF Statewide EE
 	var summaryQuery = `
-	SELECT
-	SUM(${config.column_names.population} * target_gpcd_2020 * cast(${config.column_names.month_days} as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,
-	SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
-	SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
-	FROM
-	statewide_baseline_and_target_data_11_14_14 ut
-	JOIN
-	${config.attribute_table} at
-	ON
-	at.report_agency_name = ut.urban_water_supplier
-	WHERE
-	${config.column_names.date} BETWEEN '${globals.dateData.rows[11][config.column_names.date]}' AND '${globals.dateData.rows[0][config.column_names.date]}'
-	AND ${config.column_names.uncertainty} = 'Little to no evidence of systematic bias'
-	`
+
+		WITH cte_targets AS (
+			SELECT
+			at.report_agency_name,
+			--SUM(${config.column_names.population} * target_gpcd_2020 * cast(${config.column_names.month_days} as float) * report_percent_residential  * 3.0689e-6) sb77_target_af,
+			SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) * 3.0689e-6 mwelo_target_af,
+			SUM(${config.column_names.usage} * 3.0689e-6) res_usage_af
+			FROM
+			--statewide_baseline_and_target_data_11_14_14 ut
+			--JOIN
+			${config.attribute_table} at
+			--ON
+			--at.report_agency_name = ut.urban_water_supplier
+			WHERE
+			${config.column_names.date} BETWEEN '${globals.dateData.rows[11][config.column_names.date]}' AND '${globals.dateData.rows[0][config.column_names.date]}'
+			AND ${config.column_names.uncertainty} = 'Useful first approximation'
+			GROUP BY at.report_agency_name
+			)
+
+		SELECT
+		--SUM(sb77_target_af) sb77_target_af,
+		SUM(mwelo_target_af) mwelo_target_af,
+		SUM(res_usage_af) res_usage_af
+		FROM cte_targets
+		`
 	//
 
-	
-	
+
+
 	var tsQuery = `
 	WITH cte_targets AS
 	(SELECT
@@ -163,10 +174,10 @@ function generateQuery(where_clause, queryType=false) {
 		${config.attribute_table}
 		WHERE
 		${config.geometry_table}.${config.column_names.unique_id} = ${config.attribute_table}.${config.column_names.unique_id}
-		
+
 		),
 	cte_targets AS
-	(SELECT     
+	(SELECT
 		the_geom_webmercator,
 		lat,
 		lon,
@@ -183,7 +194,7 @@ function generateQuery(where_clause, queryType=false) {
 		SUM(${config.column_names.population} * ${state.gpcd} * cast(${config.column_names.month_days} as float) + ${config.column_names.irrigable_area} * ${config.column_names.average_eto} * ${state.pf} * .62) AS target_gal
 		FROM cte_otf
 		${where_clause}
-		
+
 		GROUP BY ${config.column_names.unique_id}, the_geom_webmercator, lat, lon)
 
 SELECT
@@ -214,7 +225,7 @@ if (queryType == "ts") {
 
 
 function tsSetup() {
-	
+
 	var markers = [	{[`${config.column_names.date}`]: new Date(state.startDate), "label": "START"},
 	{[`${config.column_names.date}`]: new Date(state.endDate), "label": "END"}
 	],
@@ -305,7 +316,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 		stop: function (event, ui) {
 			var startDate = dates[ui.values[0]],
 			endDate = dates[ui.values[1]]
-			
+
 			state.startDate = `${formatter_long(new Date(startDate))}`
 			state.endDate = `${formatter_long(new Date(endDate))}`
 			query = generateQuery(where_clause=`WHERE ${config.column_names.date} BETWEEN '${state.startDate}' AND '${state.endDate}'`, queryType=false);
@@ -316,7 +327,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 
 			var startDate = dates[ui.values[0]],
 			endDate = dates[ui.values[1]]
-			
+
 			state.startDate = `${formatter_long(new Date(startDate))}`
 			state.endDate = `${formatter_long(new Date(endDate))}`
 			tsSetup()
@@ -400,11 +411,11 @@ function showFeature(cartodb_id) {
 	sql.execute(`select ST_Centroid(the_geom) as the_geom from ${config.geometry_table} where cartodb_id = {{cartodb_id}}`, {cartodb_id: cartodb_id} )
 	.done(function(geojson) {
 		if (polygon) {
-			
+
 			map.removeLayer(polygon);
 
 		}
-		polygon = L.geoJson(geojson, { 
+		polygon = L.geoJson(geojson, {
 			style: {}
 		}).addTo(map);
 	});
@@ -548,7 +559,7 @@ function bigpictureSummary(setup=false){
 function main(){
 
 	// style setup
-	styleSetup()	
+	styleSetup()
 	smoothScroll('#extraUtility') // prescribe starting div
 
 	// visualization setup

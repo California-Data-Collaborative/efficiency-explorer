@@ -13,7 +13,7 @@ a:hover {
   color: #CECECE !important
 }
 a.selected {
-  color: white !important; 
+  color: white !important;
   background: #222;
 }
 
@@ -26,7 +26,7 @@ td {
   /*height: 100vh;*/
   /*width: 100vw;*/
   background-color: #222;
-  color: white; 
+  color: white;
   overflow: scroll;
   opacity: .9;
   z-index: 1000000000 !important;
@@ -105,7 +105,7 @@ td {
   box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  
+
 }
 
 #tsLegend {
@@ -122,11 +122,11 @@ td {
   overflow-y: scroll !important;
 }
 
-.cartodb-legend-stack {
+/* .cartodb-legend-stack {
   height: 188px !important;
   top: 10px !important;;
   right: 10px !important;
-}
+} */
 
 #summary {
   z-index: 1000;
@@ -193,7 +193,7 @@ overflow: scroll;
   padding: 6px 12px;
   border-radius: 4px;
   webkit-border-radius: 4px;
-  -moz-border-radius: 4px;  
+  -moz-border-radius: 4px;
 }
 
 .ui-autocomplete .ui-state-hover,
@@ -207,7 +207,7 @@ overflow: scroll;
   padding: 1px 2px;
   border-radius: 4px;
   webkit-border-radius: 4px;
-  -moz-border-radius: 4px; 
+  -moz-border-radius: 4px;
   background-color: #eee !important;
   border: none !important;
 }
