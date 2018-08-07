@@ -310,7 +310,7 @@ function sliderSetup(datesTarget, tsTarget, legendTarget) {
 	$("#range_slider").slider({
 		range: true,
 		min: 0,
-		max: datesLength - 1,  // exclude most recent month because data may not be available for all months
+		max: datesLength,
 		step: 1,
 		values: [startPosition, endPosition],
 		stop: function (event, ui) {

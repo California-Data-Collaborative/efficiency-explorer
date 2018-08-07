@@ -17,7 +17,7 @@ var globals = {
 function dataSetup(callback) {
 	// choose random place for default placeID
 	var query = `
-		SELECT DISTINCT ${config.column_names.unique_id}, ${config.column_names.hr_name} 
+		SELECT DISTINCT ${config.column_names.unique_id}, ${config.column_names.hr_name}
 		FROM ${config.attribute_table}`,
 
 		encoded_query = encodeURIComponent(query),
@@ -33,7 +33,7 @@ function dataSetup(callback) {
 			state.hrName = randomName
 			$("#hrName").val(randomName)
 		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
-		// ^*I exclude the actual most recent month because not every block contains these data
+	
 		var query = `
 			SELECT DISTINCT ${config.column_names.date}
 			FROM ${config.attribute_table}
@@ -43,7 +43,7 @@ function dataSetup(callback) {
 			url = `https://${config.account}.carto.com/api/v2/sql?q=${encoded_query}`;
 		$.getJSON(url, function(dateData) {
 			state.endDate = dateData.rows[0][config.column_names.date];
-			state.startDate = dateData.rows[11][config.column_names.date]; 
+			state.startDate = dateData.rows[11][config.column_names.date];
 			state.gpcd = 55
 			state.pf = .8
 
