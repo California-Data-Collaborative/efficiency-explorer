@@ -29,7 +29,6 @@ var globals = {
 		state.hrName = randomName;
 		$("#hrName").val(randomName);
 		// calculate most recent full^* month and 1 year back for default end and start dates, respectively
-		// ^*I exclude the actual most recent month because not every block contains these data
 		var query = "\n\t\t\tSELECT DISTINCT " + config.column_names.date + "\n\t\t\tFROM " + config.attribute_table + "\n\t\t\tORDER BY " + config.column_names.date + " DESC",
 		    encoded_query = encodeURIComponent(query),
 		    url = "https://" + config.account + ".carto.com/api/v2/sql?q=" + encoded_query;
